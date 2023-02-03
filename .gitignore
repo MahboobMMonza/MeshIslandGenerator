@@ -6,4 +6,9 @@ target
 *.mesh
 *.iml
 *.svg
+# extra maven stuff
+.classpath
+.project
+.settings
+.factorypath
 
