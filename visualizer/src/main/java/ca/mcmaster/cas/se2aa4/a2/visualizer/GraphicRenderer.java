@@ -3,12 +3,15 @@ package ca.mcmaster.cas.se2aa4.a2.visualizer;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 public class GraphicRenderer {
@@ -16,7 +19,21 @@ public class GraphicRenderer {
     private static final int THICKNESS = 3;
     public void render(Mesh aMesh, Graphics2D canvas) {
         canvas.setColor(Color.BLACK);
-        Stroke stroke = new BasicStroke(0.5f);
+        Stroke stroke = new BasicStroke(1f);
+        canvas.setStroke(stroke);
+        for (Segment s: aMesh.getSegmentsList()) {
+            // double centre_x = v.getX() - (THICKNESS/2.0d);
+            // double centre_y = v.getY() - (THICKNESS/2.0d);
+            Color old = canvas.getColor();
+            canvas.setColor(extractColor(s.getPropertiesList()));
+            Point2D p1 = new Point2D.Double(aMesh.getVertices(s.getV1Idx()).getX(), aMesh.getVertices(s.getV1Idx()).getY());
+            Point2D p2 = new Point2D.Double(aMesh.getVertices(s.getV2Idx()).getX(), aMesh.getVertices(s.getV2Idx()).getY());
+            Line2D line = new Line2D.Double(p1, p2);
+            System.out.printf("[(%f, %f), (%f, %f)]%n",line.getX1(), line.getY1(), line.getX2(), line.getY2());
+            canvas.draw(line);
+            canvas.setColor(old);
+        }
+        stroke = new BasicStroke(1f);
         canvas.setStroke(stroke);
         for (Vertex v: aMesh.getVerticesList()) {
             double centre_x = v.getX() - (THICKNESS/2.0d);
