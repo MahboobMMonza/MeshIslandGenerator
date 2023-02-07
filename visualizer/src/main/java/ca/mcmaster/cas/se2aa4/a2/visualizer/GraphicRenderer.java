@@ -25,7 +25,11 @@ public class GraphicRenderer {
             // double centre_x = v.getX() - (THICKNESS/2.0d);
             // double centre_y = v.getY() - (THICKNESS/2.0d);
             Color old = canvas.getColor();
-            canvas.setColor(extractColor(s.getPropertiesList()));
+            // canvas.setColor(extractColor(s.getPropertiesList()));
+            Color v1Color = extractColor(aMesh.getVertices(s.getV1Idx()).getPropertiesList());
+            Color v2Color = extractColor(aMesh.getVertices(s.getV2Idx()).getPropertiesList());
+            Color strokeColor = getAverageColor(v1Color, v2Color);
+            canvas.setColor(strokeColor);
             Point2D p1 = new Point2D.Double(aMesh.getVertices(s.getV1Idx()).getX(), aMesh.getVertices(s.getV1Idx()).getY());
             Point2D p2 = new Point2D.Double(aMesh.getVertices(s.getV2Idx()).getX(), aMesh.getVertices(s.getV2Idx()).getY());
             Line2D line = new Line2D.Double(p1, p2);
@@ -46,6 +50,13 @@ public class GraphicRenderer {
         }
     }
 
+    private Color getAverageColor(Color c1, Color c2) {
+        int redAverage, greenAverage, blueAverage;
+        redAverage = (c1.getRed() + c2.getRed()) / 2;
+        greenAverage = (c1.getGreen() + c2.getGreen()) / 2;
+        blueAverage = (c1.getBlue() + c2.getBlue()) / 2;
+        return new Color(redAverage, greenAverage, blueAverage);
+    }
     private Color extractColor(List<Property> properties) {
         String val = null;
         for(Property p: properties) {

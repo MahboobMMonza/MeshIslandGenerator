@@ -58,29 +58,39 @@ public class DotGen {
          */
         List<Segment> allSegments = new ArrayList<>();
         // Add horizontal lines
-        int totalRowCols = width / square_size + 1;
-        for (int i = 0; i < totalRowCols; i++) {
-            for (int j = 0; j < totalRowCols - 1; j++) {
-                Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
-                allSegments.add(Segment.newBuilder().setV1Idx(i * (totalRowCols) + j).setV2Idx(i * (totalRowCols) + j + 1).addProperties(color)
-                        .build());
-                // System.out.println(String.format("%d %d", i * (totalRowCols) + j, i * (totalRowCols) + j + 1));
+        final int TOTAL_ROWS_COLS = width / square_size + 1;
+        int v1Idx, v2Idx;
+        for (int i = 0; i < TOTAL_ROWS_COLS; i++) {
+            for (int j = 0; j < TOTAL_ROWS_COLS - 1; j++) {
+                v1Idx = i * (TOTAL_ROWS_COLS) + j;
+                v2Idx = i * (TOTAL_ROWS_COLS) + j + 1;
+                // Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
+                // allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).addProperties(color)
+                //         .build());
+                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
+                // // System.out.println(String.format("%d %d", i * (totalRowCols) + j, i * (totalRowCols) + j + 1));
                 // System.out.println(String.format("[(%f, %f), (%f, %f)]", vertList.get(i * (totalRowCols) + j).getX(),
                 //         vertList.get(i * (totalRowCols) + j).getY(), vertList.get(i * (totalRowCols) + 1 + j).getX(),
                 //         vertList.get(i * (totalRowCols) + 1 + j).getY()));
             }
         }
-        for (int i = 0; i < totalRowCols - 1; i++) {
-            for (int j = 0; j < totalRowCols; j++) {
-                Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
-                allSegments.add(Segment.newBuilder().setV1Idx(i * totalRowCols + j).setV2Idx((i + 1) * totalRowCols + j).addProperties(color)
-                        .build());
+
+        // Add vertical lines
+        for (int i = 0; i < TOTAL_ROWS_COLS - 1; i++) {
+            for (int j = 0; j < TOTAL_ROWS_COLS; j++) {
+                v1Idx = i * TOTAL_ROWS_COLS + j;
+                v2Idx = (i + 1) * TOTAL_ROWS_COLS + j;
+                // Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
+                // allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).addProperties(color)
+                //         .build());
+                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
                 // System.out.println(String.format("%d %d", i * (totalRowCols) + j, i * (totalRowCols + 1) + j));
                 // System.out.println(String.format("[(%f, %f), (%f, %f)]", vertList.get(i * (totalRowCols) + j).getX(),
                 //         vertList.get(i * (totalRowCols) + j).getY(), vertList.get(i * (totalRowCols + 1) + j).getX(),
                 //         vertList.get(i * (totalRowCols + 1) + j).getY()));
             }
         }
+        System.out.println("Done DotGen");
         return Mesh.newBuilder().addAllVertices(vertList).addAllSegments(allSegments).build();
     }
 
