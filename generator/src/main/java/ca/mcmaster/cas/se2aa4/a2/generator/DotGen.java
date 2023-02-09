@@ -22,6 +22,47 @@ public class DotGen {
 
     public Mesh generate() {
         Set<Vertex> vertices = new HashSet<>();
+        Set<Vertex> verticesWithColors = CreateVertices(vertices);
+
+
+        // Convert the coloured vertices into a indexed list
+        ArrayList<Vertex> vertList = new ArrayList<>(verticesWithColors);
+        System.out.println("Sorting the vertices");
+        Collections.sort(vertList, Comparator.comparingDouble(Vertex::getY).thenComparing(Vertex::getX));
+        for (Vertex v : vertList) {
+            System.out.println(String.format("(%f, %f)", v.getX(), v.getY()));
+        }
+
+        // Create segments based on vertList
+        List<Segment> allSegments = new ArrayList<>();
+
+        
+        // Add horizontal lines
+        final int TOTAL_ROWS_COLS = width / square_size + 1;
+        int v1Idx, v2Idx;
+        for (int i = 0; i < TOTAL_ROWS_COLS; i++) {
+            for (int j = 0; j < TOTAL_ROWS_COLS - 1; j++) {
+                v1Idx = i * (TOTAL_ROWS_COLS) + j;
+                v2Idx = i * (TOTAL_ROWS_COLS) + j + 1;
+                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
+            }
+        }
+
+        // Add vertical lines
+        for (int i = 0; i < TOTAL_ROWS_COLS - 1; i++) {
+            for (int j = 0; j < TOTAL_ROWS_COLS; j++) {
+                v1Idx = i * TOTAL_ROWS_COLS + j;
+                v2Idx = (i + 1) * TOTAL_ROWS_COLS + j;
+                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
+            }
+        }
+
+
+        System.out.println("Done DotGen");
+        return Mesh.newBuilder().addAllVertices(vertList).addAllSegments(allSegments).build();
+    }
+
+    private Set<Vertex> CreateVertices(Set<Vertex> vertices){
         // Create all the vertices
         for (int x = 0; x < width; x += square_size) {
             for (int y = 0; y < height; y += square_size) {
@@ -43,55 +84,7 @@ public class DotGen {
             Vertex colored = Vertex.newBuilder(v).addProperties(color).build();
             verticesWithColors.add(colored);
         }
-
-        // Convert the coloured vertices into a indexed list
-        ArrayList<Vertex> vertList = new ArrayList<>(verticesWithColors);
-        System.out.println("Sorting the vertices");
-        Collections.sort(vertList, Comparator.comparingDouble(Vertex::getY).thenComparing(Vertex::getX));
-        for (Vertex v : vertList) {
-            System.out.println(String.format("(%f, %f)", v.getX(), v.getY()));
-        }
-
-        // Create segments based on vertList
-        /*   0          1           2           25          26          27          28          51
-         * (0, 0) :: (20, 0) :: (40, 0) :::: (500, 0) :: (0, 20) :: (20, 20) :: (40, 20) :::: (500, 20)
-         */
-        List<Segment> allSegments = new ArrayList<>();
-        // Add horizontal lines
-        final int TOTAL_ROWS_COLS = width / square_size + 1;
-        int v1Idx, v2Idx;
-        for (int i = 0; i < TOTAL_ROWS_COLS; i++) {
-            for (int j = 0; j < TOTAL_ROWS_COLS - 1; j++) {
-                v1Idx = i * (TOTAL_ROWS_COLS) + j;
-                v2Idx = i * (TOTAL_ROWS_COLS) + j + 1;
-                // Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
-                // allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).addProperties(color)
-                //         .build());
-                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
-                // // System.out.println(String.format("%d %d", i * (totalRowCols) + j, i * (totalRowCols) + j + 1));
-                // System.out.println(String.format("[(%f, %f), (%f, %f)]", vertList.get(i * (totalRowCols) + j).getX(),
-                //         vertList.get(i * (totalRowCols) + j).getY(), vertList.get(i * (totalRowCols) + 1 + j).getX(),
-                //         vertList.get(i * (totalRowCols) + 1 + j).getY()));
-            }
-        }
-
-        // Add vertical lines
-        for (int i = 0; i < TOTAL_ROWS_COLS - 1; i++) {
-            for (int j = 0; j < TOTAL_ROWS_COLS; j++) {
-                v1Idx = i * TOTAL_ROWS_COLS + j;
-                v2Idx = (i + 1) * TOTAL_ROWS_COLS + j;
-                // Property color = Property.newBuilder().setKey("rgb_color").setValue("0,0,0").build();
-                // allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).addProperties(color)
-                //         .build());
-                allSegments.add(Segment.newBuilder().setV1Idx(v1Idx).setV2Idx(v2Idx).build());
-                // System.out.println(String.format("%d %d", i * (totalRowCols) + j, i * (totalRowCols + 1) + j));
-                // System.out.println(String.format("[(%f, %f), (%f, %f)]", vertList.get(i * (totalRowCols) + j).getX(),
-                //         vertList.get(i * (totalRowCols) + j).getY(), vertList.get(i * (totalRowCols + 1) + j).getX(),
-                //         vertList.get(i * (totalRowCols + 1) + j).getY()));
-            }
-        }
-        System.out.println("Done DotGen");
-        return Mesh.newBuilder().addAllVertices(vertList).addAllSegments(allSegments).build();
+        return verticesWithColors;
     }
 
 }
