@@ -46,10 +46,10 @@ mosser@azrael visualizer % ls -lh sample.svg
 -rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
 mosser@azrael visualizer %
 ```
-To viualize the SVG file:
+To visualize the SVG file:
 
   - Open it with a web browser
-  - Convert it into something else with tool slike `rsvg-convert`
+  - Convert it into something else with tools like `rsvg-convert`
 
 ## How to contribute to the project
 
@@ -65,6 +65,7 @@ When you develop features and enrich the product, remember that you have first t
 
 | ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
-| F01  | Generate vertex-colour-averaged square segments | Mohammad | 02/06/2023 | 02/07/2023 | C |
+| F01  | Generate vertex-colour-averaged square segments | Mohammad/Khalid | 02/06/2023 | 02/08/2023 | D |
+| F02  | Command-line optionality for Generator | Khalid | 02/10/2023 || S |
 
 
