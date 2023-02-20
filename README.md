@@ -1,12 +1,12 @@
 # Assignment A2: Mesh Generator
 
-  - Author #1 [email@mcmaster.ca]
-  - Author #2 [email@mcmaster.ca]
-  - Author #3 [email@mcmaster.ca]
+  - Mohammad Mahdi Mahboob [mahbom2@mcmaster.ca]
+  - Khalid Farag [faragk1@mcmaster.ca]
+  - Samih Dalvi [dalvis3@mcmaster.ca]
 
 ## How to run the product
 
-_This section needs to be edited to reflect how the user can interact with thefeature released in your project_
+_This section needs to be edited to reflect how the user can interact with the feature released in your project_
 
 ### Installation instructions
 
@@ -18,26 +18,26 @@ To install the different tooling on your computer, simply run:
 mosser@azrael A2 % mvn install
 ```
 
-After installation, you'll find an application named `generator.jar` in the `generator` directory, and a file named `visualizer.jar` in the `visualizer` one. 
+After installation, you'll find an application named `generator.jar` in the `generator` directory, and a file named `visualizer.jar` in the `visualizer` one.
 
 ### Generator
 
 To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes one single argument (so far), the name of the file where the generated mesh will be stored as binary.
 
 ```
-mosser@azrael A2 % cd generator 
+mosser@azrael A2 % cd generator
 mosser@azrael generator % java -jar generator.jar sample.mesh
 mosser@azrael generator % ls -lh sample.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
-mosser@azrael generator % 
+mosser@azrael generator %
 ```
 
 ### Visualizer
 
-To visualize an existing mesh, go the the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
+To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
 
 ```
-mosser@azrael A2 % cd visualizer 
+mosser@azrael A2 % cd visualizer
 mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg
 
 ... (lots of debug information printed to stdout) ...
@@ -63,8 +63,8 @@ When you develop features and enrich the product, remember that you have first t
 
 ### Product Backlog
 
-| Id | Feature title | Who? | Start | End | Status |
+| ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
-|    |               |      |       |     |        |
+| F01  | Generate vertex-colour-averaged square segments | Mohammad | 02/06/2023 | 02/07/2023 | C |
 
 
