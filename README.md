@@ -59,7 +59,8 @@ When you develop features and enrich the product, remember that you have first t
 
 ### Definition of Done
 
--- Insert here your definition of done for your features --
+The feature works as intended, is efficient enough for the given scale, and is well documented or easy to understand. Additionally, code is written in such a manner
+that future MVPs that require modification of the feature can be implemented with minimal changes to its dependents.
 
 ### Product Backlog
 
