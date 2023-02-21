@@ -67,6 +67,10 @@ that future MVPs that require modification of the feature can be implemented wit
 | ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
 | F01  | Generate vertex-colour-averaged square segments | Mohammad/Khalid | 02/06/2023 | 02/08/2023 | D |
-| F02  | Command-line optionality for Generator | Khalid | 02/10/2023 || S |
+| F02  | Command-line optionality for Generator | Khalid | 02/10/2023 || B(F04) |
+| F03  | Create a 500x500 regular grid with size of 20 with fixed vertex, polygon, and segment properties |  |  || S |
+| F04 | Recreate the mesh from step 1|  | 02/10/2023 || S |
+| F05  | Add the option to customize the color,size |  |  || S |
+| F06  | Incorprate a debugging mode |  | 02/10/2023 || S |
 
 
