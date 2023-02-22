@@ -1,5 +1,7 @@
 package ca.mcmaster.cas.se2aa4.a2.mesh;
 
+import java.util.List;
+
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 
 public interface Mesh {
@@ -18,7 +20,7 @@ public interface Mesh {
 
     void convert();
     
-    List<Poly> getPolygans();
+    List<Poly> getPolygons();
 
     List<Seg> getSegments();
 
