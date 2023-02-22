@@ -16,7 +16,7 @@ public interface Mesh {
 
     boolean setVertexThickness(float t);
 
-    void finalize();
+    void lock();
 
     void convert();
 
