@@ -17,5 +17,5 @@ public interface Generator {
      * @param n      the additional property ot consider for this canvas. Varies
      *               with implementation.
      */
-    void generate(Mesh mesh, int height, int width, int n);
+    void generate(final Mesh mesh, final int height, final int width, final int n);
 }
