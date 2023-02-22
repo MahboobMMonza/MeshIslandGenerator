@@ -7,5 +7,11 @@ public interface Vert {
     void setThickness(float t);
 
     void setPosition(double x, double y);
+
+    int[] getColour();
+
+    double getX();
+
+    double getY();
     
 }
