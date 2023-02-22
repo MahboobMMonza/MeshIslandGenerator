@@ -12,10 +12,6 @@ public interface Mesh {
 
     boolean addVertex(Vertex v);
 
-    boolean setSegmentThickness(float t);
-
-    boolean setVertexThickness(float t);
-
     void lock();
 
     List<Polygon> getPolygons();
