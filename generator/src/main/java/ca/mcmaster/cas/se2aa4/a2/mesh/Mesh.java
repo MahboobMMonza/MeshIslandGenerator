@@ -1,8 +1,8 @@
 package ca.mcmaster.cas.se2aa4.a2.mesh;
+
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 
-public interface Mesh{
-    void generate(int n);
+public interface Mesh {
 
     void addPolygon(Poly p);
 
