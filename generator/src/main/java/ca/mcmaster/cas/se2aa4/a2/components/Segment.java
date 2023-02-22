@@ -9,6 +9,10 @@ public class Segment implements Seg, Comparable<Segment> {
     private int[] colour;
     private float thickness;
 
+    public Segment() {
+        colour = new int[4];
+    }
+
     @Override
     public int compareTo(Segment s) {
         int comp = Double.compare(x1, s.x1);
