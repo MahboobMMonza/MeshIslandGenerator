@@ -17,6 +17,11 @@ public class Vertex implements Vert, Comparable<Vertex> {
         colour = new int[4];
     }
 
+    public Vertex(double x, double y) {
+        this();
+        setPosition(x, y);
+    }
+
     @Override
     public int compareTo(Vertex v) {
         int comp = Double.compare(x, v.x);
