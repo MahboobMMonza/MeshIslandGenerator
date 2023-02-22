@@ -18,8 +18,6 @@ public interface Mesh {
 
     void lock();
 
-    void convert();
-
     List<Polygon> getPolygons();
 
     List<Segment> getSegments();
