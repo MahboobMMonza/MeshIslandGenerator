@@ -67,10 +67,7 @@ public class Polygon implements Poly, Comparable<Polygon> {
     @Override
     public int compareTo(Polygon p) {
         int comp = Double.compare(centroidX, p.centroidX);
-        if (comp != 0) {
-            return comp;
-        }
-        return Double.compare(centroidY, p.centroidY);
+        return (comp != 0) ? comp : Double.compare(centroidY, p.centroidY);
     }
 
 }
