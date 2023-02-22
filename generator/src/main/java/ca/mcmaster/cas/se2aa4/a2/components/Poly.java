@@ -1,23 +1,24 @@
 package ca.mcmaster.cas.se2aa4.a2.components;
+
 import java.util.List;
 
 public interface Poly {
 
-     void setCentroid(double x, double y);
+    void setCentroid(double x, double y);
 
-     void setVertices(List<double[]> verticesList);
+    void setVertices(List<double[]> verticesList);
 
-     void setNeighbours(List<double[]> neighbourCentroidList);
+    void setNeighbours(List<double[]> neighbourCentroidList);
 
-     void setColour(int r, int g, int b, int a);
+    void setColour(int r, int g, int b, int a);
 
-     List<double[]> getVertexList();
+    List<double[]> getVertexList();
 
-     double getCentroidX();
+    double getCentroidX();
 
-     double getCentroidY();
+    double getCentroidY();
 
-     int[] getColour();
+    int[] getColour();
 
-
+    List<double[]> getNeigbourList();
 }
