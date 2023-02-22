@@ -20,6 +20,11 @@ public class Polygon implements Poly, Comparable<Polygon> {
         colour = new int[4];
     }
 
+    public Polygon(double x, double y) {
+        this();
+        setCentroid(x, y);
+    }
+
     @Override
     public List<double[]> getNeigbourList() {
         return neighbourList;
