@@ -13,5 +13,7 @@ public interface Vert {
     double getX();
 
     double getY();
-    
+
+    float getThickness();
+
 }
