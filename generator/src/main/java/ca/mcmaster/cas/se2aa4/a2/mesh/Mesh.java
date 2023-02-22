@@ -6,15 +6,15 @@ import ca.mcmaster.cas.se2aa4.a2.components.*;
 
 public interface Mesh {
 
-    void addPolygon(Polygon p);
+    boolean addPolygon(Polygon p);
 
-    void addSegment(Segment s);
+    boolean addSegment(Segment s);
 
-    void addVertex(Vertex v);
+    boolean addVertex(Vertex v);
 
-    void setSegmentThickness(float t);
+    boolean setSegmentThickness(float t);
 
-    void setVertexThickness(float t);
+    boolean setVertexThickness(float t);
 
     void finalize();
 
