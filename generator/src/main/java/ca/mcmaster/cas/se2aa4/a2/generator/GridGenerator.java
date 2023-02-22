@@ -87,8 +87,8 @@ public class GridGenerator implements Generator {
         final List<Polygon> polygons = new ArrayList<>();
         Polygon p;
         for (final double[] centroid : centroids) {
-            p = new Polygon();
-            p.setCentroid(centroid[0], centroid[1]);
+            p = new Polygon(centroid[0], centroid[1]);
+            polygons.add(p);
         }
         return polygons;
     }
