@@ -17,5 +17,11 @@ public interface Mesh {
     void finalize();
 
     void convert();
+    
+    List<Poly> getPolygans();
+
+    List<Seg> getSegments();
+
+    List<Vert> getVertex();
 
 }
