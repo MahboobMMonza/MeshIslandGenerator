@@ -15,6 +15,11 @@ public class Segment implements Seg, Comparable<Segment> {
         colour = new int[4];
     }
 
+    public Segment(double x1, double y1, double x2, double y2) {
+        this();
+        setEndpoints(x1, y1, x2, y2);
+    }
+
     @Override
     public int compareTo(Segment s) {
         int comp = Double.compare(x1, s.x1);
