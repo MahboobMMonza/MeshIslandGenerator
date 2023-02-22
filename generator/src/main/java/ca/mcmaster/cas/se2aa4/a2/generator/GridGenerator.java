@@ -30,21 +30,30 @@ public class GridGenerator implements Generator {
         // Create the neighbours for all Polygons in the list
         populateNeighbours(allPolys, increment, bottomCentX, bottomCentY);
         // Add all components to the mesh from the generated polygons
-        populateAllComponents(mesh, allPolys);
+        addAllComponents(mesh, allPolys);
     }
 
-    private void populateAllComponents(final Mesh mesh, final List<Polygon> polygons) {
+    private void addAllComponents(final Mesh mesh, final List<Polygon> polygons) {
         Vertex v;
         Segment s;
         List<double[]> vertices;
-        for (Polygon polygon : polygons) {
-            vertices = polygon.getVertexList();
-            v = new Vertex();
-            v.setPosition(vertices.get(0)[0], vertices.get(0)[1]);
+        for (Polygon p : polygons) {
+            vertices = p.getVertexList();
+            // Add the first vertex of this polygon
+            v = new Vertex(vertices.get(0)[0], vertices.get(0)[1]);
             mesh.addVertex(v);
+            // Add remaining vertices, and since they are ordered radially, they are adjacent to the vertices before and after them.
+            // As a result, a segment can be made with this vertex and the vertex before, so add that as well.
             for (int i = 1; i < vertices.size(); i++) {
-                v = new Vertex();
+                v = new Vertex(vertices.get(i)[0], vertices.get(i)[1]);
+                mesh.addVertex(v);
+                s = new Segment(vertices.get(i-1)[0], vertices.get(i-1)[1], vertices.get(i)[0], vertices.get(i)[1]);
+                mesh.addSegment(s);
             }
+            // Add the segment that connects the first vertex with the last one.
+            s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0], vertices.get(vertices.size() - 1)[1]);
+            mesh.addSegment(s);
+            mesh.addPolygon(p);
         }
     }
 
