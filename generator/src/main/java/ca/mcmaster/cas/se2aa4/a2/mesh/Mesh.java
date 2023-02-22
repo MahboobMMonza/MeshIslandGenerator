@@ -6,11 +6,11 @@ import ca.mcmaster.cas.se2aa4.a2.components.*;
 
 public interface Mesh {
 
-    void addPolygon(Poly p);
+    void addPolygon(Polygon p);
 
-    void addSegment(Seg s);
+    void addSegment(Segment s);
 
-    void addVertex(Vert v);
+    void addVertex(Vertex v);
 
     void setSegmentThickness(float t);
 
@@ -19,11 +19,11 @@ public interface Mesh {
     void finalize();
 
     void convert();
-    
-    List<Poly> getPolygons();
 
-    List<Seg> getSegments();
+    List<Polygon> getPolygons();
 
-    List<Vert> getVertex();
+    List<Segment> getSegments();
+
+    List<Vertex> getVertex();
 
 }
