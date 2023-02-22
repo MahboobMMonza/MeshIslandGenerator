@@ -15,6 +15,10 @@ public class Polygon implements Poly, Comparable<Polygon> {
 
     private List<double[]> neighbourList;
 
+    public Polygon() {
+        colour = new int[4];
+    }
+
     @Override
     public List<double[]> getNeigbourList() {
         return neighbourList;
