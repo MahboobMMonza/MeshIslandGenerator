@@ -8,4 +8,14 @@ public interface Seg {
 
     void setEndpoints(double x1, double y1, double x2, double y2);
 
+    int[] getColour();
+
+    double getX1();
+
+    double getX2();
+
+    double getY1();
+
+    double getY2();
+
 }
