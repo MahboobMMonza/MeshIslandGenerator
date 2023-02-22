@@ -1,7 +1,7 @@
 package ca.mcmaster.cas.se2aa4.a2.components;
 
 public interface Seg {
-    
+
     void setColour(int r, int g, int b, int a);
 
     void setThickness(float t);
@@ -17,5 +17,7 @@ public interface Seg {
     double getY1();
 
     double getY2();
+
+    float getThickness();
 
 }
