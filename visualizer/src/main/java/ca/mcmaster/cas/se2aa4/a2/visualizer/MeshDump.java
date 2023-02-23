@@ -15,9 +15,7 @@ public class MeshDump {
     public void dump(String fileName) throws IOException {
         MeshFactory factory = new MeshFactory();
         Mesh aMesh = factory.read(fileName);
-        this.dumpVertices(aMesh);
-        this.dumpSegments(aMesh);
-        this.dumpPolygons(aMesh);
+        dump(aMesh);
     }
 
     public void dump(Mesh aMesh) {
