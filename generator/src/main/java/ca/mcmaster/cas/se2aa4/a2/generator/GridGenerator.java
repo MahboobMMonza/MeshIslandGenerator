@@ -40,7 +40,7 @@ public class GridGenerator implements Generator {
      * @param polygons the list of Polygons from which all relevant components are
      *                 generated.
      */
-    private void addAllComponents(final Mesh mesh, final List<Polygon> polygons) {
+    void addAllComponents(final Mesh mesh, final List<Polygon> polygons) {
         Vertex v;
         Segment s;
         List<double[]> vertices;
@@ -78,7 +78,7 @@ public class GridGenerator implements Generator {
      * @param bottomCentX the rightmost centroid location bound for a neighbour.
      * @param bottomCentY the bottommost centroid location bound for a neighbour.
      */
-    private void populateNeighbours(final List<Polygon> polygons, final double increment, final double bottomCentX,
+    void populateNeighbours(final List<Polygon> polygons, final double increment, final double bottomCentX,
             final double bottomCentY) {
         List<double[]> neighbourCentroids;
         double x, y;
@@ -109,7 +109,7 @@ public class GridGenerator implements Generator {
      * @param increment the shortest distance between the edge of a polygon and its
      *                  centroid.
      */
-    private void populateVertices(final List<Polygon> polygons, final double increment) {
+    void populateVertices(final List<Polygon> polygons, final double increment) {
         List<double[]> vertices;
         for (final Polygon polygon : polygons) {
             vertices = new ArrayList<>();
