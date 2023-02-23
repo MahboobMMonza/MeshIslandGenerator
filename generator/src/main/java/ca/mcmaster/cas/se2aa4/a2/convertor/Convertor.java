@@ -13,7 +13,7 @@ import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 /**
  * Convertor class converts high-level
  * {@link Mesh} into an equivalent
- * {@link ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh}.
+ * {@link Structs.Mesh}.
  */
 public class Convertor {
 
@@ -44,8 +44,7 @@ public class Convertor {
         return vertexList;
     }
 
-    private static List<Structs.Segment> createAllSegments(final List<Segment> segments,
-            final List<Vertex> vertices) {
+    private static List<Structs.Segment> createAllSegments(final List<Segment> segments, final List<Vertex> vertices) {
         final List<Structs.Segment> segmentList = new ArrayList<>();
         Vertex idxVert;
         Structs.Property colour, thickness;
@@ -78,8 +77,7 @@ public class Convertor {
         return segmentList;
     }
 
-    private static List<Structs.Polygon> createAllPolygons(final List<Polygon> polygons,
-            final List<Segment> segments,
+    private static List<Structs.Polygon> createAllPolygons(final List<Polygon> polygons, final List<Segment> segments,
             final List<Vertex> vertices) {
         final List<Structs.Polygon> polygonList = new ArrayList<>();
         Vertex cent;
@@ -123,7 +121,9 @@ public class Convertor {
     }
 
     /**
-     * Creates the low-level io.structs.Mesh structure for the given high-level Mesh structure.
+     * Creates the low-level io.structs.Mesh structure for the given high-level Mesh
+     * structure.
+     *
      * @param mesh the high-level Mesh to convert.
      * @return the converted io.Structs.Mesh.
      */
@@ -134,7 +134,11 @@ public class Convertor {
         List<Structs.Vertex> vertexList = createAllVertices(vertices);
         List<Structs.Segment> segmentList = createAllSegments(segments, vertices);
         List<Structs.Polygon> polygonList = createAllPolygons(polygons, segments, vertices);
-        return Structs.Mesh.newBuilder().addAllPolygons(polygonList).addAllSegments(segmentList).addAllVertices(vertexList).build();
+        return Structs.Mesh.newBuilder()
+                .addAllPolygons(polygonList)
+                .addAllSegments(segmentList)
+                .addAllVertices(vertexList)
+                .build();
     }
 
 }
