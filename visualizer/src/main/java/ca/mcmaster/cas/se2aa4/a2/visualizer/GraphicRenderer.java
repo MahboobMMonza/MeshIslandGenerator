@@ -16,25 +16,91 @@ import java.util.List;
 
 public class GraphicRenderer {
 
-    private static final int THICKNESS = 3;
-    private static final Stroke stroke = new BasicStroke(1f);
+    private static final float DEFAULT_THICKNESS = 1;
+    private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
 
     public void render(Mesh aMesh, Graphics2D canvas) {
-        Mesh(aMesh, canvas);
-        Squarelines(aMesh, canvas);
+        // mesh(aMesh, canvas);
+        // squareLines(aMesh, canvas);
+        renderSegments(aMesh, canvas);
+        renderVertices(aMesh, canvas);
     }
 
-    private Color getAverageColor(Color c1, Color c2) {
+    private void renderSegments(Mesh aMesh, Graphics2D canvas) {
+        canvas.setColor(Color.BLACK);
+        canvas.setStroke(DEFAULT_STROKE);
+        for (Segment s: aMesh.getSegmentsList()) {
+            Color old = canvas.getColor();
+            Color strokeColor = extractColor(s.getPropertiesList());
+            canvas.setColor(strokeColor);
+            Point2D p1 = new Point2D.Double(aMesh.getVertices(s.getV1Idx()).getX(), aMesh.getVertices(s.getV1Idx()).getY());
+            Point2D p2 = new Point2D.Double(aMesh.getVertices(s.getV2Idx()).getX(), aMesh.getVertices(s.getV2Idx()).getY());
+            Line2D line = new Line2D.Double(p1, p2);
+            System.out.printf("[(%f, %f), (%f, %f)]%n",line.getX1(), line.getY1(), line.getX2(), line.getY2());
+            canvas.draw(line);
+            canvas.setColor(old);
+        }
+    }
+
+    private void renderVertices(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_STROKE);
+        for (Vertex v: aMesh.getVerticesList()) {
+            double thickness = (double) extractVertexThickness(v.getPropertiesList());
+            double centre_x = v.getX() - (thickness/2.0d);
+            double centre_y = v.getY() - (thickness/2.0d);
+            Color old = canvas.getColor();
+            canvas.setColor(extractColor(v.getPropertiesList()));
+            Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
+            canvas.fill(point);
+            canvas.setColor(old);
+        }
+    }
+
+    private void renderPolygons(Mesh aMesh, Graphics2D canvas) {
+
+    }
+
+    /* private Color getAverageColor(Color c1, Color c2) {
         int redAverage, greenAverage, blueAverage;
         redAverage = (c1.getRed() + c2.getRed()) / 2;
         greenAverage = (c1.getGreen() + c2.getGreen()) / 2;
         blueAverage = (c1.getBlue() + c2.getBlue()) / 2;
         return new Color(redAverage, greenAverage, blueAverage);
+    } */
+
+    private float extractVertexThickness(List<Property> properties) {
+        String val = null;
+        for(Property p: properties) {
+            if (p.getKey().equals("thickness")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val != null) {
+            return Float.parseFloat(val);
+        }
+        return DEFAULT_THICKNESS;
     }
+
+    private Stroke extractThickness(List<Property> properties) {
+        String val = null;
+        for(Property p: properties) {
+            if (p.getKey().equals("thickness")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val == null) {
+            return DEFAULT_STROKE;
+        }
+        float f = Float.parseFloat(val);
+        return new BasicStroke(f);
+    }
+
     private Color extractColor(List<Property> properties) {
         String val = null;
         for(Property p: properties) {
-            if (p.getKey().equals("rgb_color")) {
+            if (p.getKey().equals("rgba_color")) {
                 System.out.println(p.getValue());
                 val = p.getValue();
             }
@@ -45,10 +111,11 @@ public class GraphicRenderer {
         int red = Integer.parseInt(raw[0]);
         int green = Integer.parseInt(raw[1]);
         int blue = Integer.parseInt(raw[2]);
-        return new Color(red, green, blue);
+        int alpha = Integer.parseInt(raw[3]);
+        return new Color(red, green, blue, alpha);
     }
 
-    private void Mesh(Mesh aMesh, Graphics2D canvas){
+    /* private void mesh(Mesh aMesh, Graphics2D canvas){
         canvas.setColor(Color.BLACK);
         canvas.setStroke(stroke);
         for (Segment s: aMesh.getSegmentsList()) {
@@ -65,7 +132,8 @@ public class GraphicRenderer {
             canvas.setColor(old);
         }
     }
-    private void Squarelines(Mesh aMesh, Graphics2D canvas){
+
+    private void squareLines(Mesh aMesh, Graphics2D canvas){
         canvas.setStroke(stroke);
         for (Vertex v: aMesh.getVerticesList()) {
             double centre_x = v.getX() - (THICKNESS/2.0d);
@@ -76,5 +144,5 @@ public class GraphicRenderer {
             canvas.fill(point);
             canvas.setColor(old);
         }
-    }
+    } */
 }
