@@ -5,11 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-import java.util.Arrays;
 import ca.mcmaster.cas.se2aa4.a2.components.*;
-import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.mesh.FixedMesh;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
@@ -28,13 +25,6 @@ public class GridGeneratorTest {
         generator.generate(mesh, height, width, n);
         mesh.lock();
         assertEquals(expectedPolygons, mesh.getPolygons().size());
-    }
-
-    @Test
-    public void meshIsNotNull() {
-        DotGen g = new DotGen();
-        Structs.Mesh aMesh = g.generate();
-        assertNotNull(aMesh);
     }
 
     @Test
