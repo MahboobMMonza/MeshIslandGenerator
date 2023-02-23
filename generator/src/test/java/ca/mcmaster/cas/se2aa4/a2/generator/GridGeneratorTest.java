@@ -84,11 +84,11 @@ public class GridGeneratorTest {
         assertEquals(10, topLeft.getCentroidY(), 0.00001);
     
         Polygon bottomRight = centroids.get(centroids.size()-1);
-        assertEquals(470, bottomRight.getCentroidX(), 0.00001);
-        assertEquals(470, bottomRight.getCentroidY(), 0.00001);
+        assertEquals(490, bottomRight.getCentroidX(), 0.00001);
+        assertEquals(490, bottomRight.getCentroidY(), 0.00001);
        
-        Polygon center = centroids.get(centroids.size()/2-1);
-        assertEquals(230, center.getCentroidX(), 0.00001);
+        Polygon center = centroids.get(centroids.size()/2);
+        assertEquals(250, center.getCentroidX(), 0.00001);
         assertEquals(250, center.getCentroidY(), 0.00001);
 
         for (Polygon centroid : centroids) {
