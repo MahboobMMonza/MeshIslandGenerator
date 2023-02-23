@@ -92,7 +92,7 @@ public class GridGenerator implements Generator {
                     y = poly.getCentroidY() + (2 * j * increment);
                     // Add the calculated centroid position iff it is in the bounds and not the
                     // current centroid
-                    if (x >= TOP_X && (y >= TOP_Y && x != poly.getCentroidX() || y != poly.getCentroidY())
+                    if (x >= TOP_X && y >= TOP_Y && (x != poly.getCentroidX() || y != poly.getCentroidY())
                             && x <= bottomCentX && y <= bottomCentY) {
                         neighbourCentroids.add(new double[] { x, y });
                     }
