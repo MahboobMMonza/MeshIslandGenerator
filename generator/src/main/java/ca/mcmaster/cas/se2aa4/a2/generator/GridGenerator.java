@@ -98,6 +98,7 @@ public class GridGenerator implements Generator {
                     }
                 }
             }
+            poly.setNeighbours(neighbourCentroids);
         }
     }
 
@@ -152,8 +153,8 @@ public class GridGenerator implements Generator {
     private List<double[]> generateCentroids(final double increment, final double bottomCentX,
             final double bottomCentY) {
         final List<double[]> centroids = new ArrayList<>();
-        for (double x = TOP_X + increment; x < bottomCentX; x += 2 * increment) {
-            for (double y = TOP_Y + increment; y < bottomCentY; y += 2 * increment) {
+        for (double x = TOP_X + increment; x <= bottomCentX; x += 2 * increment) {
+            for (double y = TOP_Y + increment; y <= bottomCentY; y += 2 * increment) {
                 centroids.add(new double[] { x, y });
             }
         }
