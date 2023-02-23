@@ -17,7 +17,7 @@ public class Main {
         // Make vertices red
         fMesh.setVertexColour(255, 0, 0, 255);
         // Make segments black
-        fMesh.setSegmentColour(255, 255, 255, 255);
+        fMesh.setSegmentColour(0, 0, 0, 255);
         // Make polygons yellow
         fMesh.setPolygonColour(255, 255, 0, 255);
         // Set vertex thickness to 3
