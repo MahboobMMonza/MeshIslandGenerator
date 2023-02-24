@@ -17,6 +17,7 @@ public class FixedMeshTest {
     public void addPolyTest(){
         Mesh mesh = new FixedMesh();
         Polygon poly = new Polygon();
+        poly.setCentroid(2,2);
         assertTrue(mesh.addPolygon(poly));
         assertFalse(mesh.addPolygon(poly));
     }
@@ -51,6 +52,8 @@ public class FixedMeshTest {
     public void getPolyTest(){
         Mesh mesh = new FixedMesh();
         Polygon poly = new Polygon();
+        poly.setCentroid(2,2);
+        mesh.addPolygon(poly);
         mesh.addPolygon(poly);
         mesh.lock();
         List<Polygon> polygons = mesh.getPolygons();
@@ -63,6 +66,7 @@ public class FixedMeshTest {
         Segment seg = new Segment(1, 1, 2, 2);
         Segment seg2 = new Segment(3, 3, 4, 4);
         mesh.addSegment(seg);
+        mesh.addSegment(seg);
         mesh.addSegment(seg2);
         mesh.lock();
         List<Segment> segments = mesh.getSegments();
@@ -72,7 +76,8 @@ public class FixedMeshTest {
     @Test
     public void getVertTest(){
         Mesh mesh = new FixedMesh();
-        Vertex v = new Vertex();
+        Vertex v = new Vertex(2,2);
+        mesh.addVertex(v);
         mesh.addVertex(v);
         mesh.lock();
         List<Vertex> vertices = mesh.getVertex();
