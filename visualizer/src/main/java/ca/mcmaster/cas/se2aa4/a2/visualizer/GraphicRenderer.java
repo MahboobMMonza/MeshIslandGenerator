@@ -25,10 +25,9 @@ public class GraphicRenderer {
 
     private static final float DEFAULT_THICKNESS = 1;
     private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
+    private static final Color DEFAULT_COLOR = Color.BLACK;
 
     public void render(Mesh aMesh, Graphics2D canvas) {
-        // mesh(aMesh, canvas);
-        // squareLines(aMesh, canvas);
         renderPolygons(aMesh, canvas);
         renderSegments(aMesh, canvas);
         renderVertices(aMesh, canvas);
@@ -37,7 +36,6 @@ public class GraphicRenderer {
     private class RadialVertexComparator implements Comparator<Vertex> {
 
         private Vertex anchor;
-        static final double PRECISION = 1e-5;
 
         RadialVertexComparator(Vertex anchor) {
             setAnchor(anchor);
@@ -65,7 +63,7 @@ public class GraphicRenderer {
     }
 
     private void renderSegments(Mesh aMesh, Graphics2D canvas) {
-        canvas.setColor(Color.BLACK);
+        canvas.setColor(DEFAULT_COLOR);
         canvas.setStroke(DEFAULT_STROKE);
         for (Segment s : aMesh.getSegmentsList()) {
             Color oldColor = canvas.getColor();
@@ -79,7 +77,6 @@ public class GraphicRenderer {
             Point2D p2 = new Point2D.Double(aMesh.getVertices(s.getV2Idx()).getX(),
                     aMesh.getVertices(s.getV2Idx()).getY());
             Line2D line = new Line2D.Double(p1, p2);
-            System.out.printf("[(%f, %f), (%f, %f)]%n", line.getX1(), line.getY1(), line.getX2(), line.getY2());
             canvas.draw(line);
             canvas.setColor(oldColor);
             canvas.setStroke(oldStroke);
@@ -102,12 +99,9 @@ public class GraphicRenderer {
         }
     }
 
-    List<Vertex> calculatePolyPath(final Mesh aMesh, final Polygon p) {
-        // Sorting with these comparators should give an ordering bottom to top, left to
-        // right
+    private List<Vertex> calculatePolyPath(final Mesh aMesh, final Polygon p) {
         Set<Vertex> pathVtx = new TreeSet<>(
                 Comparator.comparingDouble(Vertex::getX).thenComparing(Vertex::getY));
-
         for (int segIdx : p.getSegmentIdxsList()) {
             pathVtx.add(aMesh.getVertices(aMesh.getSegments(segIdx).getV1Idx()));
             pathVtx.add(aMesh.getVertices(aMesh.getSegments(segIdx).getV2Idx()));
@@ -118,12 +112,10 @@ public class GraphicRenderer {
     }
 
     private void renderPolygons(Mesh aMesh, Graphics2D canvas) {
-        System.out.println("################################BEGIN POLYGON DRAWING################################");
         canvas.setStroke(DEFAULT_STROKE);
         Path2D poly;
         boolean firstPoint;
         for (Polygon p : aMesh.getPolygonsList()) {
-            System.out.println("-------------------------------- NEW POLYGON DRAWING --------------------------------");
             poly = new Path2D.Double();
             firstPoint = false;
             List<Vertex> path = calculatePolyPath(aMesh, p);
@@ -142,16 +134,6 @@ public class GraphicRenderer {
             canvas.setColor(oldColor);
         }
     }
-
-    /*
-     * private Color getAverageColor(Color c1, Color c2) {
-     * int redAverage, greenAverage, blueAverage;
-     * redAverage = (c1.getRed() + c2.getRed()) / 2;
-     * greenAverage = (c1.getGreen() + c2.getGreen()) / 2;
-     * blueAverage = (c1.getBlue() + c2.getBlue()) / 2;
-     * return new Color(redAverage, greenAverage, blueAverage);
-     * }
-     */
 
     private float extractVertexThickness(List<Property> properties) {
         String val = null;
@@ -190,8 +172,9 @@ public class GraphicRenderer {
                 val = p.getValue();
             }
         }
-        if (val == null)
-            return Color.BLACK;
+        if (val == null) {
+            return DEFAULT_COLOR;
+        }
         String[] raw = val.split(",");
         int red = Integer.parseInt(raw[0]);
         int green = Integer.parseInt(raw[1]);
@@ -200,42 +183,4 @@ public class GraphicRenderer {
         return new Color(red, green, blue, alpha);
     }
 
-    /*
-     * private void mesh(Mesh aMesh, Graphics2D canvas){
-     * canvas.setColor(Color.BLACK);
-     * canvas.setStroke(stroke);
-     * for (Segment s: aMesh.getSegmentsList()) {
-     * Color old = canvas.getColor();
-     * Color v1Color =
-     * extractColor(aMesh.getVertices(s.getV1Idx()).getPropertiesList());
-     * Color v2Color =
-     * extractColor(aMesh.getVertices(s.getV2Idx()).getPropertiesList());
-     * Color strokeColor = getAverageColor(v1Color, v2Color);
-     * canvas.setColor(strokeColor);
-     * Point2D p1 = new Point2D.Double(aMesh.getVertices(s.getV1Idx()).getX(),
-     * aMesh.getVertices(s.getV1Idx()).getY());
-     * Point2D p2 = new Point2D.Double(aMesh.getVertices(s.getV2Idx()).getX(),
-     * aMesh.getVertices(s.getV2Idx()).getY());
-     * Line2D line = new Line2D.Double(p1, p2);
-     * System.out.printf("[(%f, %f), (%f, %f)]%n",line.getX1(), line.getY1(),
-     * line.getX2(), line.getY2());
-     * canvas.draw(line);
-     * canvas.setColor(old);
-     * }
-     * }
-     *
-     * private void squareLines(Mesh aMesh, Graphics2D canvas){
-     * canvas.setStroke(stroke);
-     * for (Vertex v: aMesh.getVerticesList()) {
-     * double centre_x = v.getX() - (THICKNESS/2.0d);
-     * double centre_y = v.getY() - (THICKNESS/2.0d);
-     * Color old = canvas.getColor();
-     * canvas.setColor(extractColor(v.getPropertiesList()));
-     * Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, THICKNESS,
-     * THICKNESS);
-     * canvas.fill(point);
-     * canvas.setColor(old);
-     * }
-     * }
-     */
 }
