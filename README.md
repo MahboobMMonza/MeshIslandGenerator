@@ -70,6 +70,6 @@ that future MVPs that require modification of the feature can be implemented wit
 | F02  | Command-line optionality for Generator | Khalid | 02/10/2023 || B(F04) |
 | F03 (Pre-release) | Create a 500x500 regular grid with size of 20 with fixed vertex, polygon, and segment properties | Mohammad/Khalid/Samih | 02/20/2023 | 02/23/2023 | D |
 | F04  | Add the option to customize the colour and thickness of all components | Mohammad |02/24/2023|| S |
-| F05  | Incorporate a debugging mode for Visualizer | Samih | 02/24/2023 || S |
+| F05  | Incorporate a debugging mode for Visualizer | Samih | 02/24/2023 |02/24/2023| C |
 
 
