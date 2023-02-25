@@ -10,14 +10,16 @@ import java.util.List;
 public class Polygon implements Poly {
 
     private double centroidX, centroidY;
-    private int[] colour;
+    private float borderThickness;
+    private int[] fillColour, borderColour;
 
     private List<double[]> verticesList;
 
     private List<double[]> neighbourList;
 
     public Polygon() {
-        colour = new int[4];
+        fillColour = new int[4];
+        borderColour = new int[4];
     }
 
     public Polygon(double x, double y) {
@@ -26,8 +28,19 @@ public class Polygon implements Poly {
     }
 
     @Override
+    public int compareTo(Poly p) {
+        int comp = Double.compare(centroidX, p.getCentroidX());
+        return (comp != 0) ? comp : Double.compare(centroidY, p.getCentroidY());
+    }
+
+    @Override
     public List<double[]> getNeigbourList() {
         return neighbourList;
+    }
+
+    @Override
+    public List<double[]> getVertexList() {
+        return verticesList;
     }
 
     @Override
@@ -41,13 +54,18 @@ public class Polygon implements Poly {
     }
 
     @Override
-    public int[] getColour() {
-        return colour;
+    public float getBorderThickness() {
+        return borderThickness;
     }
 
     @Override
-    public List<double[]> getVertexList() {
-        return verticesList;
+    public int[] getFillColour() {
+        return fillColour;
+    }
+
+    @Override
+    public int[] getBorderColour() {
+        return borderColour;
     }
 
     @Override
@@ -57,11 +75,8 @@ public class Polygon implements Poly {
     }
 
     @Override
-    public void setColour(int r, int g, int b, int a) {
-        colour[0] = r;
-        colour[1] = g;
-        colour[2] = b;
-        colour[3] = a;
+    public void setBorderThickness(float t) {
+        borderThickness = t;
     }
 
     @Override
@@ -75,9 +90,19 @@ public class Polygon implements Poly {
     }
 
     @Override
-    public int compareTo(Poly p) {
-        int comp = Double.compare(centroidX, p.getCentroidX());
-        return (comp != 0) ? comp : Double.compare(centroidY, p.getCentroidY());
+    public void setFillColour(int r, int g, int b, int a) {
+        fillColour[0] = r;
+        fillColour[1] = g;
+        fillColour[2] = b;
+        fillColour[3] = a;
+    }
+
+    @Override
+    public void setBorderColour(int r, int g, int b, int a) {
+        borderColour[0] = r;
+        borderColour[1] = g;
+        borderColour[2] = b;
+        borderColour[3] = a;
     }
 
 }
