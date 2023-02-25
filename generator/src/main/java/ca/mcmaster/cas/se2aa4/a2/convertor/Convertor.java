@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ca.mcmaster.cas.se2aa4.a2.components.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.components.Segment;
-import ca.mcmaster.cas.se2aa4.a2.components.Vertex;
+import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
@@ -17,12 +15,12 @@ import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
  */
 public class Convertor {
 
-    private static List<Structs.Vertex> createAllVertices(final List<Vertex> vertices) {
+    private static List<Structs.Vertex> createAllVertices(final List<Vert> vertices) {
         final List<Structs.Vertex> vertexList = new ArrayList<>();
         Structs.Property colour, thickness;
         int[] colours;
         String rgba, thick;
-        for (final Vertex vertex : vertices) {
+        for (final Vert vertex : vertices) {
             colours = vertex.getColour();
             rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
             thick = String.format("%.2f", vertex.getThickness());
@@ -44,14 +42,14 @@ public class Convertor {
         return vertexList;
     }
 
-    private static List<Structs.Segment> createAllSegments(final List<Segment> segments, final List<Vertex> vertices) {
+    private static List<Structs.Segment> createAllSegments(final List<Seg> segments, final List<Vert> vertices) {
         final List<Structs.Segment> segmentList = new ArrayList<>();
         Vertex idxVert;
         Structs.Property colour, thickness;
         int[] colours;
         int v1Idx, v2Idx;
         String rgba, thick;
-        for (Segment segment : segments) {
+        for (Seg segment : segments) {
             colours = segment.getColour();
             rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
             thick = String.format("%.2f", segment.getThickness());
@@ -77,8 +75,8 @@ public class Convertor {
         return segmentList;
     }
 
-    private static List<Structs.Polygon> createAllPolygons(final List<Polygon> polygons, final List<Segment> segments,
-            final List<Vertex> vertices) {
+    private static List<Structs.Polygon> createAllPolygons(final List<Poly> polygons, final List<Seg> segments,
+            final List<Vert> vertices) {
         final List<Structs.Polygon> polygonList = new ArrayList<>();
         Vertex cent;
         Segment seg;
@@ -87,7 +85,7 @@ public class Convertor {
         int[] colours;
         String rgba;
         int centIdx, segIdx;
-        for (Polygon polygon : polygons) {
+        for (Poly polygon : polygons) {
             colours = polygon.getColour();
             rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
             colour = Structs.Property.newBuilder()
@@ -128,9 +126,9 @@ public class Convertor {
      * @return the converted io.Structs.Mesh.
      */
     public static Structs.Mesh convert(final Mesh mesh) {
-        final List<Vertex> vertices = mesh.getVertex();
-        final List<Segment> segments = mesh.getSegments();
-        final List<Polygon> polygons = mesh.getPolygons();
+        final List<Vert> vertices = mesh.getVerts();
+        final List<Seg> segments = mesh.getSegs();
+        final List<Poly> polygons = mesh.getPolys();
         List<Structs.Vertex> vertexList = createAllVertices(vertices);
         List<Structs.Segment> segmentList = createAllSegments(segments, vertices);
         List<Structs.Polygon> polygonList = createAllPolygons(polygons, segments, vertices);
