@@ -116,6 +116,17 @@ public class FixedDecorator implements Decorator {
 
     float polyBorderThickness, segThickness, vertThickness;
 
+    public FixedDecorator() {
+        // Set colours to their defaults in case they are not changed
+        polyFillColour = DEFAULT_POLY_FILL_COLOUR;
+        polyBorderColour = DEFAULT_POLY_BORDER_COLOUR;
+        segColour = DEFAULT_SEG_COLOUR;
+        vertColour = DEFAULT_VERT_COLOUR;
+        polyBorderThickness = DEFAULT_POLY_BORDER_THICKNESS;
+        segThickness = DEFAULT_SEG_THICKNESS;
+        vertThickness = DEFAULT_VERT_THICKNESS;
+    }
+
     @Override
     public boolean setPolyFillColour(final String colourString) {
         final int[] conversion = tryConversion(colourString, DEFAULT_POLY_FILL_COLOUR);
@@ -205,7 +216,7 @@ public class FixedDecorator implements Decorator {
             colourValues[i] = extractColourValue((v.isCentroid()) ? DEFAULT_CENTROID_COLOUR : vertColour, i);
         }
         v.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : segThickness);
+        v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : vertThickness);
     }
 
 }
