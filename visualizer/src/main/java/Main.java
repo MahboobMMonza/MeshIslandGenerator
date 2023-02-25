@@ -23,7 +23,7 @@ public class Main {
         }
         // Creating the Canvas to draw the mesh
         Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
-        GraphicRenderer renderer = new GraphicRenderer(true);
+        GraphicRenderer renderer = new GraphicRenderer(false);
         // Painting the mesh on the canvas
         renderer.render(aMesh, canvas);
         // Storing the result in an SVG file
