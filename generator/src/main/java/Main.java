@@ -10,25 +10,32 @@ import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.mesh.FixedMesh;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 import command_line.GenerateCommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
+        CommandLineParser parser = new DefaultParser();
         GenerateCommandLine cmd = new GenerateCommandLine();
-        cmd.getHelp(args);
-        Mesh fMesh = new FixedMesh();
-        Decorator decorator = new FixedDecorator();
-        Generator gen = new GridGenerator(cmd.getSideLength(args));
-        MeshFactory factory = new MeshFactory();
-        decorator.setVertColour(cmd.getVertColour(args));
-        decorator.setSegColour(cmd.getSegColour(args));
-        decorator.setPolyFillColour(cmd.getPolyFillColour(args));
-        decorator.setPolyBorderColour(cmd.getPolyBorderColour(args));
-        decorator.setVertThickness(cmd.getVertThickness(args));
-        decorator.setSegThickness(cmd.getSegThickness(args));
-        decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(args));
-        factory.write(createMesh(fMesh, gen, decorator, cmd.getDimeH(args), cmd.getDimeW(args)), cmd.setFileName(args));
+        cmd.addOptions();
+        if (cmd.hasHelpOption(parser,args)){
+            cmd.getHelp(parser,args);
+        }else{
+            cmd.getHelp(parser,args);
+            Mesh fMesh = new FixedMesh();
+            Decorator decorator = new FixedDecorator();
+            Generator gen = new GridGenerator(cmd.getSideLength(parser,args));
+            MeshFactory factory = new MeshFactory();
+            decorator.setVertColour(cmd.getVertColour(parser,args));
+            decorator.setSegColour(cmd.getSegColour(parser,args));
+            decorator.setPolyFillColour(cmd.getPolyFillColour(parser,args));
+            decorator.setPolyBorderColour(cmd.getPolyBorderColour(parser,args));
+            decorator.setVertThickness(cmd.getVertThickness(parser,args));
+            decorator.setSegThickness(cmd.getSegThickness(parser,args));
+            decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(parser,args));
+            factory.write(createMesh(fMesh, gen, decorator, cmd.getDimeH(parser,args), cmd.getDimeW(parser,args)), cmd.setFileName(parser,args));
+        }
     }
 
 }
