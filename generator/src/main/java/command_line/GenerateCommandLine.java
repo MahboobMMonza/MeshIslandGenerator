@@ -21,8 +21,10 @@ public class GenerateCommandLine{
     private static Option vertexColour = Option.builder("vc").longOpt("vertexcolour").hasArg().desc("Vertex Colour").build();
     private static Option polygonFillColour = Option.builder("pf").longOpt("polygonfill").hasArg().desc("Polygon Fill Colour").build();
     private static Option polygonBorderColour = Option.builder("pb").longOpt("polygonborder").hasArg().desc("Polygon Border Colour").build();
-
-
+    private static  Option help = Option.builder("h").longOpt("help").desc("Show usage help").build();
+    private static Option polygonBorderThickness = Option.builder("bt").longOpt("borderthickness").hasArg().desc("Polygon Border Thickness").build();
+    private static  Option fileName = Option.builder("f").longOpt("filename").desc("Sets File Name").build();
+   
     private static void addOptions(){
         options.addOption(dimensionw);
         options.addOption(dimensionh);
@@ -36,9 +38,22 @@ public class GenerateCommandLine{
         options.addOption(sideLength);
         options.addOption(polygonBorderColour);
         options.addOption(polygonFillColour);
+        options.addOption(help);
+        options.addOption(fileName);
+        options.addOption(polygonBorderThickness);
     }
-    
-    private static String getMeshType(String[] args){
+    public void getHelp(String[] args){
+        addOptions();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(help)) {
+                formatter.printHelp("Mesh Generation",options);
+            }
+        } catch (ParseException e) {
+
+        }
+    }
+    public String getMeshType(String[] args){
         String type="Grid Mesh";
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -54,7 +69,7 @@ public class GenerateCommandLine{
         return type;
     }
     
-    private static String getVertThickness(String[] args){
+    public String getVertThickness(String[] args){
         addOptions();
         String vertexThicknessValue = new String();
         try {
@@ -68,7 +83,7 @@ public class GenerateCommandLine{
         return vertexThicknessValue;
     }
 
-    private static String getSegThickness(String[] args){
+    public String getSegThickness(String[] args){
         addOptions();
         String segmentthicknessvalue = new String();
         try {
@@ -82,7 +97,7 @@ public class GenerateCommandLine{
         return segmentthicknessvalue;
     }
 
-    private static int getDimeH(String[] args){
+    public int getDimeH(String[] args){
         addOptions();
         int dimh = 500;
         try {
@@ -97,7 +112,7 @@ public class GenerateCommandLine{
         return dimh;
     }
 
-    private static int getDimeW(String[] args){
+    public int getDimeW(String[] args){
         addOptions();
         int dimw = 500;
         try {
@@ -111,7 +126,7 @@ public class GenerateCommandLine{
         return dimw;
     }
 
-    private static int getSideLength(String[] args){
+    public int getSideLength(String[] args){
         addOptions();
         int sidelength = 20;
         try {
@@ -125,7 +140,7 @@ public class GenerateCommandLine{
         return sidelength;
     }
 
-    private static int getRelaxationLevel(String[] args){
+    public int getRelaxationLevel(String[] args){
         addOptions();
         int relaxationlevel = 20;
         try {
@@ -139,7 +154,7 @@ public class GenerateCommandLine{
         return relaxationlevel;
     }
 
-    private static int getNumOfPoints(String[] args){
+    public int getNumOfPoints(String[] args){
         addOptions();
         int numOfPoints = 50;
         try {
@@ -153,7 +168,7 @@ public class GenerateCommandLine{
         return numOfPoints;
     }
 
-    private static String getSegColour(String[] args){
+    public String getSegColour(String[] args){
         addOptions();
         String segmentColour = new String();
         try {
@@ -167,7 +182,7 @@ public class GenerateCommandLine{
         return segmentColour;
     }
 
-    private static String getVertColour(String[] args){
+    public String getVertColour(String[] args){
         addOptions();
         String vertexColour = new String();
         try {
@@ -181,7 +196,7 @@ public class GenerateCommandLine{
         return vertexColour;
     }
 
-    private static String getPolyFillColour(String[] args){
+    public String getPolyFillColour(String[] args){
         addOptions();
         String pfc = new String();
         try {
@@ -195,7 +210,7 @@ public class GenerateCommandLine{
         return pfc;
     }
 
-    private static String getPolyBorderColour(String[] args){
+    public String getPolyBorderColour(String[] args){
         addOptions();
         String pbc = new String();
         try {
@@ -208,7 +223,37 @@ public class GenerateCommandLine{
         }
         return pbc;
     }
-    
+
+    public String getPolyBorderThickness(String[] args){
+        addOptions();
+        String pbt = new String();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption("bt")) {
+                pbt = cmd.getOptionValue("bt");
+            }
+        } catch (ParseException e) {
+
+        }
+        return pbt;
+    }
+
+    public String setFileName(String[] args){
+        addOptions();
+        String filename = new String();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption("f")) {
+                filename = cmd.getOptionValue("f");
+            }
+        } catch (ParseException e) {
+
+        }
+        return filename;
+    }
+
+
+
 }
 
 
