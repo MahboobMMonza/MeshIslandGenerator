@@ -23,14 +23,19 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
-    private static final float DEFAULT_THICKNESS = 1;
+    private static final float DEFAULT_SEGMENT_THICKNESS = 2;
+    private static final float DEFAULT_VERTEX_THICKNESS = 3;
+    private static final float DEFAULT_POLYGON_THICKNESS = 0;
     private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
-    private static final Color DEFAULT_COLOR = Color.BLACK;
+    private static final Color DEFAULT_POLYGON_BORDER_COLOR = Color.GREEN;
+    private static final Color DEFAULT_POLYGON_COLOR = Color.GREEN;
+    private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
+    private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
+    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.WHITE;
+    boolean debug = false;
 
-    public void render(Mesh aMesh, Graphics2D canvas) {
-        renderPolygons(aMesh, canvas);
-        renderSegments(aMesh, canvas);
-        renderVertices(aMesh, canvas);
+    public GraphicRenderer(boolean debug) {
+        this.debug = debug;
     }
 
     private class RadialVertexComparator implements Comparator<Vertex> {
@@ -62,14 +67,33 @@ public class GraphicRenderer {
         }
     }
 
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void render(Mesh aMesh, Graphics2D canvas) {
+        renderPolygons(aMesh, canvas);
+        renderSegments(aMesh, canvas);
+
+        if (debug) {
+            renderNeighbours(aMesh, canvas);
+        }
+        renderVertices(aMesh, canvas);
+
+    }
+
     private void renderSegments(Mesh aMesh, Graphics2D canvas) {
-        canvas.setColor(DEFAULT_COLOR);
+        canvas.setColor(DEFAULT_SEGMENT_COLOR);
         canvas.setStroke(DEFAULT_STROKE);
         for (Segment s : aMesh.getSegmentsList()) {
             Color oldColor = canvas.getColor();
-            Color strokeColor = extractColor(s.getPropertiesList());
+            Color strokeColor = extractColor(s);
             Stroke oldStroke = canvas.getStroke();
-            Stroke stroke = extractThickness(s.getPropertiesList());
+            Stroke stroke = extractThickness(s);
             canvas.setColor(strokeColor);
             canvas.setStroke(stroke);
             Point2D p1 = new Point2D.Double(aMesh.getVertices(s.getV1Idx()).getX(),
@@ -86,11 +110,11 @@ public class GraphicRenderer {
     private void renderVertices(Mesh aMesh, Graphics2D canvas) {
         canvas.setStroke(DEFAULT_STROKE);
         for (Vertex v : aMesh.getVerticesList()) {
-            double thickness = (double) extractVertexThickness(v.getPropertiesList());
+            double thickness = (double) extractThickness(v);
             double centre_x = v.getX() - (thickness / 2.0d);
             double centre_y = v.getY() - (thickness / 2.0d);
             Color oldColor = canvas.getColor();
-            canvas.setColor(extractColor(v.getPropertiesList()));
+            canvas.setColor(extractColor(v));
             if (thickness == 0.0 || canvas.getColor().getAlpha() == 0)
                 continue;
             Ellipse2D point = new Ellipse2D.Double(centre_x, centre_y, thickness, thickness);
@@ -129,15 +153,41 @@ public class GraphicRenderer {
             }
             poly.closePath();
             Color oldColor = canvas.getColor();
-            canvas.setColor(extractColor(p.getPropertiesList()));
+            canvas.setColor(extractColor(p));
             canvas.fill(poly);
             canvas.setColor(oldColor);
         }
     }
 
-    private float extractVertexThickness(List<Property> properties) {
+    private void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_STROKE);
+        canvas.setColor(DEFAULT_NEIGHBOR_COLOR);
+        Set<Integer> visited = new TreeSet<>();
+        for (Polygon p : aMesh.getPolygonsList()) {
+            for (int idx : p.getNeighborIdxsList()) {
+                if (visited.contains(idx)) {
+                    continue;
+                }
+                Point2D p1 = new Point2D.Double(aMesh.getVertices(p.getCentroidIdx()).getX(),
+                        aMesh.getVertices(p.getCentroidIdx()).getY());
+
+                Point2D p2 = new Point2D.Double(aMesh.getVertices(idx).getX(),
+                        aMesh.getVertices(idx).getY());
+
+                Line2D line = new Line2D.Double(p1, p2);
+                canvas.draw(line);
+
+            }
+            visited.add(p.getCentroidIdx());
+        }
+    }
+
+    private float extractThickness(final Vertex vert) {
+        if (debug) {
+            return DEFAULT_VERTEX_THICKNESS;
+        }
         String val = null;
-        for (Property p : properties) {
+        for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
                 System.out.println(p.getValue());
                 val = p.getValue();
@@ -146,12 +196,15 @@ public class GraphicRenderer {
         if (val != null) {
             return Float.parseFloat(val);
         }
-        return DEFAULT_THICKNESS;
+        return DEFAULT_VERTEX_THICKNESS;
     }
 
-    private Stroke extractThickness(List<Property> properties) {
+    private Stroke extractThickness(final Polygon poly) {
+        if (debug) {
+            return new BasicStroke(DEFAULT_POLYGON_THICKNESS);
+        }
         String val = null;
-        for (Property p : properties) {
+        for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
                 System.out.println(p.getValue());
                 val = p.getValue();
@@ -164,16 +217,81 @@ public class GraphicRenderer {
         return new BasicStroke(f);
     }
 
-    private Color extractColor(List<Property> properties) {
+    private Stroke extractThickness(final Segment seg) {
+        if (debug) {
+            return new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
+        }
         String val = null;
-        for (Property p : properties) {
+        for (Property p : seg.getPropertiesList()) {
+            if (p.getKey().equals("thickness")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val == null) {
+            return DEFAULT_STROKE;
+        }
+        float f = Float.parseFloat(val);
+        return new BasicStroke(f);
+    }
+
+    private Color extractColor(Polygon poly) {
+        if (debug) {
+            return DEFAULT_POLYGON_COLOR;
+        }
+        String val = null;
+        for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
                 System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
         if (val == null) {
-            return DEFAULT_COLOR;
+            return DEFAULT_POLYGON_COLOR;
+        }
+        String[] raw = val.split(",");
+        int red = Integer.parseInt(raw[0]);
+        int green = Integer.parseInt(raw[1]);
+        int blue = Integer.parseInt(raw[2]);
+        int alpha = Integer.parseInt(raw[3]);
+        return new Color(red, green, blue, alpha);
+    }
+
+    private Color extractColor(Segment seg) {
+        if (debug) {
+            return DEFAULT_SEGMENT_COLOR;
+        }
+        String val = null;
+        for (Property p : seg.getPropertiesList()) {
+            if (p.getKey().equals("rgba_color")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val == null) {
+            return DEFAULT_SEGMENT_COLOR;
+        }
+        String[] raw = val.split(",");
+        int red = Integer.parseInt(raw[0]);
+        int green = Integer.parseInt(raw[1]);
+        int blue = Integer.parseInt(raw[2]);
+        int alpha = Integer.parseInt(raw[3]);
+        return new Color(red, green, blue, alpha);
+    }
+
+    private Color extractColor(Vertex vert) {
+        if (debug) {
+            return DEFAULT_VERTEX_COLOR;
+        }
+        String val = null;
+        for (Property p : vert.getPropertiesList()) {
+            if (p.getKey().equals("rgba_color")) {
+                System.out.println(p.getValue());
+                val = p.getValue();
+            }
+        }
+        if (val == null) {
+            return DEFAULT_VERTEX_COLOR;
         }
         String[] raw = val.split(",");
         int red = Integer.parseInt(raw[0]);
