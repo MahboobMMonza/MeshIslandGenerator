@@ -5,7 +5,7 @@ package ca.mcmaster.cas.se2aa4.a2.components;
  * the Generator and any properties from teh Mesh when finalized before
  * conversion.
  */
-public class Vertex implements Vert, Comparable<Vertex> {
+public class Vertex implements Vert {
 
     private int[] colour;
 
@@ -13,8 +13,11 @@ public class Vertex implements Vert, Comparable<Vertex> {
 
     private double x, y;
 
+    private boolean centroid;
+
     public Vertex() {
         colour = new int[4];
+        centroid = false;
     }
 
     public Vertex(double x, double y) {
@@ -23,9 +26,9 @@ public class Vertex implements Vert, Comparable<Vertex> {
     }
 
     @Override
-    public int compareTo(Vertex v) {
-        int comp = Double.compare(x, v.x);
-        return (comp != 0) ? comp : Double.compare(y, v.y);
+    public int compareTo(Vert v) {
+        int comp = Double.compare(x, v.getX());
+        return (comp != 0) ? comp : Double.compare(y, v.getY());
     }
 
     @Override
@@ -48,6 +51,11 @@ public class Vertex implements Vert, Comparable<Vertex> {
     }
 
     @Override
+    public void setCentroid() {
+        centroid = true;
+    }
+
+    @Override
     public int[] getColour() {
         return colour;
     }
@@ -65,6 +73,11 @@ public class Vertex implements Vert, Comparable<Vertex> {
     @Override
     public float getThickness() {
         return thickness;
+    }
+
+    @Override
+    public boolean isCentroid() {
+        return centroid;
     }
 
 }
