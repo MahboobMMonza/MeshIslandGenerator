@@ -22,7 +22,6 @@ public class Main {
         if (cmd.hasHelpOption(parser,args)){
             cmd.getHelp(parser,args);
         }else{
-            cmd.getHelp(parser,args);
             Mesh fMesh = new FixedMesh();
             Decorator decorator = new FixedDecorator();
             Generator gen = new GridGenerator(cmd.getSideLength(parser,args));
