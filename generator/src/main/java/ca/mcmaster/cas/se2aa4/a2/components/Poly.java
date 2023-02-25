@@ -10,7 +10,11 @@ public interface Poly extends Comparable<Poly> {
 
     void setNeighbours(List<double[]> neighbourCentroidList);
 
-    void setColour(int r, int g, int b, int a);
+    void setFillColour(int r, int g, int b, int a);
+
+    void setBorderColour(int r, int g, int b, int a);
+
+    void setBorderThickness(float t);
 
     List<double[]> getVertexList();
 
@@ -18,7 +22,11 @@ public interface Poly extends Comparable<Poly> {
 
     double getCentroidY();
 
-    int[] getColour();
+    float getBorderThickness();
+
+    int[] getFillColour();
+
+    int[] getBorderColour();
 
     List<double[]> getNeigbourList();
 }
