@@ -143,14 +143,12 @@ public class GraphicRenderer {
                     poly.lineTo(v.getX(), v.getY());
                 }
             }
-            
-            
             poly.closePath();
             Color oldColor = canvas.getColor();
             canvas.setColor(extractColor(p, "rgba_fill_color"));
             canvas.fill(poly);
             canvas.setStroke(extractThickness(p));
-            canvas.setColor(extractColor(p,"rgba_border_color_thickness"));
+            canvas.setColor(extractColor(p,"rgba_border_color"));
             canvas.draw(poly);
             canvas.setColor(oldColor);
         }
@@ -233,6 +231,7 @@ public class GraphicRenderer {
         for ( Property p : poly.getPropertiesList()) {
             if (p.getKey().equals(key)) {
                 val = p.getValue();
+                break;
             }
         }
         if (val.isEmpty()) {
