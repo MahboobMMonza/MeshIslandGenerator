@@ -16,10 +16,10 @@ public class GenerateCommandLine{
     private static Option sideLength = Option.builder("sl").longOpt("sidelength").hasArg().desc("Side Lengths (default: 20)").build();
     private static Option meshType = Option.builder("mt").longOpt("meshtype").hasArg().desc("Mesh type (default: Grid Mesh)").build();
     private static Option dimensionw = Option.builder("dw").longOpt("dimensionw").hasArg().desc("Dimension for the width (default: 500)").build();
-    private static Option segmentColour = Option.builder("sc").longOpt("segmentcolour").hasArg().desc("Segment Colour").build();
-    private static Option vertexColour = Option.builder("vc").longOpt("vertexcolour").hasArg().desc("Vertex Colour").build();
-    private static Option polygonFillColour = Option.builder("pf").longOpt("polygonfill").hasArg().desc("Polygon Fill Colour").build();
-    private static Option polygonBorderColour = Option.builder("pb").longOpt("polygonborder").hasArg().desc("Polygon Border Colour").build();
+    private static Option segmentColour = Option.builder("sc").longOpt("segmentcolour").hasArg().desc("Segment Colour (See Footer for more information)").build();
+    private static Option vertexColour = Option.builder("vc").longOpt("vertexcolour").hasArg().desc("Vertex Colour (See Footer for more information)").build();
+    private static Option polygonFillColour = Option.builder("pf").longOpt("polygonfill").hasArg().desc("Polygon Fill Colour (See Footer for more information)").build();
+    private static Option polygonBorderColour = Option.builder("pb").longOpt("polygonborder").hasArg().desc("Polygon Border Colour (See Footer for more information)").build();
     private static  Option help = Option.builder("h").longOpt("help").desc("Show usage help").build();
     private static Option polygonBorderThickness = Option.builder("bt").longOpt("borderthickness").hasArg().desc("Polygon Border Thickness").build();
     private static  Option fileName = Option.builder("f").longOpt("filename").desc("Sets File Name").build();
@@ -45,7 +45,7 @@ public class GenerateCommandLine{
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(help)) {
-                formatter.printHelp("Mesh Generation","Help Needed", options,"Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
+                formatter.printHelp("Mesh Generation","Help", options,"Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
             }
         } catch (ParseException e) {
 
@@ -58,7 +58,7 @@ public class GenerateCommandLine{
             CommandLine cmd = parser.parse(options,args);
             if (cmd.hasOption(help)) {
                 hasHelp=true;
-            } else {hasHelp = false;}
+            }
         } catch(ParseException e){
 
         }
