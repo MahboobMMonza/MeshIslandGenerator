@@ -2,7 +2,7 @@ package ca.mcmaster.cas.se2aa4.a2.components;
 
 import java.util.List;
 
-public interface Poly {
+public interface Poly extends Comparable<Poly> {
 
     void setCentroid(double x, double y);
 
