@@ -9,18 +9,36 @@ import ca.mcmaster.cas.se2aa4.a2.components.Vert;
  */
 public class FixedDecorator implements Decorator {
 
-    static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR;
-    static final int NUM_COLOURS, COLOUR_BIT_SIZE, TOTAL_BITS, LEFT_SHIFT;
-    static final float DEFAULT_POLY_BORDER_THICKNESS, DEFAULT_SEG_THICKNESS, DEFAULT_VERT_THICKNESS;
+    static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR,
+            DEFAULT_CENTROID_COLOUR;
+    private static final int NUM_COLOURS, COLOUR_BIT_SIZE, TOTAL_BITS, LEFT_SHIFT;
+    static final float DEFAULT_POLY_BORDER_THICKNESS, DEFAULT_SEG_THICKNESS, DEFAULT_VERT_THICKNESS,
+            DEFAULT_CENTROID_THICKNESS, MAX_SEG_THICKNESS, MAX_VERT_THICKNESS, MAX_POLY_BORDER_THICKNESS,
+            MIN_SEG_THICKNESS, MIN_VERT_THICKNESS, MIN_POLY_BORDER_THICKNESS;
 
     static {
+        // Set default colours
         DEFAULT_POLY_FILL_COLOUR = 0xffff00ff;
         DEFAULT_POLY_BORDER_COLOUR = 0xffffff00;
         DEFAULT_SEG_COLOUR = 0xffffffff;
         DEFAULT_VERT_COLOUR = 0xff0000ff;
+        DEFAULT_CENTROID_COLOUR = 0xffffff00;
+
+        // Set default thicknesses
         DEFAULT_POLY_BORDER_THICKNESS = 0f;
         DEFAULT_SEG_THICKNESS = 3f;
         DEFAULT_VERT_THICKNESS = 2f;
+        DEFAULT_CENTROID_THICKNESS = 0f;
+
+        // Set min and max thicknesses
+        MIN_SEG_THICKNESS = 0.25f;
+        MIN_VERT_THICKNESS = 0.25f;
+        MIN_POLY_BORDER_THICKNESS = 0f;
+        MAX_SEG_THICKNESS = 10f;
+        MAX_VERT_THICKNESS = 10f;
+        MAX_POLY_BORDER_THICKNESS = 10f;
+
+        // Set colour-convertor-related constants
         NUM_COLOURS = 4;
         COLOUR_BIT_SIZE = 8;
         TOTAL_BITS = 32;
@@ -58,24 +76,35 @@ public class FixedDecorator implements Decorator {
     private static int[] tryConversion(final String colourString, final int defaultValue) {
         int colour;
         final int[] result = new int[2];
-        try {
-            colour = Integer.parseInt(colourString, 16);
-            result[0] = 1;
-            result[1] = colour;
-        } catch (final Exception e) {
+        if (colourString.length() != 8) {
             result[0] = 0;
             result[1] = defaultValue;
+        } else {
+            try {
+                colour = Integer.parseInt(colourString, 16);
+                result[0] = 1;
+                result[1] = colour;
+            } catch (Exception e) {
+                result[0] = 0;
+                result[1] = defaultValue;
+            }
         }
         return result;
     }
 
-    private static float[] tryConversion(final String colourString, final float defaultValue) {
-        int colour;
+    private static float[] tryConversion(final String colourString, final float defaultValue, final float minValue,
+            final float maxValue) {
+        float thickness;
         final float[] result = new float[2];
         try {
-            colour = Integer.parseInt(colourString, 16);
-            result[0] = 1;
-            result[1] = colour;
+            thickness = Float.parseFloat(colourString);
+            if (thickness < minValue || thickness > maxValue) {
+                result[0] = -1;
+                result[1] = defaultValue;
+            } else {
+                result[0] = 1;
+                result[1] = thickness;
+            }
         } catch (final Exception e) {
             result[0] = -1;
             result[1] = defaultValue;
@@ -117,21 +146,24 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public boolean setSegThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_SEG_THICKNESS);
+        final float[] conversion = tryConversion(thickness, DEFAULT_SEG_THICKNESS, MIN_SEG_THICKNESS,
+                MAX_SEG_THICKNESS);
         segThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
     }
 
     @Override
     public boolean setVertThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_VERT_THICKNESS);
+        final float[] conversion = tryConversion(thickness, DEFAULT_VERT_THICKNESS, MIN_VERT_THICKNESS,
+                MAX_VERT_THICKNESS);
         vertThickness = conversion[1];
         return Float.compare(conversion[0], 0f) > 0;
     }
 
     @Override
     public boolean setPolyBorderThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_POLY_BORDER_THICKNESS);
+        final float[] conversion = tryConversion(thickness, DEFAULT_POLY_BORDER_THICKNESS, MIN_POLY_BORDER_THICKNESS,
+                MAX_POLY_BORDER_THICKNESS);
         polyBorderThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
     }
