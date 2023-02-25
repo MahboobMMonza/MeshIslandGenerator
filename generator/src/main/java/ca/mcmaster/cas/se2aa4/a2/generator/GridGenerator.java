@@ -3,6 +3,7 @@ package ca.mcmaster.cas.se2aa4.a2.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcmaster.cas.se2aa4.a2.components.Poly;
 import ca.mcmaster.cas.se2aa4.a2.components.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.components.Segment;
 import ca.mcmaster.cas.se2aa4.a2.components.Vertex;
@@ -30,7 +31,7 @@ public class GridGenerator implements Generator {
         final double bottomCentY = (Math.ceil(width / (sideLength + 0.0)) * sideLength) - increment;
         final List<double[]> allCentroids = generateCentroids(increment, bottomCentX, bottomCentY);
         // Create a list of Polygons using the generateCentroids
-        final List<Polygon> allPolys = generatePolygons(allCentroids);
+        final List<Poly> allPolys = generatePolygons(allCentroids);
         // Create the vertices for all Polygons in the list in a radial order
         populateVertices(allPolys, increment);
         // Create the neighbours for all Polygons in the list
@@ -46,11 +47,11 @@ public class GridGenerator implements Generator {
      * @param polygons the list of Polygons from which all relevant components are
      *                 generated.
      */
-    void addAllComponents(final Mesh mesh, final List<Polygon> polygons) {
+    void addAllComponents(final Mesh mesh, final List<Poly> polygons) {
         Vertex v;
         Segment s;
         List<double[]> vertices;
-        for (Polygon p : polygons) {
+        for (Poly p : polygons) {
             vertices = p.getVertexList();
             // Add the first vertex of this polygon
             v = new Vertex(vertices.get(0)[0], vertices.get(0)[1]);
@@ -84,11 +85,11 @@ public class GridGenerator implements Generator {
      * @param bottomCentX the rightmost centroid location bound for a neighbour.
      * @param bottomCentY the bottommost centroid location bound for a neighbour.
      */
-    void populateNeighbours(final List<Polygon> polygons, final double increment, final double bottomCentX,
+    void populateNeighbours(final List<Poly> polygons, final double increment, final double bottomCentX,
             final double bottomCentY) {
         List<double[]> neighbourCentroids;
         double x, y;
-        for (final Polygon poly : polygons) {
+        for (final Poly poly : polygons) {
             neighbourCentroids = new ArrayList<>();
             // Use math to calculate each neighbouring centroid's index
             for (int i = -1; i < 2; i++) {
@@ -115,9 +116,9 @@ public class GridGenerator implements Generator {
      * @param increment the shortest distance between the edge of a polygon and its
      *                  centroid.
      */
-    void populateVertices(final List<Polygon> polygons, final double increment) {
+    void populateVertices(final List<Poly> polygons, final double increment) {
         List<double[]> vertices;
-        for (final Polygon polygon : polygons) {
+        for (final Poly polygon : polygons) {
             vertices = new ArrayList<>();
             vertices.add(new double[] { polygon.getCentroidX() + increment, polygon.getCentroidY() - increment });
             vertices.add(new double[] { polygon.getCentroidX() - increment, polygon.getCentroidY() - increment });
@@ -134,8 +135,8 @@ public class GridGenerator implements Generator {
      * @param centroids the list containing the centroid for each Polygon.
      * @return a list of Polygons with their centroids populated.
      */
-    private List<Polygon> generatePolygons(final List<double[]> centroids) {
-        final List<Polygon> polygons = new ArrayList<>();
+    private List<Poly> generatePolygons(final List<double[]> centroids) {
+        final List<Poly> polygons = new ArrayList<>();
         Polygon p;
         for (final double[] centroid : centroids) {
             p = new Polygon(centroid[0], centroid[1]);
