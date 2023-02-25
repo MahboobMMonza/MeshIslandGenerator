@@ -9,29 +9,26 @@ import ca.mcmaster.cas.se2aa4.a2.generator.GridGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.mesh.FixedMesh;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
+import command_line.GenerateCommandLine;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        final int height = 500, width = 500, side = 20;
+
+        GenerateCommandLine cmd = new GenerateCommandLine();
+        cmd.getHelp(args);
         Mesh fMesh = new FixedMesh();
         Decorator decorator = new FixedDecorator();
-        Generator gen = new GridGenerator(side);
+        Generator gen = new GridGenerator(cmd.getSideLength(args));
         MeshFactory factory = new MeshFactory();
-        // Make vertices blue
-        decorator.setVertColour("0000ffff");
-        // Make segments black
-        decorator.setSegColour("000000ff");
-        // Make polygon fill green
-        decorator.setPolyFillColour("00ff00ff");
-        // Make polygon border colour orange
-        decorator.setPolyBorderColour("ffa500ff");
-        // Set vertex thickness to 3
-        decorator.setVertThickness("6");
-        // Set segment thickness to 1
-        decorator.setSegThickness("1");
-        decorator.setPolyBorderThickness("3");
-        factory.write(createMesh(fMesh, gen, decorator, height, width), args[0]);
+        decorator.setVertColour(cmd.getVertColour(args));
+        decorator.setSegColour(cmd.getSegColour(args));
+        decorator.setPolyFillColour(cmd.getPolyFillColour(args));
+        decorator.setPolyBorderColour(cmd.getPolyBorderColour(args));
+        decorator.setVertThickness(cmd.getVertThickness(args));
+        decorator.setSegThickness(cmd.getSegThickness(args));
+        decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(args));
+        factory.write(createMesh(fMesh, gen, decorator, cmd.getDimeH(args), cmd.getDimeW(args)), cmd.setFileName(args));
     }
 
 }
