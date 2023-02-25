@@ -181,19 +181,18 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public void decoratePoly(final Poly p) {
-        // Get colours in rgba format
+        // Get colours in rgba format for fill
         final int[] colourValues = new int[NUM_COLOURS];
         for (int i = 0; i < NUM_COLOURS; i++) {
             colourValues[i] = extractColourValue(polyFillColour, i);
         }
-        p.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        // Prepare colour value setting for border colour and thickness.
-        // for (int i = 0; i < NUM_COLOURS; i++) {
-        // colourValues[i] = extractColourValue(polyBorderColour, i);
-        // }
-        // p.setBorderColour(colourValues[0], colourValues[1], colourValues[2],
-        // colourValues[3]);
-        // p.setBorderThickness(polyBorderThickness);
+        p.setFillColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        // Get colours for border
+        for (int i = 0; i < NUM_COLOURS; i++) {
+            colourValues[i] = extractColourValue(polyBorderColour, i);
+        }
+        p.setBorderColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        p.setBorderThickness(polyBorderThickness);
     }
 
     @Override
@@ -212,7 +211,8 @@ public class FixedDecorator implements Decorator {
         // Get colours in rgba format
         final int[] colourValues = new int[NUM_COLOURS];
         for (int i = 0; i < NUM_COLOURS; i++) {
-            // Make sure to get the default centroid colour if the vertex is marked as a centroid
+            // Make sure to get the default centroid colour if the vertex is marked as a
+            // centroid
             colourValues[i] = extractColourValue((v.isCentroid()) ? DEFAULT_CENTROID_COLOUR : vertColour, i);
         }
         v.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
