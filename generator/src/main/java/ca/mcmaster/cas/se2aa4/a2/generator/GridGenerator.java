@@ -54,22 +54,22 @@ public class GridGenerator implements Generator {
             vertices = p.getVertexList();
             // Add the first vertex of this polygon
             v = new Vertex(vertices.get(0)[0], vertices.get(0)[1]);
-            mesh.addVertex(v);
+            mesh.addVert(v);
             // Add remaining vertices, and since they are ordered radially, they are
             // adjacent to the vertices before and after them.
             // As a result, a segment can be made with this vertex and the vertex before, so
             // add that as well.
             for (int i = 1; i < vertices.size(); i++) {
                 v = new Vertex(vertices.get(i)[0], vertices.get(i)[1]);
-                mesh.addVertex(v);
+                mesh.addVert(v);
                 s = new Segment(vertices.get(i - 1)[0], vertices.get(i - 1)[1], vertices.get(i)[0], vertices.get(i)[1]);
-                mesh.addSegment(s);
+                mesh.addSeg(s);
             }
             // Add the segment that connects the first vertex with the last one.
             s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0],
                     vertices.get(vertices.size() - 1)[1]);
-            mesh.addSegment(s);
-            mesh.addPolygon(p);
+            mesh.addSeg(s);
+            mesh.addPoly(p);
         }
     }
 
