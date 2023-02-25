@@ -81,7 +81,7 @@ public class FixedDecorator implements Decorator {
             result[1] = defaultValue;
         } else {
             try {
-                colour = Integer.parseInt(colourString, 16);
+                colour = Integer.parseUnsignedInt(colourString, 16);
                 result[0] = 1;
                 result[1] = colour;
             } catch (Exception e) {
