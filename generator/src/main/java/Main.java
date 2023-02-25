@@ -18,16 +18,19 @@ public class Main {
         Decorator decorator = new FixedDecorator();
         Generator gen = new GridGenerator(side);
         MeshFactory factory = new MeshFactory();
-        // Make vertices red
-        decorator.setVertColour("FF0000FF");
+        // Make vertices blue
+        decorator.setVertColour("0000ffff");
         // Make segments black
-        decorator.setSegColour("000000FF");
-        // Make polygons green
-        decorator.setPolyFillColour("00FF00FF");
+        decorator.setSegColour("000000ff");
+        // Make polygon fill green
+        decorator.setPolyFillColour("00ff00ff");
+        // Make polygon border colour orange
+        decorator.setPolyBorderColour("ffa500ff");
         // Set vertex thickness to 3
-        decorator.setVertThickness("3");
+        decorator.setVertThickness("6");
         // Set segment thickness to 1
         decorator.setSegThickness("1");
+        decorator.setPolyBorderThickness("3");
         factory.write(createMesh(fMesh, gen, decorator, height, width), args[0]);
     }
 
