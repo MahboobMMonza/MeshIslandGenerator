@@ -3,21 +3,24 @@ package ca.mcmaster.cas.se2aa4.a2.mesh;
 import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.components.*;
+import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 
 public interface Mesh {
 
-    boolean addPolygon(Polygon p);
+    boolean addPoly(Poly p);
 
-    boolean addSegment(Segment s);
+    boolean addSeg(Seg s);
 
-    boolean addVertex(Vertex v);
+    boolean addVert(Vert v);
 
     void lock();
 
-    List<Polygon> getPolygons();
+    List<Poly> getPolys();
 
-    List<Segment> getSegments();
+    List<Seg> getSegs();
 
-    List<Vertex> getVertex();
+    List<Vert> getVerts();
+
+    boolean decorateComponents(Decorator decorator);
 
 }

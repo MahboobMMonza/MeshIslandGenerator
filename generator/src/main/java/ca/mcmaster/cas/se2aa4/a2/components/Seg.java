@@ -1,6 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.components;
 
-public interface Seg {
+public interface Seg extends Comparable<Seg> {
 
     void setColour(int r, int g, int b, int a);
 

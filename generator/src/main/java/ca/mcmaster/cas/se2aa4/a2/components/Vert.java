@@ -1,6 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.components;
 
-public interface Vert {
+public interface Vert extends Comparable<Vert> {
 
     void setColour(int r, int g, int b, int a);
 
@@ -16,4 +16,7 @@ public interface Vert {
 
     float getThickness();
 
+    void setCentroid();
+
+    boolean isCentroid();
 }

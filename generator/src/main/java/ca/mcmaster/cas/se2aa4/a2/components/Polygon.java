@@ -7,7 +7,7 @@ import java.util.List;
  * the Generator and any properties from the Mesh when finalized before
  * conversion.
  */
-public class Polygon implements Poly, Comparable<Polygon> {
+public class Polygon implements Poly {
 
     private double centroidX, centroidY;
     private int[] colour;
@@ -75,9 +75,9 @@ public class Polygon implements Poly, Comparable<Polygon> {
     }
 
     @Override
-    public int compareTo(Polygon p) {
-        int comp = Double.compare(centroidX, p.centroidX);
-        return (comp != 0) ? comp : Double.compare(centroidY, p.centroidY);
+    public int compareTo(Poly p) {
+        int comp = Double.compare(centroidX, p.getCentroidX());
+        return (comp != 0) ? comp : Double.compare(centroidY, p.getCentroidY());
     }
 
 }

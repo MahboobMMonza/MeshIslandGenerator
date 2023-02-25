@@ -5,7 +5,7 @@ package ca.mcmaster.cas.se2aa4.a2.components;
  * the Generator and any properties from the Mesh when finalized before
  * conversion.
  */
-public class Segment implements Seg, Comparable<Segment> {
+public class Segment implements Seg, Comparable<Seg> {
 
     private double x1, y1, x2, y2;
     private int[] colour;
@@ -21,17 +21,17 @@ public class Segment implements Seg, Comparable<Segment> {
     }
 
     @Override
-    public int compareTo(Segment s) {
-        int comp = Double.compare(x1, s.x1);
+    public int compareTo(Seg s) {
+        int comp = Double.compare(x1, s.getX1());
         if (comp != 0)
             return comp;
-        comp = Double.compare(y1, s.y1);
+        comp = Double.compare(y1, s.getY1());
         if (comp != 0)
             return comp;
-        comp = Double.compare(x2, s.x2);
+        comp = Double.compare(x2, s.getX2());
         if (comp != 0)
             return comp;
-        return Double.compare(y2, s.y2);
+        return Double.compare(y2, s.getY2());
     }
 
     @Override
