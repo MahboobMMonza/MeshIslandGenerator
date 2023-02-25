@@ -81,16 +81,27 @@ public class Convertor {
         Vertex cent;
         Segment seg;
         List<double[]> polyVerts;
-        Structs.Property colour;
+        Structs.Property fillColour, borderColour, thickness;
         int[] colours;
-        String rgba;
+        String rgba, thick;
         int centIdx, segIdx;
         for (Poly polygon : polygons) {
-            colours = polygon.getColour();
+            colours = polygon.getFillColour();
             rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
-            colour = Structs.Property.newBuilder()
-                    .setKey("rgba_color")
+            fillColour = Structs.Property.newBuilder()
+                    .setKey("rgba_fill_color")
                     .setValue(rgba)
+                    .build();
+            colours = polygon.getBorderColour();
+            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            borderColour = Structs.Property.newBuilder()
+                    .setKey("rgba_border_color")
+                    .setValue(rgba)
+                    .build();
+            thick = String.format("%.2f", polygon.getBorderThickness());
+            thickness = Structs.Property.newBuilder()
+                    .setKey("thickness")
+                    .setValue(thick)
                     .build();
             cent = new Vertex(polygon.getCentroidX(), polygon.getCentroidY());
             centIdx = Collections.binarySearch(vertices, cent);
@@ -112,7 +123,10 @@ public class Convertor {
                 centIdx = Collections.binarySearch(vertices, cent);
                 builder = builder.addNeighborIdxs(centIdx);
             }
-            builder = builder.addProperties(colour);
+            builder = builder
+                    .addProperties(fillColour)
+                    .addProperties(borderColour)
+                    .addProperties(thickness);
             polygonList.add(builder.build());
         }
         return polygonList;
