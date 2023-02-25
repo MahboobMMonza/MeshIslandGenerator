@@ -23,7 +23,7 @@ public class GeneratorMeshIntegrationTest {
         double expectedPolygons = (Math.ceil(width / (n + 0.0)) * (height / (n + 0.0)));
         generator.generate(mesh, height, width);
         mesh.lock();
-        assertEquals(expectedPolygons, mesh.getPolygons().size());
+        assertEquals(expectedPolygons, mesh.getPolys().size());
     }
 
     @Test
@@ -32,7 +32,7 @@ public class GeneratorMeshIntegrationTest {
         generator.generate(mesh, height, width);
         int expectedVertices = 1301;
         mesh.lock();
-        List<Vertex> vertices = mesh.getVertex();
+        List<Vert> vertices = mesh.getVerts();
         assertEquals(expectedVertices, vertices.size());
     }
 
@@ -41,9 +41,9 @@ public class GeneratorMeshIntegrationTest {
         Mesh mesh = new FixedMesh();
         generator.generate(mesh, height, width);
         mesh.lock();
-        List<Vertex> vertices = mesh.getVertex();
+        List<Vert> vertices = mesh.getVerts();
         Set<String> vertposition = new HashSet<>();
-        for (Vertex v : vertices) {
+        for (Vert v : vertices) {
             String position = String.format("(%f, %f)", v.getX(), v.getY());
             assertFalse(vertposition.contains(position));
             vertposition.add(position);
@@ -55,7 +55,7 @@ public class GeneratorMeshIntegrationTest {
         Mesh mesh = new FixedMesh();
         generator.generate(mesh, height, width);
         mesh.lock();
-        List<Polygon> centroids = mesh.getPolygons();
+        List<Poly> centroids = mesh.getPolys();
         assertEquals(625, centroids.size());
     }
 
@@ -66,21 +66,21 @@ public class GeneratorMeshIntegrationTest {
         Mesh mesh = new FixedMesh();
         generator.generate(mesh, height, width);
         mesh.lock();
-        List<Polygon> centroids = mesh.getPolygons();
+        List<Poly> centroids = mesh.getPolys();
 
-        Polygon topLeft = centroids.get(0);
+        Poly topLeft = centroids.get(0);
         assertEquals(10, topLeft.getCentroidX(), 0.00001);
         assertEquals(10, topLeft.getCentroidY(), 0.00001);
 
-        Polygon bottomRight = centroids.get(centroids.size() - 1);
+        Poly bottomRight = centroids.get(centroids.size() - 1);
         assertEquals(490, bottomRight.getCentroidX(), 0.00001);
         assertEquals(490, bottomRight.getCentroidY(), 0.00001);
 
-        Polygon center = centroids.get(centroids.size() / 2);
+        Poly center = centroids.get(centroids.size() / 2);
         assertEquals(250, center.getCentroidX(), 0.00001);
         assertEquals(250, center.getCentroidY(), 0.00001);
 
-        for (Polygon centroid : centroids) {
+        for (Poly centroid : centroids) {
             assertTrue(centroid.getCentroidX() >= 0.5 && centroid.getCentroidX() <= bottomCentX - 0.5);
             assertTrue(centroid.getCentroidY() >= 0.5 && centroid.getCentroidY() <= bottomCentY - 0.5);
         }
@@ -92,7 +92,7 @@ public class GeneratorMeshIntegrationTest {
         Generator generator = new GridGenerator(3);
         generator.generate(mesh, 30, 30);
         mesh.lock();
-        List<Polygon> polys = mesh.getPolygons();
+        List<Poly> polys = mesh.getPolys();
         for (double[] neighbours : polys.get(0).getNeigbourList()) {
             System.out.println(String.format("(%.2f, %.2f) :: (%.2f, %.2f)", polys.get(0).getCentroidX(),
                     polys.get(0).getCentroidY(), neighbours[0], neighbours[1]));
