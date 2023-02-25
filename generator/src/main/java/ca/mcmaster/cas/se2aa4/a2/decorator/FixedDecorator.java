@@ -201,10 +201,11 @@ public class FixedDecorator implements Decorator {
         // Get colours in rgba format
         final int[] colourValues = new int[NUM_COLOURS];
         for (int i = 0; i < NUM_COLOURS; i++) {
-            colourValues[i] = extractColourValue(vertColour, i);
+            // Make sure to get the default centroid colour if the vertex is marked as a centroid
+            colourValues[i] = extractColourValue((v.isCentroid()) ? DEFAULT_CENTROID_COLOUR : vertColour, i);
         }
         v.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        v.setThickness(segThickness);
+        v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : segThickness);
     }
 
 }
