@@ -64,12 +64,15 @@ that future MVPs that require modification of the feature can be implemented wit
 
 ### Product Backlog
 
+Remember to view Issue tickets on GitHub for specific tasks, including non-MVP essentials such as testing.
+
 | ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
-| F01  | Generate vertex-colour-averaged square segments | Mohammad/Khalid | 02/06/2023 | 02/08/2023 | D |
-| F02  | Command-line optionality for Generator | Khalid | 02/10/2023 || B(F04) |
-| F03 (Pre-release) | Create a 500x500 regular grid with size of 20 with fixed vertex, polygon, and segment properties | Mohammad/Khalid/Samih | 02/20/2023 | 02/23/2023 | D |
-| F04  | Add the option to customize the colour and thickness of all components | Mohammad |02/24/2023|| S |
-| F05  | Incorporate a debugging mode for Visualizer | Samih | 02/24/2023 |02/24/2023| C |
-
-
+| F01 | Generate vertex-colour-averaged square segments | Mohammad/Khalid | 02/06/2023 | 02/08/2023 | D |
+| F02 (Pre-release) | Create a 500x500 regular grid with size of 20 with fixed vertex, polygon, and segment properties | Mohammad/Khalid/Samih | 02/20/2023 | 02/23/2023 | D |
+| F03 | Add the option to customize the colour and thickness of all components | Mohammad | 02/24/2023 | 02/25/2023 | D |
+| F04 | Command-line optionality for Generator | Khalid | 02/19/2023 || S |
+| F05 | Incorporate a debugging mode for Visualizer | Samih | 02/24/2023 | 02/25/2023 | D |
+| F06 | Add the option to customize the size of the mesh with sane defaults | Mohammad/Khalid | 02/24/2023 || S |
+| F07 | Add mesh size property for cropping | Mohammad | 02/24/2023 || S |
+| F08 | Command-line optionality for debug mode on the Visualizer | Khalid | 02/25/2023 || S |
