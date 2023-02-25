@@ -1,24 +1,30 @@
 package ca.mcmaster.cas.se2aa4.a2.visualizer;
+
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
+
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
+
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 public class GraphicRenderer {
+
     private static final float DEFAULT_SEGMENT_THICKNESS = 2;
     private static final float DEFAULT_VERTEX_THICKNESS = 3;
     private static final float DEFAULT_POLYGON_THICKNESS = 0;
@@ -172,7 +178,6 @@ public class GraphicRenderer {
         String val = null;
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
@@ -189,7 +194,6 @@ public class GraphicRenderer {
         String val = null;
         for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
@@ -207,7 +211,6 @@ public class GraphicRenderer {
         String val = null;
         for (Property p : seg.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
@@ -225,7 +228,6 @@ public class GraphicRenderer {
         String val = null;
         for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
@@ -247,7 +249,6 @@ public class GraphicRenderer {
         String val = null;
         for (Property p : seg.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
@@ -261,12 +262,11 @@ public class GraphicRenderer {
         int alpha = Integer.parseInt(raw[3]);
         return new Color(red, green, blue, alpha);
     }
-    
+
     private Color extractColor(Vertex vert) {
         String val = new String();
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
-                System.out.println(p.getValue());
                 val = p.getValue();
             }
         }
