@@ -15,13 +15,19 @@ public class GridGenerator implements Generator {
 
     private static final double TOP_X = 0, TOP_Y = 0;
 
+    public final int sideLength;
+
+    public GridGenerator(int sideLength) {
+        this.sideLength = sideLength;
+    }
+
     @Override
-    public void generate(final Mesh mesh, final int height, final int width, final int n) {
-        final double increment = Math.round(n / 2.0 * 100) / 100.0;
+    public void generate(final Mesh mesh, final int height, final int width) {
+        final double increment = Math.round(sideLength / 2.0 * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
         // area, and calculate the centroid bounds
-        final double bottomCentX = (Math.ceil(height / (n + 0.0)) * n) - increment;
-        final double bottomCentY = (Math.ceil(width / (n + 0.0)) * n) - increment;
+        final double bottomCentX = (Math.ceil(height / (sideLength + 0.0)) * sideLength) - increment;
+        final double bottomCentY = (Math.ceil(width / (sideLength + 0.0)) * sideLength) - increment;
         final List<double[]> allCentroids = generateCentroids(increment, bottomCentX, bottomCentY);
         // Create a list of Polygons using the generateCentroids
         final List<Polygon> allPolys = generatePolygons(allCentroids);
