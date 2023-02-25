@@ -18,6 +18,8 @@ public interface Poly extends Comparable<Poly> {
 
     List<double[]> getVertexList();
 
+    List<double[]> getNeigbourList();
+
     double getCentroidX();
 
     double getCentroidY();
@@ -28,5 +30,4 @@ public interface Poly extends Comparable<Poly> {
 
     int[] getBorderColour();
 
-    List<double[]> getNeigbourList();
 }
