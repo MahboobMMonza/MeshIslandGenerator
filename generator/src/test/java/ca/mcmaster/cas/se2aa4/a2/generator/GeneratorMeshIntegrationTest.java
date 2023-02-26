@@ -19,17 +19,17 @@ public class GeneratorMeshIntegrationTest {
 
     @Test
     public void numOfPoly() {
-        Mesh mesh = new FixedMesh();
+        Mesh mesh = new FixedMesh(height, width);
         double expectedPolygons = (Math.ceil(width / (n + 0.0)) * (height / (n + 0.0)));
-        generator.generate(mesh, height, width);
+        generator.generate(mesh);
         mesh.lock();
         assertEquals(expectedPolygons, mesh.getPolys().size());
     }
 
     @Test
     public void numOfVert() {
-        Mesh mesh = new FixedMesh();
-        generator.generate(mesh, height, width);
+        Mesh mesh = new FixedMesh(height, width);
+        generator.generate(mesh);
         int expectedVertices = 1301;
         mesh.lock();
         List<Vert> vertices = mesh.getVerts();
@@ -38,8 +38,8 @@ public class GeneratorMeshIntegrationTest {
 
     @Test
     public void verticesIsNotDuplicate() {
-        Mesh mesh = new FixedMesh();
-        generator.generate(mesh, height, width);
+        Mesh mesh = new FixedMesh(height, width);
+        generator.generate(mesh);
         mesh.lock();
         List<Vert> vertices = mesh.getVerts();
         Set<String> vertposition = new HashSet<>();
@@ -52,8 +52,8 @@ public class GeneratorMeshIntegrationTest {
 
     @Test
     public void numOfCentroids() {
-        Mesh mesh = new FixedMesh();
-        generator.generate(mesh, height, width);
+        Mesh mesh = new FixedMesh(height, width);
+        generator.generate(mesh);
         mesh.lock();
         List<Poly> centroids = mesh.getPolys();
         assertEquals(625, centroids.size());
@@ -63,8 +63,8 @@ public class GeneratorMeshIntegrationTest {
     public void correctCentroids() {
         double bottomCentX = 500.0;
         double bottomCentY = 500.0;
-        Mesh mesh = new FixedMesh();
-        generator.generate(mesh, height, width);
+        Mesh mesh = new FixedMesh(height, width);
+        generator.generate(mesh);
         mesh.lock();
         List<Poly> centroids = mesh.getPolys();
 
@@ -88,9 +88,10 @@ public class GeneratorMeshIntegrationTest {
 
     @Test
     public void testCornerPolygonNeighbors() {
+        // Creates a new mesh with the minimum width and height
         Mesh mesh = new FixedMesh();
-        Generator generator = new GridGenerator(3);
-        generator.generate(mesh, 30, 30);
+        Generator generator = new GridGenerator(5);
+        generator.generate(mesh);
         mesh.lock();
         List<Poly> polys = mesh.getPolys();
         for (double[] neighbours : polys.get(0).getNeigbourList()) {

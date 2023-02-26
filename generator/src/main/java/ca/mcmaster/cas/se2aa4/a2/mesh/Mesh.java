@@ -13,7 +13,15 @@ public interface Mesh {
 
     boolean addVert(Vert v);
 
+    boolean setHeight(int h);
+
+    boolean setWidth(int w);
+
     void lock();
+
+    int getHeight();
+
+    int getWidth();
 
     List<Poly> getPolys();
 
@@ -22,5 +30,7 @@ public interface Mesh {
     List<Vert> getVerts();
 
     boolean decorateComponents(Decorator decorator);
+
+    static final int MIN_HEIGHT = 300, MIN_WIDTH = 300;
 
 }

@@ -14,8 +14,8 @@ import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 public class MeshCreator {
 
     public static Mesh createMesh(final ca.mcmaster.cas.se2aa4.a2.mesh.Mesh aMesh, final Generator gen,
-            final Decorator dec, final int height, final int width) {
-        gen.generate(aMesh, height, width);
+            final Decorator dec) {
+        gen.generate(aMesh);
         aMesh.lock();
         aMesh.decorateComponents(dec);
         return convert(aMesh);

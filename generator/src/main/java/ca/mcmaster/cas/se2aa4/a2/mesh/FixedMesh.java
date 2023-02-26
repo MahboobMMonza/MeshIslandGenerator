@@ -19,6 +19,7 @@ public class FixedMesh implements Mesh {
     private List<Poly> polysList;
     private List<Seg> segsList;
     private List<Vert> vertsList;
+    private int height, width;
     private boolean locked;
 
     /**
@@ -28,7 +29,35 @@ public class FixedMesh implements Mesh {
         vertsSet = new TreeSet<>();
         polysSet = new TreeSet<>();
         segsSet = new TreeSet<>();
+        setHeight(MIN_HEIGHT);
+        setWidth(MIN_WIDTH);
         locked = false;
+    }
+
+    /**
+     * Creates a new FixedMesh and initializes all necessary fields.
+     */
+    public FixedMesh(int height, int width) {
+        this();
+        setHeight(height);
+        setWidth(width);
+    }
+
+
+    @Override
+    public boolean setHeight(int h) {
+        if (locked)
+        return false;
+        height = Math.max(MIN_HEIGHT, h);
+        return true;
+    }
+
+    @Override
+    public boolean setWidth(int w) {
+        if (locked)
+        return false;
+        width = Math.max(MIN_WIDTH, w);
+        return true;
     }
 
     @Override
@@ -49,6 +78,27 @@ public class FixedMesh implements Mesh {
     }
 
     @Override
+    public boolean decorateComponents(Decorator decorator) {
+        if (!locked) {
+            return false;
+        }
+        decorateVerts(decorator);
+        decorateSegs(decorator);
+        decoratePolys(decorator);
+        return true;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
     public List<Poly> getPolys() {
         return polysList;
     }
@@ -61,6 +111,16 @@ public class FixedMesh implements Mesh {
     @Override
     public List<Vert> getVerts() {
         return vertsList;
+    }
+
+    @Override
+    public void lock() {
+        if (locked)
+        return;
+        polysList = new ArrayList<>(polysSet);
+        segsList = new ArrayList<>(segsSet);
+        vertsList = new ArrayList<>(vertsSet);
+        locked = true;
     }
 
     /**
@@ -94,27 +154,6 @@ public class FixedMesh implements Mesh {
         for (Vert v : vertsList) {
             decorator.decorateVert(v);
         }
-    }
-
-    @Override
-    public void lock() {
-        if (locked)
-            return;
-        polysList = new ArrayList<>(polysSet);
-        segsList = new ArrayList<>(segsSet);
-        vertsList = new ArrayList<>(vertsSet);
-        locked = true;
-    }
-
-    @Override
-    public boolean decorateComponents(Decorator decorator) {
-        if (!locked) {
-            return false;
-        }
-        decorateVerts(decorator);
-        decorateSegs(decorator);
-        decoratePolys(decorator);
-        return true;
     }
 
 }
