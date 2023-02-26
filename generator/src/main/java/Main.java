@@ -22,19 +22,19 @@ public class Main {
         if (cmd.hasHelpOption(parser, args)) {
             cmd.getHelp(parser, args);
         } else {
-            int height = cmd.getDimeH(parser,args), width = cmd.getDimeW(parser,args);
+            int height = cmd.getDimeH(parser, args), width = cmd.getDimeW(parser, args);
             Mesh fMesh = new FixedMesh(height, width);
             Decorator decorator = new FixedDecorator();
-            Generator gen = new GridGenerator(cmd.getSideLength(parser,args));
+            Generator gen = new GridGenerator(cmd.getSideLength(parser, args));
             MeshFactory factory = new MeshFactory();
-            decorator.setVertColour(cmd.getVertColour(parser,args));
-            decorator.setSegColour(cmd.getSegColour(parser,args));
-            decorator.setPolyFillColour(cmd.getPolyFillColour(parser,args));
-            decorator.setPolyBorderColour(cmd.getPolyBorderColour(parser,args));
-            decorator.setVertThickness(cmd.getVertThickness(parser,args));
-            decorator.setSegThickness(cmd.getSegThickness(parser,args));
-            decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(parser,args));
-            factory.write(createMesh(fMesh, gen, decorator), cmd.setFileName(parser,args));
+            decorator.setVertColour(cmd.getVertColour(parser, args));
+            decorator.setSegColour(cmd.getSegColour(parser, args));
+            decorator.setPolyFillColour(cmd.getPolyFillColour(parser, args));
+            decorator.setPolyBorderColour(cmd.getPolyBorderColour(parser, args));
+            decorator.setVertThickness(cmd.getVertThickness(parser, args));
+            decorator.setSegThickness(cmd.getSegThickness(parser, args));
+            decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(parser, args));
+            factory.write(createMesh(fMesh, gen, decorator), cmd.setFileName(parser, args));
         }
     }
 

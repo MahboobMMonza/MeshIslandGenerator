@@ -1,10 +1,8 @@
 package cli;
 
-
 import org.apache.commons.cli.*;
 
-public class GeneratorCommandLine{
-
+public class GeneratorCommandLine {
 
     private static Option sideLength = new Option("sl", "sidelength", true,
             "Side Lengths (default: 20)");
@@ -68,7 +66,7 @@ public class GeneratorCommandLine{
     }
 
     public boolean hasHelpOption(CommandLineParser parser, String[] args) {
-        boolean hasHelp = true;
+        boolean hasHelp = false;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(help)) {
@@ -282,9 +280,4 @@ public class GeneratorCommandLine{
         return filename;
     }
 
-
-
 }
-
-
-
