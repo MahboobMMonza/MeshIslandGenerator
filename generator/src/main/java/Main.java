@@ -9,14 +9,15 @@ import ca.mcmaster.cas.se2aa4.a2.generator.GridGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.mesh.FixedMesh;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
-import command_line.GenerateCommandLine;
+import cli.GeneratorCommandLine;
+
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
-        GenerateCommandLine cmd = new GenerateCommandLine();
+        GeneratorCommandLine cmd = new GeneratorCommandLine();
         cmd.addOptions();
         if (cmd.hasHelpOption(parser, args)) {
             cmd.getHelp(parser, args);

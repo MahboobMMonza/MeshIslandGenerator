@@ -1,9 +1,9 @@
-package command_line;
+package cli;
 
 
 import org.apache.commons.cli.*;
 
-public class GenerateCommandLine{
+public class GeneratorCommandLine{
 
 
     private static Option sideLength = new Option("sl", "sidelength", true,
