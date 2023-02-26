@@ -3,10 +3,7 @@ package ca.mcmaster.cas.se2aa4.a2.generator;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcmaster.cas.se2aa4.a2.components.Poly;
-import ca.mcmaster.cas.se2aa4.a2.components.Polygon;
-import ca.mcmaster.cas.se2aa4.a2.components.Segment;
-import ca.mcmaster.cas.se2aa4.a2.components.Vertex;
+import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
 /**
@@ -14,21 +11,28 @@ import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
  */
 public class GridGenerator implements Generator {
 
-    private static final double TOP_X = 0, TOP_Y = 0;
+    static final double TOP_X = 0, TOP_Y = 0;
+    static final int MIN_SIDE_LENGTH = 5, DEFAULT_SIDE_LENGTH = 100;
 
     public final int sideLength;
 
     public GridGenerator(int sideLength) {
-        this.sideLength = sideLength;
+        this.sideLength = Math.max(sideLength, MIN_SIDE_LENGTH);
     }
 
     @Override
-    public void generate(final Mesh mesh, final int height, final int width) {
-        final double increment = Math.round(sideLength / 2.0 * 100) / 100.0;
+    public void generate(final Mesh mesh) {
+        // This is to compromise a small mesh given, but the generator will create grids
+        // of the given sideLength in other cases.
+        int side = sideLength;
+        if (this.sideLength > mesh.getHeight() || this.sideLength > mesh.getWidth()) {
+            side = DEFAULT_SIDE_LENGTH;
+        }
+        final double increment = Math.round(side / 2.0 * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
         // area, and calculate the centroid bounds
-        final double bottomCentX = (Math.ceil(height / (sideLength + 0.0)) * sideLength) - increment;
-        final double bottomCentY = (Math.ceil(width / (sideLength + 0.0)) * sideLength) - increment;
+        final double bottomCentX = (Math.ceil(mesh.getHeight() / (side + 0.0)) * side) - increment;
+        final double bottomCentY = (Math.ceil(mesh.getWidth() / (side + 0.0)) * side) - increment;
         final List<double[]> allCentroids = generateCentroids(increment, bottomCentX, bottomCentY);
         // Create a list of Polygons using the generateCentroids
         final List<Poly> allPolys = generatePolygons(allCentroids);
@@ -48,8 +52,8 @@ public class GridGenerator implements Generator {
      *                 generated.
      */
     void addAllComponents(final Mesh mesh, final List<Poly> polygons) {
-        Vertex v;
-        Segment s;
+        Vert v;
+        Seg s;
         List<double[]> vertices;
         for (Poly p : polygons) {
             vertices = p.getVertexList();
