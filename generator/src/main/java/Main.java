@@ -14,15 +14,15 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
         GenerateCommandLine cmd = new GenerateCommandLine();
         cmd.addOptions();
-        if (cmd.hasHelpOption(parser,args)){
-            cmd.getHelp(parser,args);
-        }else{
-            Mesh fMesh = new FixedMesh();
+        if (cmd.hasHelpOption(parser, args)) {
+            cmd.getHelp(parser, args);
+        } else {
+            int height = cmd.getDimeH(parser,args), width = cmd.getDimeW(parser,args);
+            Mesh fMesh = new FixedMesh(height, width);
             Decorator decorator = new FixedDecorator();
             Generator gen = new GridGenerator(cmd.getSideLength(parser,args));
             MeshFactory factory = new MeshFactory();
@@ -33,7 +33,7 @@ public class Main {
             decorator.setVertThickness(cmd.getVertThickness(parser,args));
             decorator.setSegThickness(cmd.getSegThickness(parser,args));
             decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(parser,args));
-            factory.write(createMesh(fMesh, gen, decorator, cmd.getDimeH(parser,args), cmd.getDimeW(parser,args)), cmd.setFileName(parser,args));
+            factory.write(createMesh(fMesh, gen, decorator), cmd.setFileName(parser,args));
         }
     }
 

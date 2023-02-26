@@ -5,26 +5,38 @@ import org.apache.commons.cli.*;
 
 public class GenerateCommandLine{
 
+
+    private static Option sideLength = new Option("sl", "sidelength", true,
+            "Side Lengths (default: 20)");
+    private static Option relaxationLevel = new Option("rl", "relaxationlevel", true,
+            "Relaxation Level (default: 20)");
+    private static Option startpoints = new Option("sp", "startpoints", true,
+            "Number of Start Points (default: 50)");
+    private static Option dimensionh = new Option("dh", "dimensionh", true,
+            "Dimension for the height (default: 500)");
+    private static Option segmentThickness = new Option("st", "segmentthickness", true,
+            "Segment Thickness");
+    private static Option vertexThickness = new Option("vt", "vertexthickness", true,
+            "Vertex Thickness");
+    private static Option polygonFillColour = new Option("pf", "polygonfill", true,
+            "Polygon Fill Colour (See Footer for more information");
+    private static Option vertexColour = new Option("vc", "vertexcolour", true,
+            "Vertex Colour (See Footer for more information)");
+    private static Option segmentColour = new Option("sc", "segmentcolour", true,
+            "Segment Colour (See Footer for more information)");
+    private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 500)");
+    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (default: Grid Mesh)");
+
+    private static Option help = new Option("h", "help", false, "Show usage help");
+    private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
+            "Polygon Border Colour (See Footer for more information)");
+    private static Option polygonBorderThickness = new Option("bt", "borderthickness", true,
+            "Polygon Border Thickness");
+    private static Option fileName = new Option("f", "filename", true, "Sets File Name");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
-    private static Option vertexThickness = Option.builder("vt").longOpt("vertexthickness").hasArg().desc("Vertex Thickness").build();
-    private static Option segmentThickness = Option.builder("st").longOpt("segmentthickness").hasArg().desc("Segment Thickness").build();
-    private static Option dimensionh = Option.builder("dh").longOpt("dimensionh").hasArg().desc("Dimension for the height (default: 500)").build();
-    private static Option startpoints = Option.builder("sp").longOpt("startpoints").hasArg().desc("Number of Start Points (default: 50)").build();
-    private static Option relaxationLevel = Option.builder("rl").longOpt("relaxationlevel").hasArg().desc("Relaxation Level (default: 20)").build();
-    private static Option sideLength = Option.builder("sl").longOpt("sidelength").hasArg().desc("Side Lengths (default: 20)").build();
-    private static Option meshType = Option.builder("mt").longOpt("meshtype").hasArg().desc("Mesh type (default: Grid Mesh)").build();
-    private static Option dimensionw = Option.builder("dw").longOpt("dimensionw").hasArg().desc("Dimension for the width (default: 500)").build();
-    private static Option segmentColour = Option.builder("sc").longOpt("segmentcolour").hasArg().desc("Segment Colour (See Footer for more information)").build();
-    private static Option vertexColour = Option.builder("vc").longOpt("vertexcolour").hasArg().desc("Vertex Colour (See Footer for more information)").build();
-    private static Option polygonFillColour = Option.builder("pf").longOpt("polygonfill").hasArg().desc("Polygon Fill Colour (See Footer for more information)").build();
-    private static Option polygonBorderColour = Option.builder("pb").longOpt("polygonborder").hasArg().desc("Polygon Border Colour (See Footer for more information)").build();
-    private static  Option help = Option.builder("h").longOpt("help").desc("Show usage help").build();
-    private static Option polygonBorderThickness = Option.builder("bt").longOpt("borderthickness").hasArg().desc("Polygon Border Thickness").build();
-    private static  Option fileName = Option.builder("f").longOpt("filename").desc("Sets File Name").build();
-
-    public void addOptions(){
+    public void addOptions() {
         options.addOption(dimensionw);
         options.addOption(dimensionh);
         options.addOption(segmentThickness);
@@ -41,46 +53,53 @@ public class GenerateCommandLine{
         options.addOption(fileName);
         options.addOption(polygonBorderThickness);
     }
-    public void getHelp(CommandLineParser parser,String[] args){
+
+    public void getHelp(CommandLineParser parser, String[] args) {
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(help)) {
-                formatter.printHelp("Mesh Generation","Help", options,"Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
+                formatter.printHelp("java -jar generator.jar [option 1] arg1 [option 2] arg2 ...", "Help", options,
+                        "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
     }
 
-    public boolean hasHelpOption(CommandLineParser parser,String[] args){
-        boolean hasHelp = false;
-        try{
-            CommandLine cmd = parser.parse(options,args);
+    public boolean hasHelpOption(CommandLineParser parser, String[] args) {
+        boolean hasHelp = true;
+        try {
+            CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(help)) {
-                hasHelp=true;
+                hasHelp = true;
             }
-        } catch(ParseException e){
-
+        } catch (ParseException e) {
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return hasHelp;
     }
-    public String getMeshType(CommandLineParser parser,String[] args){
-        String type="Grid";
+
+    public String getMeshType(CommandLineParser parser, String[] args) {
+        String type = "Grid";
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption("mt")) {
                 String meshtype = cmd.getOptionValue("mt");
-                if(meshtype == "Vornoi"){
-                    type ="Vornoi";
+                if (meshtype == "Vornoi") {
+                    type = "Vornoi";
                 }
             }
         } catch (ParseException e) {
+            getHelp(parser, args);
+            System.err.println(e.getMessage());
 
         }
         return type;
     }
 
-    public String getVertThickness(CommandLineParser parser,String[] args){
+    public String getVertThickness(CommandLineParser parser, String[] args) {
         String vertexThicknessValue = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -88,12 +107,13 @@ public class GenerateCommandLine{
                 vertexThicknessValue = cmd.getOptionValue(vertexThickness);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return vertexThicknessValue;
     }
 
-    public String getSegThickness(CommandLineParser parser,String[] args){
+    public String getSegThickness(CommandLineParser parser, String[] args) {
         String segmentthicknessvalue = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -101,12 +121,13 @@ public class GenerateCommandLine{
                 segmentthicknessvalue = cmd.getOptionValue(segmentThickness);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return segmentthicknessvalue;
     }
 
-    public int getDimeH(CommandLineParser parser,String[] args){
+    public int getDimeH(CommandLineParser parser, String[] args) {
         int dimh = 500;
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -115,12 +136,13 @@ public class GenerateCommandLine{
 
             }
         } catch (ParseException | NumberFormatException e) {
-            dimh=500;
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return dimh;
     }
 
-    public int getDimeW(CommandLineParser parser,String[] args){
+    public int getDimeW(CommandLineParser parser, String[] args) {
         int dimw = 500;
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -128,12 +150,13 @@ public class GenerateCommandLine{
                 dimw = Integer.parseInt(cmd.getOptionValue(dimensionw));
             }
         } catch (ParseException | NumberFormatException e) {
-            dimw=500;
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return dimw;
     }
 
-    public int getSideLength(CommandLineParser parser,String[] args){
+    public int getSideLength(CommandLineParser parser, String[] args) {
         int sidelength = 20;
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -141,12 +164,13 @@ public class GenerateCommandLine{
                 sidelength = Integer.parseInt(cmd.getOptionValue(sideLength));
             }
         } catch (ParseException | NumberFormatException e) {
-            sidelength=20;
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return sidelength;
     }
 
-    public int getRelaxationLevel(CommandLineParser parser,String[] args){
+    public int getRelaxationLevel(CommandLineParser parser, String[] args) {
         int relaxationlevel = 20;
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -154,12 +178,13 @@ public class GenerateCommandLine{
                 relaxationlevel = Integer.parseInt(cmd.getOptionValue(relaxationLevel));
             }
         } catch (ParseException | NumberFormatException e) {
-            relaxationlevel =20;
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return relaxationlevel;
     }
 
-    public int getNumOfPoints(CommandLineParser parser,String[] args){
+    public int getNumOfPoints(CommandLineParser parser, String[] args) {
         int numOfPoints = 50;
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -167,12 +192,13 @@ public class GenerateCommandLine{
                 numOfPoints = Integer.parseInt(cmd.getOptionValue(startpoints));
             }
         } catch (ParseException | NumberFormatException e) {
-            numOfPoints =50;
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return numOfPoints;
     }
 
-    public String getSegColour(CommandLineParser parser,String[] args){
+    public String getSegColour(CommandLineParser parser, String[] args) {
         String segColour = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -180,12 +206,13 @@ public class GenerateCommandLine{
                 segColour = cmd.getOptionValue(segmentColour);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return segColour;
     }
 
-    public String getVertColour(CommandLineParser parser,String[] args){
+    public String getVertColour(CommandLineParser parser, String[] args) {
         String vertColour = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -193,12 +220,13 @@ public class GenerateCommandLine{
                 vertColour = cmd.getOptionValue(vertexColour);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return vertColour;
     }
 
-    public String getPolyFillColour(CommandLineParser parser,String[] args){
+    public String getPolyFillColour(CommandLineParser parser, String[] args) {
         String pfc = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -206,12 +234,13 @@ public class GenerateCommandLine{
                 pfc = cmd.getOptionValue(polygonFillColour);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return pfc;
     }
 
-    public String getPolyBorderColour(CommandLineParser parser,String[] args){
+    public String getPolyBorderColour(CommandLineParser parser, String[] args) {
         String pbc = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -219,12 +248,13 @@ public class GenerateCommandLine{
                 pbc = cmd.getOptionValue(polygonBorderColour);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return pbc;
     }
 
-    public String getPolyBorderThickness(CommandLineParser parser,String[] args){
+    public String getPolyBorderThickness(CommandLineParser parser, String[] args) {
         String pbt = new String();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -232,20 +262,22 @@ public class GenerateCommandLine{
                 pbt = cmd.getOptionValue(polygonBorderThickness);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            getHelp(parser, args);
         }
         return pbt;
     }
 
-    public String setFileName(CommandLineParser parser,String[] args){
-        String filename = new String();
+    public String setFileName(CommandLineParser parser, String[] args) {
+        String filename = "generator/sample.mesh";
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(fileName)) {
                 filename = cmd.getOptionValue(fileName);
             }
         } catch (ParseException e) {
-
+            System.err.println(e.getMessage());
+            filename = "generator/sample.mesh";
         }
         return filename;
     }
