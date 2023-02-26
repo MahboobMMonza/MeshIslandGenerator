@@ -146,10 +146,21 @@ public class Convertor {
         List<Structs.Vertex> vertexList = createAllVertices(vertices);
         List<Structs.Segment> segmentList = createAllSegments(segments, vertices);
         List<Structs.Polygon> polygonList = createAllPolygons(polygons, segments, vertices);
+        Structs.Property height, width;
+        height = Structs.Property.newBuilder()
+                .setKey("height")
+                .setValue(Integer.toString(mesh.getHeight()))
+                .build();
+        width = Structs.Property.newBuilder()
+                .setKey("width")
+                .setValue(Integer.toString(mesh.getWidth()))
+                .build();
         return Structs.Mesh.newBuilder()
                 .addAllPolygons(polygonList)
                 .addAllSegments(segmentList)
                 .addAllVertices(vertexList)
+                .addProperties(height)
+                .addProperties(width)
                 .build();
     }
 
