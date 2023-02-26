@@ -25,6 +25,15 @@ public class FixedMeshTest {
     }
 
     @Test
+    public void addNewPolySameCentroidTest() {
+        Mesh mesh = new FixedMesh();
+        Polygon poly = new Polygon(3, 5);
+        Polygon otherPoly = new Polygon(3, 5);
+        assertTrue(mesh.addPoly(poly));
+        assertFalse(mesh.addPoly(otherPoly));
+    }
+
+    @Test
     public void addSegTest() {
         Mesh mesh = new FixedMesh();
         Segment seg = new Segment(1, 1, 2, 2);
