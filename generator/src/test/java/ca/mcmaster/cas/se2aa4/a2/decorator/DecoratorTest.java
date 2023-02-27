@@ -55,13 +55,13 @@ public class DecoratorTest {
         assertEquals(5.0f, decorator.polyBorderThickness, 0.001f);
 
         assertFalse(decorator.setPolyBorderThickness("-1"));
-        assertEquals(0.0f, decorator.polyBorderThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_POLY_BORDER_THICKNESS, decorator.polyBorderThickness, 0.001f); 
 
-        assertFalse(decorator.setPolyBorderThickness("11")); 
-        assertEquals(0.0f, decorator.polyBorderThickness, 0.001f); 
+        assertTrue(decorator.setPolyBorderThickness("11")); 
+        assertEquals(11f, decorator.polyBorderThickness, 0.001f); 
 
         assertFalse(decorator.setPolyBorderThickness("abc")); 
-        assertEquals(0.0f, decorator.polyBorderThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_POLY_BORDER_THICKNESS, decorator.polyBorderThickness, 0.001f); 
     }
 
     // Test to check if the segment thickness takes the right inputs
@@ -72,13 +72,13 @@ public class DecoratorTest {
         assertEquals(7.0f, decorator.segThickness, 0.001f);
 
         assertFalse(decorator.setSegThickness("-1")); 
-        assertEquals(3.0f, decorator.segThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_SEG_THICKNESS, decorator.segThickness, 0.001f); 
 
-        assertFalse(decorator.setSegThickness("11")); 
-        assertEquals(3.0f, decorator.segThickness, 0.001f); 
+        assertTrue(decorator.setSegThickness("11")); 
+        assertEquals(11f, decorator.segThickness, 0.001f); 
 
         assertFalse(decorator.setSegThickness("abc")); 
-        assertEquals(3.0f, decorator.segThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_SEG_THICKNESS, decorator.segThickness, 0.001f); 
     }
 
     // Test to check if the vertex thickness takes the right inputs
@@ -89,12 +89,12 @@ public class DecoratorTest {
         assertEquals(2.5f, decorator.vertThickness, 0.001f);
         
         assertFalse(decorator.setVertThickness("-1")); 
-        assertEquals(2.0f, decorator.vertThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_VERT_THICKNESS, decorator.vertThickness, 0.001f); 
 
-        assertFalse(decorator.setVertThickness("11")); 
-        assertEquals(2.0f, decorator.vertThickness, 0.001f); 
+        assertTrue(decorator.setVertThickness("11")); 
+        assertEquals(11f, decorator.vertThickness, 0.001f); 
 
         assertFalse(decorator.setVertThickness("abc")); 
-        assertEquals(2.0f, decorator.vertThickness, 0.001f); 
+        assertEquals(FixedDecorator.DEFAULT_VERT_THICKNESS, decorator.vertThickness, 0.001f); 
     }
 }
