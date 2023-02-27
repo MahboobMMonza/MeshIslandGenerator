@@ -53,8 +53,10 @@ public class Main {
         if (cmd.hasHelpOption(parser, args) || type.equals(GeneratorTypes.NONE)) {
             cmd.getHelp(parser, args);
             System.exit(0);
-        } // Otherwise make the required generator
-        else if (type.equals(GeneratorTypes.VORONOI)) {
+        } 
+        
+        // Otherwise make the required generator
+        if (type.equals(GeneratorTypes.VORONOI)) {
             System.out.println();
             gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {

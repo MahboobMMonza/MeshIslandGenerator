@@ -14,7 +14,7 @@ public class GeneratorCommandLine {
     private static Option startpoints = new Option("sp", "startpoints", true,
             "Number of Start Points (default: 50)");
     private static Option dimensionh = new Option("dh", "dimensionh", true,
-            "Dimension for the height (default: 500)");
+            "Dimension for the height (default: 300)");
     private static Option segmentThickness = new Option("st", "segmentthickness", true,
             "Segment Thickness");
     private static Option vertexThickness = new Option("vt", "vertexthickness", true,
@@ -25,7 +25,7 @@ public class GeneratorCommandLine {
             "Vertex Colour (See Footer for more information)");
     private static Option segmentColour = new Option("sc", "segmentcolour", true,
             "Segment Colour (See Footer for more information)");
-    private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 500)");
+    private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 300)");
     private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi)");
     private static Option help = new Option("h", "help", false, "Show usage help");
     private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
@@ -81,9 +81,7 @@ public class GeneratorCommandLine {
     public GeneratorTypes getMeshType(CommandLineParser parser, String[] args) {
         GeneratorTypes type = GeneratorTypes.NONE;
         try {
-            //System.out.println("Entered try");
             CommandLine cmd = parser.parse(options, args);
-            //System.out.println("Found given type");
             String meshtype = cmd.getOptionValue(meshType).toUpperCase();
             type = GeneratorTypes.valueOf(meshtype);
         } catch (ParseException | IllegalArgumentException | NullPointerException e ) {

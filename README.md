@@ -22,23 +22,80 @@ After installation, you'll find an application named `generator.jar` in the `gen
 
 ### Generator
 
-To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes one single argument (so far), the name of the file where the generated mesh will be stored as binary.
+To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes multiple arguments, each with it's own switch as described below, the name of the file where the generated mesh will be stored as binary. Follow the instructions below.
+```
+usage: java -jar generator.jar [option 1] arg1 [option 2] arg2 ...
+Help
+ -bt,--borderthickness <arg>    Polygon Border Thickness
+ -dh,--dimensionh <arg>         Dimension for the height (default: 500)
+ -dw,--dimensionw <arg>         Dimension for the width (default: 500)
+ -f,--filename <arg>            Sets File Name
+ -h,--help                      Show usage help
+ -mt,--meshtype <arg>           Mesh type (Grid or Vornoi)
+ -pb,--polygonborder <arg>      Polygon Border Colour (See Footer for more
+                                information)
+ -pf,--polygonfill <arg>        Polygon Fill Colour (See Footer for more
+                                information
+ -rl,--relaxationlevel <arg>    Relaxation Level (default: 20)
+ -sc,--segmentcolour <arg>      Segment Colour (See Footer for more
+                                information)
+ -sl,--sidelength <arg>         Side Lengths (default: 20)
+ -sp,--startpoints <arg>        Number of Start Points (default: 50)
+ -st,--segmentthickness <arg>   Segment Thickness
+ -vc,--vertexcolour <arg>       Vertex Colour (See Footer for more
+                                information)
+ -vt,--vertexthickness <arg>    Vertex Thickness
+Colour must be in RGBA hex format. E.g.: Fully opaque orange would be
+entered as "FFA500FF", and semi-transparent orange as "FFA50080"; see
+https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex
+conversions
+```
 
+For a Grid Mesh with some default options for every color:
 ```
 mosser@azrael A2 % cd generator
-mosser@azrael generator % java -jar generator.jar sample.mesh
-mosser@azrael generator % ls -lh sample.mesh
--rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 sample.mesh
+mosser@azrael generator % java -jar generator.jar -mt Grid -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 7 -st 2 -bt 7 -sl 100 -mt grid -f grid.mesh
+mosser@azrael generator % ls -lh grid.mesh
+-rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 grid.mesh
+mosser@azrael generator %
+```
+For a Voronoi Mesh with some default options for every color:
+```
+mosser@azrael A2 % cd generator
+mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 7 -st 2 -bt 7 -rl 23 -sp 55 -mt voronoi -f voronoi.mesh
+mosser@azrael generator % ls -lh voronoi.mesh
+-rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 voronoi.mesh
 mosser@azrael generator %
 ```
 
+
 ### Visualizer
 
-To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product take two arguments (so far): the file containing the mesh, and the name of the file to store the visualization (as an SVG image).
-
+To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. The name of the file to store the visualization (as an SVG image).
+```
+usage: java -jar visualizer/visualizer.jar [-i] inputfile [-o] outputfile
+Help
+ -h,--help           Show usage help
+ -i,--input <arg>    Input Option
+ -o,--output <arg>   Output Option
+ -X,--debug          Debug Option
+For debugging, Add option [-X]
+```
+For Normal Mode:
 ```
 mosser@azrael A2 % cd visualizer
-mosser@azrael visualizer % java -jar visualizer.jar ../generator/sample.mesh sample.svg
+mosser@azrael visualizer % java -jar visualizer.jar -i ../generator/sample.mesh -o sample.svg
+
+... (lots of debug information printed to stdout) ...
+
+mosser@azrael visualizer % ls -lh sample.svg
+-rw-r--r--  1 mosser  staff    56K 29 Jan 10:53 sample.svg
+mosser@azrael visualizer %
+```
+For Debug Mode:
+```
+mosser@azrael A2 % cd visualizer
+mosser@azrael visualizer % java -jar visualizer.jar -i ../generator/sample.mesh -o sample.svg
 
 ... (lots of debug information printed to stdout) ...
 
