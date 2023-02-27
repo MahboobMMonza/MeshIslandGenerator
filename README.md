@@ -6,7 +6,6 @@
 
 ## How to run the product
 
-_This section needs to be edited to reflect how the user can interact with the feature released in your project_
 
 ### Installation instructions
 
