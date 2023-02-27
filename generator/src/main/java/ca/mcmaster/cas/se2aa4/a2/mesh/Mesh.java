@@ -5,6 +5,7 @@ import java.util.List;
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 
+//Mesh interface contains all the properties that mesh should have
 public interface Mesh {
 
     boolean addPoly(Poly p);

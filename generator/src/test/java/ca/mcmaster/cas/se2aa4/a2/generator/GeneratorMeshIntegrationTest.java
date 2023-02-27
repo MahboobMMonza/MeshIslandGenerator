@@ -17,6 +17,7 @@ public class GeneratorMeshIntegrationTest {
     private final int width = 500;
     private final GridGenerator generator = new GridGenerator(n);
 
+    // Test to check if the expected amount of polygons is created
     @Test
     public void numOfPoly() {
         Mesh mesh = new FixedMesh(height, width);
@@ -26,6 +27,7 @@ public class GeneratorMeshIntegrationTest {
         assertEquals(expectedPolygons, mesh.getPolys().size());
     }
 
+    // Test to check if the correct amount of vertices is created
     @Test
     public void numOfVert() {
         Mesh mesh = new FixedMesh(height, width);
@@ -36,6 +38,7 @@ public class GeneratorMeshIntegrationTest {
         assertEquals(expectedVertices, vertices.size());
     }
 
+    // Test to check if the vertices is not duplicated
     @Test
     public void verticesIsNotDuplicate() {
         Mesh mesh = new FixedMesh(height, width);
@@ -50,6 +53,7 @@ public class GeneratorMeshIntegrationTest {
         }
     }
 
+    // Test to check if the correct amount of centroids is created
     @Test
     public void numOfCentroids() {
         Mesh mesh = new FixedMesh(height, width);
@@ -59,6 +63,7 @@ public class GeneratorMeshIntegrationTest {
         assertEquals(625, centroids.size());
     }
 
+    // Test to check of the right location of the centroid 
     @Test
     public void correctCentroids() {
         double bottomCentX = 500.0;

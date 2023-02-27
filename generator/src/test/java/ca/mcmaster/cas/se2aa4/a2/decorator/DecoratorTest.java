@@ -11,8 +11,7 @@ public class DecoratorTest {
 
     private FixedDecorator decorator;
 
-
-
+    // Test to check if the polygon fill colour takes the right inputs
     @Test
     public void testSetPolyFillColour() {
         decorator = new FixedDecorator();
@@ -21,6 +20,7 @@ public class DecoratorTest {
         assertFalse(decorator.setPolyFillColour("ff0000ff0"));
     }
 
+    // Test to check if the polygon border colour takes the right inputs
     @Test
     public void testSetPolyBorderColour() {
         decorator = new FixedDecorator();
@@ -29,6 +29,7 @@ public class DecoratorTest {
         assertFalse(decorator.setPolyBorderColour("ff0000ff0"));
     }
 
+    // Test to check if the segment colour takes the right inputs
     @Test
     public void testSetSegColour() {
         decorator = new FixedDecorator();
@@ -37,6 +38,7 @@ public class DecoratorTest {
         assertFalse(decorator.setSegColour("ff0000ff0"));
     }
 
+    // Test to check if the vertex colour takes the right inputs
     @Test
     public void testSetVertColour() {
         decorator = new FixedDecorator();
@@ -45,6 +47,7 @@ public class DecoratorTest {
         assertFalse(decorator.setVertColour("ff0000ff0"));
     }
 
+    // Test to check if the polygon border thickness takes the right inputs
     @Test
     public void testSetPolyBorderThickness() {
         decorator = new FixedDecorator();
@@ -61,6 +64,7 @@ public class DecoratorTest {
         assertEquals(0.0f, decorator.polyBorderThickness, 0.001f); 
     }
 
+    // Test to check if the segment thickness takes the right inputs
     @Test
     public void testSetSegThickness() {
         decorator = new FixedDecorator();
@@ -77,6 +81,7 @@ public class DecoratorTest {
         assertEquals(3.0f, decorator.segThickness, 0.001f); 
     }
 
+    // Test to check if the vertex thickness takes the right inputs
     @Test
     public void testSetVertThickness() {
         decorator = new FixedDecorator();

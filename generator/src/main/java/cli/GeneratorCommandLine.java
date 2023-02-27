@@ -6,6 +6,7 @@ import ca.mcmaster.cas.se2aa4.a2.generator.GeneratorTypes;
 
 public class GeneratorCommandLine {
 
+    //Options that is used for the command line functionality
     private static Option sideLength = new Option("sl", "sidelength", true,
             "Side Lengths (default: 20)");
     private static Option relaxationLevel = new Option("rl", "relaxationlevel", true,
@@ -26,7 +27,6 @@ public class GeneratorCommandLine {
             "Segment Colour (See Footer for more information)");
     private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 500)");
     private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi)");
-
     private static Option help = new Option("h", "help", false, "Show usage help");
     private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
             "Polygon Border Colour (See Footer for more information)");
@@ -36,6 +36,7 @@ public class GeneratorCommandLine {
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
+    //Adds the different options to the type Options
     public void addOptions() {
         options.addOption(dimensionw);
         options.addOption(dimensionh);
@@ -54,19 +55,14 @@ public class GeneratorCommandLine {
         options.addOption(polygonBorderThickness);
     }
 
+    //A method that provides the user the help instructions regarding the command line options
     public void getHelp(CommandLineParser parser, String[] args) {
-        try {
-            CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption(help)) {
-                formatter.printHelp("java -jar generator.jar [option 1] arg1 [option 2] arg2 ...", "Help", options,
-                        "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
-            }
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            getHelp(parser, args);
-        }
+        formatter.printHelp("java -jar generator.jar [option 1] arg1 [option 2] arg2 ...", "Help", options,
+        "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
+
     }
 
+    //A method that checks if the help option is used and returns true
     public boolean hasHelpOption(CommandLineParser parser, String[] args) {
         boolean hasHelp = false;
         try {
@@ -81,28 +77,23 @@ public class GeneratorCommandLine {
         return hasHelp;
     }
 
+    //A method that gets the mesh type from user and is associated to the enum value, returns the type 
     public GeneratorTypes getMeshType(CommandLineParser parser, String[] args) {
         GeneratorTypes type = GeneratorTypes.NONE;
         try {
+            //System.out.println("Entered try");
             CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption(meshType)) {
-                String meshtype = cmd.getOptionValue(meshType).toUpperCase();
-                type = GeneratorTypes.valueOf(meshtype);
-            }
-        } catch (ParseException | IllegalArgumentException e) {
+            //System.out.println("Found given type");
+            String meshtype = cmd.getOptionValue(meshType).toUpperCase();
+            type = GeneratorTypes.valueOf(meshtype);
+        } catch (ParseException | IllegalArgumentException | NullPointerException e ) {
             System.out.println("WARNING: A valid mesh type was not provided.");
+            type = GeneratorTypes.NONE;
         }
         return type;
     }
 
-    public boolean isVornoi(CommandLineParser parser, String[] args) {
-        boolean result = false;
-        if (getMeshType(parser, args).equals(GeneratorTypes.VORONOI)) {
-            result = true;
-        }
-        return result;
-    }
-
+    //A method that gets vertex thickness from user, returns it as string
     public String getVertThickness(CommandLineParser parser, String[] args) {
         String vertexThicknessValue = new String();
         try {
@@ -117,6 +108,7 @@ public class GeneratorCommandLine {
         return vertexThicknessValue;
     }
 
+    //A method that gets segment thickness from user, returns it as string
     public String getSegThickness(CommandLineParser parser, String[] args) {
         String segmentthicknessvalue = new String();
         try {
@@ -131,6 +123,7 @@ public class GeneratorCommandLine {
         return segmentthicknessvalue;
     }
 
+    //A method that gets mesh height dimension from user, returns it as int
     public int getDimeH(CommandLineParser parser, String[] args) {
         int dimh = 0;
         try {
@@ -146,6 +139,7 @@ public class GeneratorCommandLine {
         return dimh;
     }
 
+    //A method that gets mesh width dimension from user, returns it as int
     public int getDimeW(CommandLineParser parser, String[] args) {
         int dimw = 0;
         try {
@@ -160,6 +154,7 @@ public class GeneratorCommandLine {
         return dimw;
     }
 
+    //A method that gets grid side length from user, returns it as int
     public int getSideLength(CommandLineParser parser, String[] args) {
         int sidelength = 0;
         try {
@@ -174,6 +169,7 @@ public class GeneratorCommandLine {
         return sidelength;
     }
 
+    //A method that gets voronoi relaxation level from user, returns it as int
     public int getRelaxationLevel(CommandLineParser parser, String[] args) {
         int relaxationlevel = 0;
         try {
@@ -188,6 +184,7 @@ public class GeneratorCommandLine {
         return relaxationlevel;
     }
 
+    //A method that gets voronoi numbers of start points from user, returns it as int
     public int getNumOfPoints(CommandLineParser parser, String[] args) {
         int numOfPoints = 0;
         try {
@@ -202,6 +199,7 @@ public class GeneratorCommandLine {
         return numOfPoints;
     }
 
+    //A method that gets segment colour from user, returns it as string
     public String getSegColour(CommandLineParser parser, String[] args) {
         String segColour = new String();
         try {
@@ -216,6 +214,7 @@ public class GeneratorCommandLine {
         return segColour;
     }
 
+    //A method that gets vertex colour from user, returns it as string
     public String getVertColour(CommandLineParser parser, String[] args) {
         String vertColour = new String();
         try {
@@ -230,6 +229,7 @@ public class GeneratorCommandLine {
         return vertColour;
     }
 
+    //A method that gets polygon fill colour from user, returns it as string
     public String getPolyFillColour(CommandLineParser parser, String[] args) {
         String pfc = new String();
         try {
@@ -244,6 +244,7 @@ public class GeneratorCommandLine {
         return pfc;
     }
 
+    //A method that gets polygon border colour from user, returns it as string
     public String getPolyBorderColour(CommandLineParser parser, String[] args) {
         String pbc = new String();
         try {
@@ -258,6 +259,7 @@ public class GeneratorCommandLine {
         return pbc;
     }
 
+    //A method that gets polygon border thickness from user, returns it as string
     public String getPolyBorderThickness(CommandLineParser parser, String[] args) {
         String pbt = new String();
         try {
@@ -272,6 +274,7 @@ public class GeneratorCommandLine {
         return pbt;
     }
 
+    //A method that gets the file name from user, returns it as string
     public String setFileName(CommandLineParser parser, String[] args) {
         String filename = "sample.mesh";
         try {

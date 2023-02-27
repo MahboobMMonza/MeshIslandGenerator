@@ -55,8 +55,10 @@ public class Main {
             System.exit(0);
         } // Otherwise make the required generator
         else if (type.equals(GeneratorTypes.VORONOI)) {
+            System.out.println();
             gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {
+            System.out.println();
             gen = new GridGenerator(sideLength);
         }
         // Generate the mesh and convert it
