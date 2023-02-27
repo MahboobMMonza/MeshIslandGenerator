@@ -22,6 +22,15 @@ public class FixedMesh implements Mesh {
     private int height, width;
     private boolean locked;
 
+    static void warnUser(int givenValue, int defaultValue, String property) {
+        if (givenValue < defaultValue) {
+            System.out.println(
+                    String.format("WARNNING: The interpreted value of %1$s was set below the minimum value"
+                            + "of %2$s for argument %3$s. Setting %3$s to default value %2$s.",
+                            givenValue, defaultValue, property.toUpperCase()));
+        }
+    }
+
     /**
      * Creates a new FixedMesh and initializes all necessary fields.
      */
@@ -43,20 +52,21 @@ public class FixedMesh implements Mesh {
         setWidth(width);
     }
 
-
     @Override
     public boolean setHeight(int h) {
         if (locked)
-        return false;
+            return false;
         height = Math.max(MIN_HEIGHT, h);
+        warnUser(h, MIN_HEIGHT, "height");
         return true;
     }
 
     @Override
     public boolean setWidth(int w) {
         if (locked)
-        return false;
+            return false;
         width = Math.max(MIN_WIDTH, w);
+        warnUser(w, MIN_WIDTH, "width");
         return true;
     }
 
@@ -116,7 +126,7 @@ public class FixedMesh implements Mesh {
     @Override
     public void lock() {
         if (locked)
-        return;
+            return;
         polysList = new ArrayList<>(polysSet);
         segsList = new ArrayList<>(segsSet);
         vertsList = new ArrayList<>(vertsSet);
