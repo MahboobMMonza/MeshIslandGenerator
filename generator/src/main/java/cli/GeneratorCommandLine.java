@@ -8,30 +8,30 @@ public class GeneratorCommandLine {
 
     //Options that is used for the command line functionality
     private static Option sideLength = new Option("sl", "sidelength", true,
-            "Side Lengths (default: 20)");
+            "Side Lengths :: MIN = 20");
     private static Option relaxationLevel = new Option("rl", "relaxationlevel", true,
-            "Relaxation Level (default: 20)");
+            "Relaxation Level :: MIN = 0");
     private static Option startpoints = new Option("sp", "startpoints", true,
-            "Number of Start Points (default: 50)");
+            "Number of Start Points :: MIN = 20");
     private static Option dimensionh = new Option("dh", "dimensionh", true,
-            "Dimension for the height (default: 300)");
+            "Dimension for the height :: MIN = 300");
     private static Option segmentThickness = new Option("st", "segmentthickness", true,
-            "Segment Thickness");
+            "Segment Thickness :: MIN = 0.25, Max = 30 )");
     private static Option vertexThickness = new Option("vt", "vertexthickness", true,
-            "Vertex Thickness");
+            "Vertex Thickness :: MIN = 0.25, Max = 30");
     private static Option polygonFillColour = new Option("pf", "polygonfill", true,
             "Polygon Fill Colour (See Footer for more information");
     private static Option vertexColour = new Option("vc", "vertexcolour", true,
             "Vertex Colour (See Footer for more information)");
     private static Option segmentColour = new Option("sc", "segmentcolour", true,
             "Segment Colour (See Footer for more information)");
-    private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 300)");
-    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi)");
+    private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width :: MIN = 300");
+    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi) ::This is a mandatory option");
     private static Option help = new Option("h", "help", false, "Show usage help");
     private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
             "Polygon Border Colour (See Footer for more information)");
     private static Option polygonBorderThickness = new Option("bt", "borderthickness", true,
-            "Polygon Border Thickness");
+            "Polygon Border Thickness :: MIN =0, MAX = 30");
     private static Option fileName = new Option("f", "filename", true, "Sets File Name");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
@@ -57,7 +57,7 @@ public class GeneratorCommandLine {
 
     //A method that provides the user the help instructions regarding the command line options
     public void getHelp(CommandLineParser parser, String[] args) {
-        formatter.printHelp("java -jar generator.jar [option 1] arg1 [option 2] arg2 ...", "Help", options,
+        formatter.printHelp("java -jar generator.jar -mt arg0 [option 1] arg1 [option 2] arg2 ...", "Options", options,
         "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
 
     }
