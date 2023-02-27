@@ -53,18 +53,27 @@ public class Main {
         if (cmd.hasHelpOption(parser, args) || type.equals(GeneratorTypes.NONE)) {
             cmd.getHelp(parser, args);
             System.exit(0);
-        } 
-        
-        // Otherwise make the required generator
+        } // Otherwise make the required generator
         if (type.equals(GeneratorTypes.VORONOI)) {
-            System.out.println();
+            System.out.println("Creating Mesh Type: Voronoi");
+            System.out.println("Voronoi Relaxation Level: " + relaxationLevel);
+            System.out.println("Voronoi Number of Start Points: "+ numPoints);
             gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {
-            System.out.println();
+            System.out.println("Creating Mesh Type: Grid");
+            System.out.println("Grid Side Length: "+sideLength);
             gen = new GridGenerator(sideLength);
         }
+        System.out.println("Mesh Vertex Colour: " + decorator.getVertThickness());
+        System.out.println("Mesh Segment Colour: " + decorator.getSegColour());
+        System.out.println("Mesh Segment Thickness: " + decorator.getSegThickness());
+        System.out.println("Mesh Polygon Fill Colour: " + decorator.getPolyFillColour());
+        System.out.println("Mesh Polygon Border Colour: " + decorator.getPolyBorderColour());
+        System.out.println("Mesh Polygon Border Thickness: " + decorator.getPolyBorderThickness());
+        System.out.println("File Name: "+ fileName);
         // Generate the mesh and convert it
         factory.write(createMesh(fMesh, gen, decorator), fileName);
+        System.out.println("File " + fileName + " has been created");
     }
 
 }
