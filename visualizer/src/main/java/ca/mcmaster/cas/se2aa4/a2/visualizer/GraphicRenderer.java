@@ -25,14 +25,14 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
-    private static final float DEFAULT_SEGMENT_THICKNESS = 2;
-    private static final float DEFAULT_VERTEX_THICKNESS = 3;
+    private static final float DEFAULT_SEGMENT_THICKNESS = 5;
+    private static final float DEFAULT_VERTEX_THICKNESS = 5;
     private static final float DEFAULT_POLYGON_THICKNESS = 0;
-    private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
+    private static final Stroke DEFAULT_STROKE = new BasicStroke(5f);
     private static final Color DEFAULT_POLYGON_COLOR = Color.GREEN;
     private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
     private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
-    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.WHITE;
+    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.LIGHT_GRAY;
     private static final Color DEFAULT_CENTROID_COLOR = Color.BLUE;
     boolean debug = false;
 
