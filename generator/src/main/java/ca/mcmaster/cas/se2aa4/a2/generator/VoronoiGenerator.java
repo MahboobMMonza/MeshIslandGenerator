@@ -15,26 +15,15 @@ import java.util.*;
 
 public class VoronoiGenerator implements Generator {
 
-    private class IntermediateVertexComparator implements Comparator<double[]> {
-        @Override
-        public int compare(double[] vertex1, double[] vertex2) {
-            int comp = Double.compare(vertex1[0], vertex2[0]);
-            if (comp != 0) {
-                return comp;
-            }
-            return Double.compare(vertex1[1], vertex2[1]);
-        }
-    }
-
     final static PrecisionModel HUNDREDTH_PRECISION_MODEL = new PrecisionModel(100);
-    final static double NINE_TENTHS = 0.9;
+    final static long PRIME = 2305843009213693951L;
     public final static int MIN_NUM_POINTS = 20, MIN_RELAXATION_LEVEL = 1;
 
-    static void warnUser(int givenValue, int defaultValue, String subject) {
+    static void warnUser(int givenValue, int defaultValue, String property) {
         if (givenValue < defaultValue) {
             System.out.println(String.format(
-                    "WARNING: The given value of %1$s was set below the minimum value of %2$s for argument %3$s. Setting %3$s to default value %2$s",
-                    givenValue, defaultValue, subject));
+                    "WARNING: The interpreted value of '%1$s' was set below the minimum value of %2$s for argument %3$s. Setting %3$s to default value %2$s",
+                    givenValue, defaultValue, property));
         }
 
     }
@@ -48,8 +37,8 @@ public class VoronoiGenerator implements Generator {
         this.relaxationLevel = Math.max(relaxationLevel, MIN_RELAXATION_LEVEL);
         randomX = new Random();
         randomY = new Random();
-        warnUser(numPoints, MIN_NUM_POINTS, "NUMBER POINTS");
-        warnUser(relaxationLevel, MIN_RELAXATION_LEVEL, "RELAXATION LEVEL");
+        warnUser(numPoints, MIN_NUM_POINTS, "NUMBER_POINTS");
+        warnUser(relaxationLevel, MIN_RELAXATION_LEVEL, "RELAXATION_LEVEL");
     }
 
     public VoronoiGenerator(int numPoints, int relaxationLevel, long seedX, long seedY) {
@@ -57,8 +46,8 @@ public class VoronoiGenerator implements Generator {
         this.relaxationLevel = Math.max(relaxationLevel, MIN_RELAXATION_LEVEL);
         randomX = new Random(seedX);
         randomY = new Random(seedY);
-        warnUser(numPoints, MIN_NUM_POINTS, "NUMBER POINTS");
-        warnUser(relaxationLevel, MIN_RELAXATION_LEVEL, "RELAXATION LEVEL");
+        warnUser(numPoints, MIN_NUM_POINTS, "NUMBER_POINTS");
+        warnUser(relaxationLevel, MIN_RELAXATION_LEVEL, "RELAXATION_LEVEL");
     }
 
     @Override
@@ -184,13 +173,24 @@ public class VoronoiGenerator implements Generator {
 
     List<Coordinate> randomCoords(final int height, final int width) {
         List<Coordinate> coords = new ArrayList<>();
+        Set<Long> containedPoints = new HashSet<>();
+        int pointX = randomX.nextInt(width);
+        int pointY = randomY.nextInt(height);
+        for (int i = 0; i < numPoints; i++) {
+            do {
+                pointX = randomX.nextInt(width);
+                pointY = randomY.nextInt(height);
+            } while (containedPoints.contains(hashCoordinates(pointX, pointY)));
+            containedPoints.add(hashCoordinates(pointX, pointY));
 
-        for (int i = 1; i < numPoints; i++) {
-            int pointX = randomX.nextInt(width);
-            int pointY = randomY.nextInt(height);
             coords.add(new Coordinate(pointX, pointY));
         }
         return coords;
+    }
+
+    private static long hashCoordinates(int x, int y) {
+        return (long) x * PRIME + (long) y;
+
     }
 
     /**
@@ -270,7 +270,6 @@ public class VoronoiGenerator implements Generator {
         p2 = new ca.mcmaster.cas.se2aa4.a2.components.Polygon();
         Set<Seg> segSet = new TreeSet<>();
         Seg s1, s2, s3;
-        IntermediateVertexComparator vertComp = new IntermediateVertexComparator();
         for (Polygon dPoly : delauney) {
             Coordinate[] coordinates = dPoly.getCoordinates();
             s1 = new Segment(coordinates[0].getX(), coordinates[0].getY(),
