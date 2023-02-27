@@ -80,13 +80,13 @@ public class GeneratorCommandLine {
     }
 
     public String getMeshType(CommandLineParser parser, String[] args) {
-        String type = "Grid";
+        String type = "grid";
         try {
             CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption("mt")) {
+            if (cmd.hasOption(meshType)) {
                 String meshtype = cmd.getOptionValue("mt");
-                if (meshtype == "Vornoi") {
-                    type = "Vornoi";
+                if (meshtype.toLowerCase().equals("vornoi")) {
+                    type = "vornoi";
                 }
             }
         } catch (ParseException e) {
