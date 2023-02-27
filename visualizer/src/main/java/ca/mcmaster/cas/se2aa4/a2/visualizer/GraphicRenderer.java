@@ -25,28 +25,33 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
-    private static final float DEFAULT_SEGMENT_THICKNESS = 5;
-    private static final float DEFAULT_VERTEX_THICKNESS = 5;
-    private static final float DEFAULT_POLYGON_THICKNESS = 0;
-    private static final Stroke DEFAULT_STROKE = new BasicStroke(5f);
-    private static final Color DEFAULT_POLYGON_COLOR = Color.GREEN;
+    private static final float DEFAULT_SEGMENT_THICKNESS = 1;
+    private static final float DEFAULT_VERTEX_THICKNESS = 8;
+    private static final float DEFAULT_POLYGON_THICKNESS = 5;
+    private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
+    private static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
+    private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0,0xf0,0xf0,0xd9);
     private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
     private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
-    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.LIGHT_GRAY;
+    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
     private static final Color DEFAULT_CENTROID_COLOR = Color.BLUE;
     boolean debug = false;
 
     public GraphicRenderer(boolean debug) {
         this.debug = debug;
     }
+
     private class RadialVertexComparator implements Comparator<Vertex> {
         private Vertex anchor;
+
         RadialVertexComparator(Vertex anchor) {
             setAnchor(anchor);
         }
+
         void setAnchor(Vertex anchor) {
             this.anchor = anchor;
         }
+
         @Override
         public int compare(Vertex v1, Vertex v2) {
             // Determine if the orientation of these 2 points with the anchor is
@@ -63,9 +68,11 @@ public class GraphicRenderer {
             return Double.compare(angle1, angle2);
         }
     }
+
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
+
     public boolean isDebug() {
         return debug;
     }
@@ -99,6 +106,7 @@ public class GraphicRenderer {
             canvas.setStroke(oldStroke);
         }
     }
+
     private void renderVertices(Mesh aMesh, Graphics2D canvas) {
         canvas.setStroke(DEFAULT_STROKE);
         for (Vertex v : aMesh.getVerticesList()) {
@@ -148,7 +156,7 @@ public class GraphicRenderer {
             canvas.setColor(extractColor(p, "rgba_fill_color"));
             canvas.fill(poly);
             canvas.setStroke(extractThickness(p));
-            canvas.setColor(extractColor(p,"rgba_border_color"));
+            canvas.setColor(extractColor(p, "rgba_border_color"));
             canvas.draw(poly);
             canvas.setColor(oldColor);
         }
@@ -173,6 +181,7 @@ public class GraphicRenderer {
             visited.add(p.getCentroidIdx());
         }
     }
+
     private float extractThickness(final Vertex vert) {
         if (debug) {
             return DEFAULT_VERTEX_THICKNESS;
@@ -225,17 +234,21 @@ public class GraphicRenderer {
 
     private Color extractColor(Polygon poly, String key) {
         if (debug) {
-            return DEFAULT_POLYGON_COLOR;
+            if (key.equals("rgba_border_color"))
+                return DEFAULT_POLYGON_BORDER_COLOR;
+            else
+                return DEFAULT_POLYGON_FILL_COLOR;
+
         }
         String val = new String();
-        for ( Property p : poly.getPropertiesList()) {
+        for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals(key)) {
                 val = p.getValue();
                 break;
             }
         }
         if (val.isEmpty()) {
-            return DEFAULT_POLYGON_COLOR;
+            return DEFAULT_POLYGON_BORDER_COLOR;
         }
         String[] raw = val.split(",");
         int red = Integer.parseInt(raw[0]);
