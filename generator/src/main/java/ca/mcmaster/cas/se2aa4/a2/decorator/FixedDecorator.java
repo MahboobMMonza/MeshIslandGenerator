@@ -180,6 +180,41 @@ public class FixedDecorator implements Decorator {
     }
 
     @Override
+    public String getPolyFillColour() {
+        return Integer.toHexString(polyFillColour);
+    }
+
+    @Override
+    public String getPolyBorderColour() {
+        return Integer.toHexString(polyBorderColour);
+    }
+
+    @Override
+    public String getSegColour() {
+        return Integer.toHexString(segColour);
+    }
+
+    @Override
+    public String getVertColour() {
+        return Integer.toHexString(vertColour);
+    }
+
+    @Override
+    public float getPolyBorderThickness() {
+        return polyBorderThickness;
+    }
+
+    @Override
+    public float getSegThickness() {
+        return segThickness;
+    }
+
+    @Override
+    public float getVertThickness() {
+        return vertThickness;
+    }
+
+    @Override
     public void decoratePoly(final Poly p) {
         // Get colours in rgba format for fill
         final int[] colourValues = new int[NUM_COLOURS];
