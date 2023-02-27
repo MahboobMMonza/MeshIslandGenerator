@@ -34,9 +34,9 @@ public class FixedDecorator implements Decorator {
         MIN_SEG_THICKNESS = 0.25f;
         MIN_VERT_THICKNESS = 0.25f;
         MIN_POLY_BORDER_THICKNESS = 0f;
-        MAX_SEG_THICKNESS = 10f;
-        MAX_VERT_THICKNESS = 10f;
-        MAX_POLY_BORDER_THICKNESS = 10f;
+        MAX_SEG_THICKNESS = 30f;
+        MAX_VERT_THICKNESS = 30f;
+        MAX_POLY_BORDER_THICKNESS = 30f;
 
         // Set colour-convertor-related constants
         NUM_COLOURS = 4;
@@ -181,22 +181,22 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public String getPolyFillColour() {
-        return Integer.toHexString(polyFillColour);
+        return String.format("#%s", Integer.toHexString(polyFillColour).toUpperCase());
     }
 
     @Override
     public String getPolyBorderColour() {
-        return Integer.toHexString(polyBorderColour);
+        return String.format("#%s", Integer.toHexString(polyBorderColour).toUpperCase());
     }
 
     @Override
     public String getSegColour() {
-        return Integer.toHexString(segColour);
+        return String.format("#%s", Integer.toHexString(segColour).toUpperCase());
     }
 
     @Override
     public String getVertColour() {
-        return Integer.toHexString(vertColour);
+        return String.format("#%s", Integer.toHexString(vertColour).toUpperCase());
     }
 
     @Override
