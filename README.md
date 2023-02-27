@@ -97,7 +97,7 @@ mosser@azrael visualizer %
 For Debug Mode:
 ```
 mosser@azrael A2 % cd visualizer
-mosser@azrael visualizer % java -jar visualizer.jar -i ../generator/sample.mesh -o sample.svg
+mosser@azrael visualizer % java -jar visualizer.jar -X -i ../generator/sample.mesh -o sample.svg
 
 ... (lots of debug information printed to stdout) ...
 
