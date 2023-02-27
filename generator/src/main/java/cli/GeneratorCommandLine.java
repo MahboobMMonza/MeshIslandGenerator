@@ -2,6 +2,8 @@ package cli;
 
 import org.apache.commons.cli.*;
 
+import ca.mcmaster.cas.se2aa4.a2.generator.GeneratorTypes;
+
 public class GeneratorCommandLine {
 
     private static Option sideLength = new Option("sl", "sidelength", true,
@@ -23,7 +25,7 @@ public class GeneratorCommandLine {
     private static Option segmentColour = new Option("sc", "segmentcolour", true,
             "Segment Colour (See Footer for more information)");
     private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width (default: 500)");
-    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (default: Grid Mesh)");
+    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi)");
 
     private static Option help = new Option("h", "help", false, "Show usage help");
     private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
@@ -79,22 +81,26 @@ public class GeneratorCommandLine {
         return hasHelp;
     }
 
-    public String getMeshType(CommandLineParser parser, String[] args) {
-        String type = "grid";
+    public GeneratorTypes getMeshType(CommandLineParser parser, String[] args) {
+        GeneratorTypes type = GeneratorTypes.NONE;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(meshType)) {
-                String meshtype = cmd.getOptionValue("mt");
-                if (meshtype.toLowerCase().equals("vornoi")) {
-                    type = "vornoi";
-                }
+                String meshtype = cmd.getOptionValue(meshType).toUpperCase();
+                type = GeneratorTypes.valueOf(meshtype);
             }
-        } catch (ParseException e) {
-            getHelp(parser, args);
-            System.err.println(e.getMessage());
-
+        } catch (ParseException | IllegalArgumentException e ) {
+            System.out.println("WARNING: A valid mesh type was not provided.");
         }
         return type;
+    }
+
+    public boolean isVornoi(CommandLineParser parser, String[] args){
+        boolean result = false;
+        if(getMeshType(parser, args).equals(GeneratorTypes.VORONOI)){
+            result = true;
+        }
+        return result;
     }
 
     public String getVertThickness(CommandLineParser parser, String[] args) {
@@ -126,7 +132,7 @@ public class GeneratorCommandLine {
     }
 
     public int getDimeH(CommandLineParser parser, String[] args) {
-        int dimh = 500;
+        int dimh = 0;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(dimensionh)) {
@@ -141,7 +147,7 @@ public class GeneratorCommandLine {
     }
 
     public int getDimeW(CommandLineParser parser, String[] args) {
-        int dimw = 500;
+        int dimw = 0;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(dimensionw)) {
@@ -155,7 +161,7 @@ public class GeneratorCommandLine {
     }
 
     public int getSideLength(CommandLineParser parser, String[] args) {
-        int sidelength = 20;
+        int sidelength = 0;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(sideLength)) {
@@ -169,7 +175,7 @@ public class GeneratorCommandLine {
     }
 
     public int getRelaxationLevel(CommandLineParser parser, String[] args) {
-        int relaxationlevel = 20;
+        int relaxationlevel = 0;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(relaxationLevel)) {
@@ -183,7 +189,7 @@ public class GeneratorCommandLine {
     }
 
     public int getNumOfPoints(CommandLineParser parser, String[] args) {
-        int numOfPoints = 50;
+        int numOfPoints = 0;
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(startpoints)) {
@@ -267,15 +273,15 @@ public class GeneratorCommandLine {
     }
 
     public String setFileName(CommandLineParser parser, String[] args) {
-        String filename = "generator/sample.mesh";
+        String filename = "sample.mesh";
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(fileName)) {
                 filename = cmd.getOptionValue(fileName);
             }
         } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            filename = "generator/sample.mesh";
+            System.out.println("WARNING: No File name was given. The default file name 'sample.mesh' will be used and the file will be created in the default directory.");
+            filename = "sample.mesh";
         }
         return filename;
     }

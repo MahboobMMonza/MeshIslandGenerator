@@ -5,7 +5,9 @@ import java.io.IOException;
 import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 import ca.mcmaster.cas.se2aa4.a2.decorator.FixedDecorator;
 import ca.mcmaster.cas.se2aa4.a2.generator.Generator;
+import ca.mcmaster.cas.se2aa4.a2.generator.GeneratorTypes;
 import ca.mcmaster.cas.se2aa4.a2.generator.GridGenerator;
+import ca.mcmaster.cas.se2aa4.a2.generator.VoronoiGenerator;
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.mesh.FixedMesh;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
@@ -15,27 +17,50 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
         GeneratorCommandLine cmd = new GeneratorCommandLine();
+        Generator gen = null;
         cmd.addOptions();
-        if (cmd.hasHelpOption(parser, args)) {
+        Decorator decorator = new FixedDecorator();
+        MeshFactory factory = new MeshFactory();
+        int height = cmd.getDimeH(parser, args), width = cmd.getDimeW(parser, args);
+        Mesh fMesh = new FixedMesh(height, width);
+        String vertColour = cmd.getVertColour(parser, args);
+        String segColour = cmd.getSegColour(parser, args);
+        String polyFillColour = cmd.getPolyFillColour(parser, args);
+        String polyBorderColour = cmd.getPolyBorderColour(parser, args);
+        String vertThickness = cmd.getVertThickness(parser, args);
+        String segThickness = cmd.getSegThickness(parser, args);
+        String polyBorderThickness = cmd.getPolyBorderThickness(parser, args);
+        // Set required decorator properties for any type
+        decorator.setVertColour(vertColour);
+        decorator.setSegColour(segColour);
+        decorator.setPolyFillColour(polyFillColour);
+        decorator.setPolyBorderColour(polyBorderColour);
+        decorator.setVertThickness(vertThickness);
+        decorator.setSegThickness(segThickness);
+        decorator.setPolyBorderThickness(polyBorderThickness);
+        // Get necessary variables for generators
+        int numPoints = cmd.getNumOfPoints(parser, args);
+        int relaxationLevel = cmd.getRelaxationLevel(parser, args);
+        int sideLength = cmd.getSideLength(parser, args);
+        String fileName = cmd.setFileName(parser, args);
+        GeneratorTypes type = cmd.getMeshType(parser, args);
+        // Determine help option or if mesh type was not given or not valid then show
+        // help and exit
+        if (cmd.hasHelpOption(parser, args) || type.equals(GeneratorTypes.NONE)) {
             cmd.getHelp(parser, args);
+            System.exit(0);
+        } // Otherwise make the required generator
+        else if (type.equals(GeneratorTypes.VORONOI)) {
+            gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {
-            int height = cmd.getDimeH(parser, args), width = cmd.getDimeW(parser, args);
-            Mesh fMesh = new FixedMesh(height, width);
-            Decorator decorator = new FixedDecorator();
-            Generator gen = new GridGenerator(cmd.getSideLength(parser, args));
-            MeshFactory factory = new MeshFactory();
-            decorator.setVertColour(cmd.getVertColour(parser, args));
-            decorator.setSegColour(cmd.getSegColour(parser, args));
-            decorator.setPolyFillColour(cmd.getPolyFillColour(parser, args));
-            decorator.setPolyBorderColour(cmd.getPolyBorderColour(parser, args));
-            decorator.setVertThickness(cmd.getVertThickness(parser, args));
-            decorator.setSegThickness(cmd.getSegThickness(parser, args));
-            decorator.setPolyBorderThickness(cmd.getPolyBorderThickness(parser, args));
-            factory.write(createMesh(fMesh, gen, decorator), cmd.setFileName(parser, args));
+            gen = new GridGenerator(sideLength);
         }
+        // Generate the mesh and convert it
+        factory.write(createMesh(fMesh, gen, decorator), fileName);
     }
 
 }
