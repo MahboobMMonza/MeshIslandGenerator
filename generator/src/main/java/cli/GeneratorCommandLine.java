@@ -89,15 +89,15 @@ public class GeneratorCommandLine {
                 String meshtype = cmd.getOptionValue(meshType).toUpperCase();
                 type = GeneratorTypes.valueOf(meshtype);
             }
-        } catch (ParseException | IllegalArgumentException e ) {
+        } catch (ParseException | IllegalArgumentException e) {
             System.out.println("WARNING: A valid mesh type was not provided.");
         }
         return type;
     }
 
-    public boolean isVornoi(CommandLineParser parser, String[] args){
+    public boolean isVornoi(CommandLineParser parser, String[] args) {
         boolean result = false;
-        if(getMeshType(parser, args).equals(GeneratorTypes.VORONOI)){
+        if (getMeshType(parser, args).equals(GeneratorTypes.VORONOI)) {
             result = true;
         }
         return result;
@@ -280,7 +280,8 @@ public class GeneratorCommandLine {
                 filename = cmd.getOptionValue(fileName);
             }
         } catch (ParseException e) {
-            System.out.println("WARNING: No File name was given. The default file name 'sample.mesh' will be used and the file will be created in the default directory.");
+            System.out.println(
+                    "WARNING: No File name was given. The default file name 'sample.mesh' will be used and the file will be created in the default directory.");
             filename = "sample.mesh";
         }
         return filename;

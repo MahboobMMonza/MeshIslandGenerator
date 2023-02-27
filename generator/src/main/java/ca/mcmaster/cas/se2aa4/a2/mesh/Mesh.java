@@ -31,6 +31,6 @@ public interface Mesh {
 
     boolean decorateComponents(Decorator decorator);
 
-    static final int MIN_HEIGHT = 300, MIN_WIDTH = 300;
+    public static final int MIN_HEIGHT = 300, MIN_WIDTH = 300;
 
 }
