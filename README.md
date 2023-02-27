@@ -6,7 +6,6 @@
 
 ## How to run the product
 
-
 ### Installation instructions
 
 This product is handled by Maven, as a multi-module project. We assume here that you have cloned the project in a directory named `A2`
@@ -23,27 +22,31 @@ After installation, you'll find an application named `generator.jar` in the `gen
 
 To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes multiple arguments, each with it's own switch as described below, the name of the file where the generated mesh will be stored as binary. Follow the instructions below.
 ```
-usage: java -jar generator.jar [option 1] arg1 [option 2] arg2 ...
-Help
- -bt,--borderthickness <arg>    Polygon Border Thickness
- -dh,--dimensionh <arg>         Dimension for the height (default: 500)
- -dw,--dimensionw <arg>         Dimension for the width (default: 500)
+usage: java -jar generator.jar -mt type_arg [option 1] arg1 [option 2] arg2
+            ...
+Options
+ -bt,--borderthickness <arg>    Polygon Border Thickness :: MIN =0, MAX =
+                                30
+ -dh,--dimensionh <arg>         Dimension for the height :: MIN = 300
+ -dw,--dimensionw <arg>         Dimension for the width :: MIN = 300
  -f,--filename <arg>            Sets File Name
  -h,--help                      Show usage help
- -mt,--meshtype <arg>           Mesh type (Grid or Vornoi)
+ -mt,--meshtype <type_arg>           Mesh type (Grid or Vornoi) ::This is a
+                                mandatory option
  -pb,--polygonborder <arg>      Polygon Border Colour (See Footer for more
                                 information)
  -pf,--polygonfill <arg>        Polygon Fill Colour (See Footer for more
                                 information
- -rl,--relaxationlevel <arg>    Relaxation Level (default: 20)
+ -rl,--relaxationlevel <arg>    Relaxation Level :: MIN = 0
  -sc,--segmentcolour <arg>      Segment Colour (See Footer for more
                                 information)
- -sl,--sidelength <arg>         Side Lengths (default: 20)
- -sp,--startpoints <arg>        Number of Start Points (default: 50)
- -st,--segmentthickness <arg>   Segment Thickness
+ -sl,--sidelength <arg>         Side Lengths :: MIN = 20
+ -sp,--startpoints <arg>        Number of Start Points :: MIN = 20
+ -st,--segmentthickness <arg>   Segment Thickness :: MIN = 0.25, Max = 30
+                                )
  -vc,--vertexcolour <arg>       Vertex Colour (See Footer for more
                                 information)
- -vt,--vertexthickness <arg>    Vertex Thickness
+ -vt,--vertexthickness <arg>    Vertex Thickness :: MIN = 0.25, Max = 30
 Colour must be in RGBA hex format. E.g.: Fully opaque orange would be
 entered as "FFA500FF", and semi-transparent orange as "FFA50080"; see
 https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex
