@@ -1,24 +1,15 @@
 package ca.mcmaster.cas.se2aa4.a2.generator;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.triangulate.*;
 
 import ca.mcmaster.cas.se2aa4.a2.components.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.components.Vert;
 import ca.mcmaster.cas.se2aa4.a2.components.Segment;
 import ca.mcmaster.cas.se2aa4.a2.components.Seg;
 import ca.mcmaster.cas.se2aa4.a2.components.Poly;
-
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.algorithm.Centroid;
 import org.locationtech.jts.algorithm.ConvexHull;
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
+
 
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 import java.util.*;
@@ -28,6 +19,7 @@ public class VoronoiGenerator implements Generator {
     private final Random randomX, randomY;
     private final int numPoints, relaxationLevel;
     final static PrecisionModel HUNDREDTH_PRECISION_MODEL = new PrecisionModel(100);
+    final static double NINE_TENTHS = 0.9;
     public final static int MIN_NUM_POINTS = 20, MIN_RELAXATION_LEVEL = 0;
 
     public VoronoiGenerator(int numPoints, int relaxationLevel) {
@@ -48,11 +40,11 @@ public class VoronoiGenerator implements Generator {
         warnUser(relaxationLevel, MIN_RELAXATION_LEVEL, "RELAXATION LEVEL");
     }
 
-    static void warnUser(int givenValue, int setValue, String subject) {
-        if (givenValue < setValue) {
+    static void warnUser(int givenValue, int defaultValue, String subject) {
+        if (givenValue < defaultValue) {
             System.out.println(String.format(
                     "WARNING: The given value of %1$s was set below the minimum value of %2$s for argument %3$s. Setting %3$s to Default value %2$s",
-                    givenValue, setValue, subject));
+                    givenValue, defaultValue, subject));
         }
 
     }
@@ -60,17 +52,15 @@ public class VoronoiGenerator implements Generator {
     @Override
     public void generate(final Mesh mesh) {
         List<Coordinate> randCoord = RandomCoords(mesh.getHeight(), mesh.getWidth());
-        List<Polygon> polygons = createPolygons(randCoord);
+        List<Polygon> polygons = createPolygons(randCoord, mesh.getHeight(), mesh.getWidth());
         for (int i = 0; i < relaxationLevel; i++) {
             randCoord = relaxAllCentroids(polygons, mesh.getHeight(), mesh.getWidth());
-            polygons = createPolygons(randCoord);
+            polygons = createPolygons(randCoord, mesh.getHeight(), mesh.getWidth());
         }
-        // List<Coordinate> deulayneyPol = relaxAllCentroids(polygons, mesh.getHeight(),
-        // mesh.getWidth());
-        // Will add Delaunay implementation later
-        //List<Polygon> deulPoly = new ArrayList<>();
+        List<Coordinate> deulayneyPol = relaxAllCentroids(polygons, mesh.getHeight(), mesh.getWidth());
+        List<Polygon> deulPoly = delaunayGen(deulayneyPol);
 
-        List<Poly> finalPolys = convertPolygons(polygons, /* deulPoly, */ mesh.getHeight(), mesh.getWidth());
+        List<Poly> finalPolys = convertPolygons(polygons, deulPoly, mesh.getHeight(), mesh.getWidth());
 
         addAllComponents(mesh, finalPolys);
     }
@@ -109,12 +99,8 @@ public class VoronoiGenerator implements Generator {
         }
     }
 
-    public List<Polygon> createPolygons(List<Coordinate> coords) {
-        double height = 500;
-        double width = 500;
-
+    public List<Polygon> createPolygons(List<Coordinate> coords, int height, int width) {
         GeometryFactory geomfactory = new GeometryFactory(HUNDREDTH_PRECISION_MODEL);
-
         VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
         Envelope size = new Envelope(0, width, 0, height);
         voronoiBuilder.setClipEnvelope(size);
@@ -139,12 +125,13 @@ public class VoronoiGenerator implements Generator {
         List<Coordinate> coords = new ArrayList<>();
 
         for (int i = 1; i < numPoints; i++) {
-            int pointX = randomX.nextInt((height / 5) * 4 + 1);
-            int pointY = randomY.nextInt((width / 5) * 4 + 1);
+            int pointX = randomX.nextInt((int) Math.ceil(height * NINE_TENTHS + 1));
+            int pointY = randomY.nextInt((int) Math.ceil(width * NINE_TENTHS + 1));
             coords.add(new Coordinate(pointX, pointY));
         }
         return coords;
     }
+    
 
     private List<double[]> getVertices(final Polygon polygon) {
         GeometryFactory geomFactory = new GeometryFactory(HUNDREDTH_PRECISION_MODEL);
@@ -160,17 +147,49 @@ public class VoronoiGenerator implements Generator {
         return vertices;
     }
 
-    private List<Poly> convertPolygons(final List<Polygon> voronoi, /* final List<Polygon> delauney, */ int height,
+    private List<Poly> convertPolygons(final List<Polygon> voronoi, final List<Polygon> delauney, int height,
             int width) {
         final List<Poly> polys = new ArrayList<>();
-        ca.mcmaster.cas.se2aa4.a2.components.Polygon p;
+        ca.mcmaster.cas.se2aa4.a2.components.Polygon p, p1, p2;
+        p1 = new ca.mcmaster.cas.se2aa4.a2.components.Polygon();
+        p2 = new ca.mcmaster.cas.se2aa4.a2.components.Polygon();
+        Set<Seg> segSet = new TreeSet<>();
+        for (Polygon dPoly : delauney) {
+            Coordinate[] coordinates = dPoly.getCoordinates();
+            Seg s1 = new Segment(coordinates[0].getX(), coordinates[0].getY(),
+            coordinates[1].getX(), coordinates[1].getY());
+            Seg s2 = new Segment(coordinates[0].getX(), coordinates[0].getY(),
+            coordinates[2].getX(), coordinates[2].getY());
+            Seg s3 = new Segment(coordinates[2].getX(), coordinates[2].getY(),
+            coordinates[1].getX(), coordinates[1].getY());
+            segSet.add(s1);
+            segSet.add(s2);
+            segSet.add(s3);
+        }
+
         for (Polygon polygon : voronoi) {
             Coordinate centroidCoord = boundCentroid(polygon, height, width);
             p = new ca.mcmaster.cas.se2aa4.a2.components.Polygon(centroidCoord.getX(), centroidCoord.getY());
             p.setVertices(getVertices(polygon));
             p.setNeighbours(new ArrayList<>());
             polys.add(p);
-
+        }
+        //sorting polygons to assign neighbours
+        Collections.sort(polys);
+        List<List<double[]>> neighboursList = new ArrayList<>();
+        for (int i = 0; i < polys.size(); i++) {
+            neighboursList.add(new ArrayList<>());
+        }
+        for (Seg seg : segSet) {
+            p1.setCentroid(seg.getX1(), seg.getY1());
+            p2.setCentroid(seg.getX2(), seg.getY2());
+            int idx1 = Collections.binarySearch(polys, p1);
+            int idx2 = Collections.binarySearch(polys, p2);
+            neighboursList.get(idx1).add(new double[] { seg.getX2(), seg.getY2() });
+            neighboursList.get(idx2).add(new double[] { seg.getX1(), seg.getY1() });
+        }
+        for (int i = 0; i < polys.size(); i++) {
+            polys.get(i).setNeighbours(neighboursList.get(i));
         }
 
         return polys;
@@ -207,6 +226,22 @@ public class VoronoiGenerator implements Generator {
     double[] convertCentroid(final Polygon polygon) {
         return new double[] { polygon.getCentroid().getX(), polygon.getCentroid().getY() };
 
+    }
+
+    List<Polygon> delaunayGen(List<Coordinate> coords) {
+
+        GeometryFactory geomfactory = new GeometryFactory(HUNDREDTH_PRECISION_MODEL);
+        DelaunayTriangulationBuilder dBuilder = new DelaunayTriangulationBuilder();
+        dBuilder.setSites(coords);
+        Geometry createdPolys = dBuilder.getTriangles(geomfactory);
+        List<Polygon> triangleList = new ArrayList<>();
+
+        GeometryCollection geomCollection = (GeometryCollection) createdPolys;
+        for (int j = 0; j < geomCollection.getNumGeometries(); j++) {
+            Polygon polygon = (Polygon) geomCollection.getGeometryN(j);
+            triangleList.add(polygon);
+        }
+        return triangleList;
     }
 
     private class PolygonComparator implements Comparator<Polygon> {
