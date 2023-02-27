@@ -37,7 +37,11 @@ public class Main {
                         width = Integer.parseInt(p.getValue());
                     }
                 }
-
+                
+                if(height<= 0 || width <= 0){
+                    System.out.println("WARNING: The height or width values were not set to dimension values");
+                    System.exit(0);
+                }
                 // Creating the Canvas to draw the mesh
                 Graphics2D canvas = SVGCanvas.build(width, height);
                 GraphicRenderer renderer = new GraphicRenderer(cmd.hasDebugOption(parser, args));
