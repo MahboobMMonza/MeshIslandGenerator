@@ -12,7 +12,7 @@ import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 public class GridGenerator implements Generator {
 
     static final double TOP_X = 0, TOP_Y = 0;
-    static final int MIN_SIDE_LENGTH = 5, DEFAULT_SIDE_LENGTH = 100;
+    static final int MIN_SIDE_LENGTH = 20, DEFAULT_SIDE_LENGTH = 100;
 
     public final int sideLength;
 
@@ -24,15 +24,18 @@ public class GridGenerator implements Generator {
     public void generate(final Mesh mesh) {
         // This is to compromise a small mesh given, but the generator will create grids
         // of the given sideLength in other cases.
-        int side = sideLength;
+        int sideLength = this.sideLength;
         if (this.sideLength > mesh.getHeight() || this.sideLength > mesh.getWidth()) {
-            side = DEFAULT_SIDE_LENGTH;
+            System.out.println("WARNING: The given SIDE_LENGTH of " + sideLength
+                    + "exceeds one of the given border sizes of the Mesh. The default value of " + DEFAULT_SIDE_LENGTH
+                    + " will be used instead.");
+            sideLength = DEFAULT_SIDE_LENGTH;
         }
-        final double increment = Math.round((side / 2.0) * 100) / 100.0;
+        final double increment = Math.round((sideLength / 2.0) * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
         // area, and calculate the centroid bounds
-        final double bottomCentY = (Math.ceil(mesh.getHeight() / (side + 0.0)) * side) - increment;
-        final double bottomCentX = (Math.ceil(mesh.getWidth() / (side + 0.0)) * side) - increment;
+        final double bottomCentY = (Math.ceil(mesh.getHeight() / (sideLength + 0.0)) * sideLength) - increment;
+        final double bottomCentX = (Math.ceil(mesh.getWidth() / (sideLength + 0.0)) * sideLength) - increment;
         final List<double[]> allCentroids = generateCentroids(increment, bottomCentX, bottomCentY);
         // Create a list of Polygons using the generateCentroids
         final List<Poly> allPolys = generatePolygons(allCentroids);
