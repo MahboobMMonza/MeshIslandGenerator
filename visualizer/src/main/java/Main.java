@@ -20,7 +20,8 @@ public class Main {
             VisualizerCommandLine cmd = new VisualizerCommandLine();
             cmd.addOptions();
             if (cmd.hasHelpOption(parser, args)) {
-                cmd.getHelp(parser, args);
+                cmd.getHelp();
+                System.exit(0);
             } else {
                 String input = cmd.inputCli(parser, args);
                 String output = cmd.outputCli(parser, args);

@@ -51,7 +51,7 @@ public class Main {
         // Determine help option or if mesh type was not given or not valid then show
         // help and exit
         if (cmd.hasHelpOption(parser, args) || type.equals(GeneratorTypes.NONE)) {
-            cmd.getHelp(parser, args);
+            cmd.getHelp();
             System.exit(0);
         } // Otherwise make the required generator
         if (type.equals(GeneratorTypes.VORONOI)) {

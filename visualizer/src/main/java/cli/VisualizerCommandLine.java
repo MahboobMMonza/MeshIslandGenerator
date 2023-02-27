@@ -27,20 +27,20 @@ public class VisualizerCommandLine {
         options.addOption(help);
     }
 
-    //A method that provides the user the help instructions regarding the command line options
-    public void getHelp(CommandLineParser parser, String[] args) {
-        try {
-            CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption(help)) {
-                formatter.printHelp("java -jar visualizer/visualizer.jar [-i] inputfile [-o] outputfile", "Help", options, "For debugging, Add option [-X]");
-            }
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            getHelp(parser, args);
-        }
+    /**
+     * Prints the Help information
+     */
+    public void getHelp() {
+        formatter.printHelp("java -jar visualizer/visualizer.jar [-i] inputfile [-o] outputfile", "Help", options, "For debugging, Add option [-X]");
     }
 
-    //A method that checks if the help option is used and returns true
+    /**
+     * Determines if the user wants the Help command
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Descision as a boolean
+     */
     public boolean hasHelpOption(CommandLineParser parser, String[] args) {
         boolean hasHelp = false;
         try {
@@ -50,12 +50,18 @@ public class VisualizerCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return hasHelp;
     }
 
-    //A method that checks if the debug option is provided, returns boolean
+    /**
+     * Determines if the user wants the Debug command
+     *
+     * @param parser Parser that scans the command line
+     * @param args The input arguments that the parser will scan
+     * @return Decision as a boolean
+     */
     public boolean hasDebugOption(CommandLineParser parser, String[] args) {
         boolean result = false;
         try {
@@ -70,7 +76,13 @@ public class VisualizerCommandLine {
 
     }
 
-    //A method that gets the input file from user, returns string
+    /**
+     * Gets the Input File from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args The input arguments that the parser will scan
+     * @return Input File as a String
+     */
     public String inputCli(CommandLineParser parser, String[] args) {
         String input = "";
         try {
@@ -86,7 +98,13 @@ public class VisualizerCommandLine {
         return input;
     }
 
-    //A method that gets the output file from user, returns string
+    /**
+     * Gets the Output File from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args The input arguments that the parser will scan
+     * @return Output File as a String
+     */
     public String outputCli(CommandLineParser parser, String[] args) {
         String output = "";
         try {

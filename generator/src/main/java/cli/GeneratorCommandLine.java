@@ -6,7 +6,7 @@ import ca.mcmaster.cas.se2aa4.a2.generator.GeneratorTypes;
 
 public class GeneratorCommandLine {
 
-    //Options that is used for the command line functionality
+    // Options that is used for the command line functionality
     private static Option sideLength = new Option("sl", "sidelength", true,
             "Side Lengths :: MIN = 20");
     private static Option relaxationLevel = new Option("rl", "relaxationlevel", true,
@@ -26,7 +26,8 @@ public class GeneratorCommandLine {
     private static Option segmentColour = new Option("sc", "segmentcolour", true,
             "Segment Colour (See Footer for more information)");
     private static Option dimensionw = new Option("dw", "dimensionw", true, "Dimension for the width :: MIN = 300");
-    private static Option meshType = new Option("mt", "meshtype", true, "Mesh type (Grid or Vornoi) ::This is a mandatory option");
+    private static Option meshType = new Option("mt", "meshtype", true,
+            "Mesh type (Grid or Vornoi) ::This is a mandatory option");
     private static Option help = new Option("h", "help", false, "Show usage help");
     private static Option polygonBorderColour = new Option("pb", "polygonborder", true,
             "Polygon Border Colour (See Footer for more information)");
@@ -36,7 +37,7 @@ public class GeneratorCommandLine {
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
-    //Adds the different options to the type Options
+    // Adds the different options to the type Options
     public void addOptions() {
         options.addOption(dimensionw);
         options.addOption(dimensionh);
@@ -55,14 +56,22 @@ public class GeneratorCommandLine {
         options.addOption(polygonBorderThickness);
     }
 
-    //A method that provides the user the help instructions regarding the command line options
-    public void getHelp(CommandLineParser parser, String[] args) {
+    /**
+     * Prints the Help information
+     */
+    public void getHelp() {
         formatter.printHelp("java -jar generator.jar -mt arg0 [option 1] arg1 [option 2] arg2 ...", "Options", options,
-        "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
+                "Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions");
 
     }
 
-    //A method that checks if the help option is used and returns true
+    /**
+     * Determines if the user wants the Help command
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Descision as a boolean
+     */
     public boolean hasHelpOption(CommandLineParser parser, String[] args) {
         boolean hasHelp = false;
         try {
@@ -72,26 +81,38 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return hasHelp;
     }
 
-    //A method that gets the mesh type from user and is associated to the enum value, returns the type 
+    /**
+     * Gets the Mesh Type from user and is associated to the enum value
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Mesh Type as a GeneratorTypes type
+     */
     public GeneratorTypes getMeshType(CommandLineParser parser, String[] args) {
         GeneratorTypes type = GeneratorTypes.NONE;
         try {
             CommandLine cmd = parser.parse(options, args);
             String meshtype = cmd.getOptionValue(meshType).toUpperCase();
             type = GeneratorTypes.valueOf(meshtype);
-        } catch (ParseException | IllegalArgumentException | NullPointerException e ) {
+        } catch (ParseException | IllegalArgumentException | NullPointerException e) {
             System.out.println("WARNING: A valid mesh type was not provided.");
             type = GeneratorTypes.NONE;
         }
         return type;
     }
 
-    //A method that gets vertex thickness from user, returns it as string
+    /**
+     * Gets the Vertex Thickness from user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Vertex Thickness as a String
+     */
     public String getVertThickness(CommandLineParser parser, String[] args) {
         String vertexThicknessValue = new String();
         try {
@@ -101,12 +122,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return vertexThicknessValue;
     }
 
-    //A method that gets segment thickness from user, returns it as string
+    /**
+     * Gets the Segment Thickness from user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Segment Thickness as a String
+     */
     public String getSegThickness(CommandLineParser parser, String[] args) {
         String segmentthicknessvalue = new String();
         try {
@@ -116,12 +143,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return segmentthicknessvalue;
     }
 
-    //A method that gets mesh height dimension from user, returns it as int
+    /**
+     * Gets the Height dimension from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Height as an integer
+     */
     public int getDimeH(CommandLineParser parser, String[] args) {
         int dimh = 0;
         try {
@@ -132,12 +165,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return dimh;
     }
 
-    //A method that gets mesh width dimension from user, returns it as int
+    /**
+     * Gets the Width dimension from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Width as an integer
+     */
     public int getDimeW(CommandLineParser parser, String[] args) {
         int dimw = 0;
         try {
@@ -147,12 +186,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return dimw;
     }
 
-    //A method that gets grid side length from user, returns it as int
+    /**
+     * Gets the Side Length of the Grid from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Side Length as an integer
+     */
     public int getSideLength(CommandLineParser parser, String[] args) {
         int sidelength = 0;
         try {
@@ -162,12 +207,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return sidelength;
     }
 
-    //A method that gets voronoi relaxation level from user, returns it as int
+    /**
+     * Gets the Voronoi Relaxation Level from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Relaxation Level as an integer
+     */
     public int getRelaxationLevel(CommandLineParser parser, String[] args) {
         int relaxationlevel = 0;
         try {
@@ -177,12 +228,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return relaxationlevel;
     }
 
-    //A method that gets voronoi numbers of start points from user, returns it as int
+    /**
+     * Gets the Voronoi number of Start Points from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Number of Start Points as an integer
+     */
     public int getNumOfPoints(CommandLineParser parser, String[] args) {
         int numOfPoints = 0;
         try {
@@ -192,12 +249,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return numOfPoints;
     }
 
-    //A method that gets segment colour from user, returns it as string
+    /**
+     * Gets the Segment Colour from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Segment Colour as a String
+     */
     public String getSegColour(CommandLineParser parser, String[] args) {
         String segColour = new String();
         try {
@@ -207,12 +270,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return segColour;
     }
 
-    //A method that gets vertex colour from user, returns it as string
+    /**
+     * Gets the Vertex Colour from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Vertex Colour as a String
+     */
     public String getVertColour(CommandLineParser parser, String[] args) {
         String vertColour = new String();
         try {
@@ -222,12 +291,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return vertColour;
     }
 
-    //A method that gets polygon fill colour from user, returns it as string
+    /**
+     * Gets the Polygon Fill Colour from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Polygon Fill Colour as a String
+     */
     public String getPolyFillColour(CommandLineParser parser, String[] args) {
         String pfc = new String();
         try {
@@ -237,12 +312,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return pfc;
     }
 
-    //A method that gets polygon border colour from user, returns it as string
+    /**
+     * Gets the Polygon Border Colour from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Polygon Border Colour as a String
+     */
     public String getPolyBorderColour(CommandLineParser parser, String[] args) {
         String pbc = new String();
         try {
@@ -252,12 +333,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return pbc;
     }
 
-    //A method that gets polygon border thickness from user, returns it as string
+    /**
+     * Gets the Polygon Border Thickness from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Polygon Border Thickness as a String
+     */
     public String getPolyBorderThickness(CommandLineParser parser, String[] args) {
         String pbt = new String();
         try {
@@ -267,12 +354,18 @@ public class GeneratorCommandLine {
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            getHelp(parser, args);
+            getHelp();
         }
         return pbt;
     }
 
-    //A method that gets the file name from user, returns it as string
+    /**
+     * Gets the File Name from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return File Name as a String
+     */
     public String setFileName(CommandLineParser parser, String[] args) {
         String filename = "sample.mesh";
         try {
