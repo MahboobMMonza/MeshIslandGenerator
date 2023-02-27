@@ -181,22 +181,22 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public String getPolyFillColour() {
-        return String.format("#%s", Integer.toHexString(polyFillColour).toUpperCase());
+        return String.format("#%08X", polyFillColour);
     }
 
     @Override
     public String getPolyBorderColour() {
-        return String.format("#%s", Integer.toHexString(polyBorderColour).toUpperCase());
+        return String.format("#%08X", polyBorderColour);
     }
 
     @Override
     public String getSegColour() {
-        return String.format("#%s", Integer.toHexString(segColour).toUpperCase());
+        return String.format("#%08X", segColour);
     }
 
     @Override
     public String getVertColour() {
-        return String.format("#%s", Integer.toHexString(vertColour).toUpperCase());
+        return String.format("#%08X", vertColour);
     }
 
     @Override
