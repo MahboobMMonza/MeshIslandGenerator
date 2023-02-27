@@ -24,6 +24,8 @@ public class Main {
             } else {
                 String input = cmd.inputCli(parser, args);
                 String output = cmd.outputCli(parser, args);
+                System.out.println("Input File: "+ input);
+                System.out.println("Output File: " + output);
                 // Getting width and width for the canvas
                 Structs.Mesh aMesh = new MeshFactory().read(input);
                 int height = 0, width = 0;
@@ -46,6 +48,7 @@ public class Main {
                 // Dump the mesh to stdout
                 MeshDump dumper = new MeshDump();
                 dumper.dump(aMesh);
+                System.out.println("File "+output+" has been created");
             }
         } catch (Exception e) {
             e.printStackTrace();
