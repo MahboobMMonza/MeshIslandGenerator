@@ -28,11 +28,11 @@ public class GridGenerator implements Generator {
         if (this.sideLength > mesh.getHeight() || this.sideLength > mesh.getWidth()) {
             side = DEFAULT_SIDE_LENGTH;
         }
-        final double increment = Math.round(side / 2.0 * 100) / 100.0;
+        final double increment = Math.round((side / 2.0) * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
         // area, and calculate the centroid bounds
-        final double bottomCentX = (Math.ceil(mesh.getHeight() / (side + 0.0)) * side) - increment;
-        final double bottomCentY = (Math.ceil(mesh.getWidth() / (side + 0.0)) * side) - increment;
+        final double bottomCentY = (Math.ceil(mesh.getHeight() / (side + 0.0)) * side) - increment;
+        final double bottomCentX = (Math.ceil(mesh.getWidth() / (side + 0.0)) * side) - increment;
         final List<double[]> allCentroids = generateCentroids(increment, bottomCentX, bottomCentY);
         // Create a list of Polygons using the generateCentroids
         final List<Poly> allPolys = generatePolygons(allCentroids);
