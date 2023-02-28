@@ -3,21 +3,35 @@ package ca.mcmaster.cas.se2aa4.a2.mesh;
 import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a2.components.*;
+import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 
+//Mesh interface contains all the properties that mesh should have
 public interface Mesh {
 
-    boolean addPolygon(Polygon p);
+    boolean addPoly(Poly p);
 
-    boolean addSegment(Segment s);
+    boolean addSeg(Seg s);
 
-    boolean addVertex(Vertex v);
+    boolean addVert(Vert v);
+
+    boolean setHeight(int h);
+
+    boolean setWidth(int w);
 
     void lock();
 
-    List<Polygon> getPolygons();
+    int getHeight();
 
-    List<Segment> getSegments();
+    int getWidth();
 
-    List<Vertex> getVertex();
+    List<Poly> getPolys();
+
+    List<Seg> getSegs();
+
+    List<Vert> getVerts();
+
+    boolean decorateComponents(Decorator decorator);
+
+    public static final int MIN_HEIGHT = 300, MIN_WIDTH = 300;
 
 }

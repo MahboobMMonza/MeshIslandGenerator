@@ -2,7 +2,7 @@ package ca.mcmaster.cas.se2aa4.a2.components;
 
 import java.util.List;
 
-public interface Poly {
+public interface Poly extends Comparable<Poly> {
 
     void setCentroid(double x, double y);
 
@@ -10,15 +10,24 @@ public interface Poly {
 
     void setNeighbours(List<double[]> neighbourCentroidList);
 
-    void setColour(int r, int g, int b, int a);
+    void setFillColour(int r, int g, int b, int a);
+
+    void setBorderColour(int r, int g, int b, int a);
+
+    void setBorderThickness(float t);
 
     List<double[]> getVertexList();
+
+    List<double[]> getNeigbourList();
 
     double getCentroidX();
 
     double getCentroidY();
 
-    int[] getColour();
+    float getBorderThickness();
 
-    List<double[]> getNeigbourList();
+    int[] getFillColour();
+
+    int[] getBorderColour();
+
 }

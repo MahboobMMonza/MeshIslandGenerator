@@ -18,6 +18,20 @@ public interface Decorator {
 
     boolean setPolyBorderThickness(final String thickness);
 
+    String getPolyFillColour();
+
+    String getPolyBorderColour();
+
+    String getSegColour();
+
+    String getVertColour();
+
+    float getPolyBorderThickness();
+
+    float getSegThickness();
+
+    float getVertThickness();
+
     void decoratePoly(final Poly p);
 
     void decorateSeg(final Seg s);

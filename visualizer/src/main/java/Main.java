@@ -1,35 +1,63 @@
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
+import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.GraphicRenderer;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.MeshDump;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.SVGCanvas;
+import cli.VisualizerCommandLine;
 
 import java.awt.*;
 import java.io.IOException;
 
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        // Extracting command line parameters
-        String input = args[0];
-        String output = args[1];
-        // Getting width and height for the canvas
-        Structs.Mesh aMesh = new MeshFactory().read(input);
-        double max_x = Double.MIN_VALUE;
-        double max_y = Double.MIN_VALUE;
-        for (Structs.Vertex v: aMesh.getVerticesList()) {
-            max_x = (Double.compare(max_x, v.getX()) < 0? v.getX(): max_x);
-            max_y = (Double.compare(max_y, v.getY()) < 0? v.getY(): max_y);
+        try {
+            CommandLineParser parser = new DefaultParser();
+            VisualizerCommandLine cmd = new VisualizerCommandLine();
+            cmd.addOptions();
+            if (cmd.hasHelpOption(parser, args)) {
+                cmd.getHelp();
+                System.exit(0);
+            } else {
+                String input = cmd.inputCli(parser, args);
+                String output = cmd.outputCli(parser, args);
+                System.out.println("Input File: "+ input);
+                System.out.println("Output File: " + output);
+                // Getting width and width for the canvas
+                Structs.Mesh aMesh = new MeshFactory().read(input);
+                int height = 0, width = 0;
+                for (Property p : aMesh.getPropertiesList()) {
+                    if (p.getKey().equals("height")) {
+                        height = Integer.parseInt(p.getValue());
+                    }
+                    if (p.getKey().equals("width")) {
+                        width = Integer.parseInt(p.getValue());
+                    }
+                }
+                
+                if(height<= 0 || width <= 0){
+                    System.out.println("WARNING: The height or width values were not set to dimension values");
+                    System.exit(0);
+                }
+                // Creating the Canvas to draw the mesh
+                Graphics2D canvas = SVGCanvas.build(width, height);
+                GraphicRenderer renderer = new GraphicRenderer(cmd.hasDebugOption(parser, args));
+                // Painting the mesh on the canvas
+                renderer.render(aMesh, canvas);
+                // Storing the result in an SVG file
+                SVGCanvas.write(canvas, output);
+                // Dump the mesh to stdout
+                MeshDump dumper = new MeshDump();
+                dumper.dump(aMesh);
+                System.out.println("File "+output+" has been created");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
         }
-        // Creating the Canvas to draw the mesh
-        Graphics2D canvas = SVGCanvas.build((int) Math.ceil(max_x), (int) Math.ceil(max_y));
-        GraphicRenderer renderer = new GraphicRenderer(true);
-        // Painting the mesh on the canvas
-        renderer.render(aMesh, canvas);
-        // Storing the result in an SVG file
-        SVGCanvas.write(canvas, output);
-        // Dump the mesh to stdout
-        MeshDump dumper = new MeshDump();
-        dumper.dump(aMesh);
     }
 }

@@ -9,18 +9,37 @@ import ca.mcmaster.cas.se2aa4.a2.components.Vert;
  */
 public class FixedDecorator implements Decorator {
 
-    static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR;
-    static final int NUM_COLOURS, COLOUR_BIT_SIZE, TOTAL_BITS, LEFT_SHIFT;
-    static final float DEFAULT_POLY_BORDER_THICKNESS, DEFAULT_SEG_THICKNESS, DEFAULT_VERT_THICKNESS;
+    static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR,
+            DEFAULT_CENTROID_COLOUR;
+    private static final int NUM_COLOURS, COLOUR_BIT_SIZE, TOTAL_BITS, LEFT_SHIFT;
+    static final float DEFAULT_POLY_BORDER_THICKNESS, DEFAULT_SEG_THICKNESS, DEFAULT_VERT_THICKNESS,
+            DEFAULT_CENTROID_THICKNESS, MAX_SEG_THICKNESS, MAX_VERT_THICKNESS, MAX_POLY_BORDER_THICKNESS,
+            MIN_SEG_THICKNESS, MIN_VERT_THICKNESS, MIN_POLY_BORDER_THICKNESS;
+    static final String HEX_FORMAT_STRING = "#%08X";
 
     static {
+        // Set default colours
         DEFAULT_POLY_FILL_COLOUR = 0xffff00ff;
         DEFAULT_POLY_BORDER_COLOUR = 0xffffff00;
         DEFAULT_SEG_COLOUR = 0xffffffff;
         DEFAULT_VERT_COLOUR = 0xff0000ff;
+        DEFAULT_CENTROID_COLOUR = 0xffffff00;
+
+        // Set default thicknesses
         DEFAULT_POLY_BORDER_THICKNESS = 0f;
         DEFAULT_SEG_THICKNESS = 3f;
         DEFAULT_VERT_THICKNESS = 2f;
+        DEFAULT_CENTROID_THICKNESS = 0f;
+
+        // Set min and max thicknesses
+        MIN_SEG_THICKNESS = 0.25f;
+        MIN_VERT_THICKNESS = 0.25f;
+        MIN_POLY_BORDER_THICKNESS = 0f;
+        MAX_SEG_THICKNESS = 30f;
+        MAX_VERT_THICKNESS = 30f;
+        MAX_POLY_BORDER_THICKNESS = 30f;
+
+        // Set colour-convertor-related constants
         NUM_COLOURS = 4;
         COLOUR_BIT_SIZE = 8;
         TOTAL_BITS = 32;
@@ -55,27 +74,48 @@ public class FixedDecorator implements Decorator {
         return (colour << rightShift) >>> LEFT_SHIFT;
     }
 
-    private static int[] tryConversion(final String colourString, final int defaultValue) {
+    private static void warnUser(final String given, final String defaultValue, final String property) {
+        System.out.println(String.format(
+                "WARNGING: The interpreted value of '%1$s' for the property %2$s is invalid. Property %2$s will be set to %3$s instead.",
+                given, property.toUpperCase(), defaultValue));
+    }
+
+    private static int[] tryConversion(final String colourString, final String property, final int defaultValue) {
         int colour;
         final int[] result = new int[2];
-        try {
-            colour = Integer.parseInt(colourString, 16);
-            result[0] = 1;
-            result[1] = colour;
-        } catch (final Exception e) {
+        if (colourString.length() != 8) {
             result[0] = 0;
             result[1] = defaultValue;
+            warnUser(colourString, String.format(HEX_FORMAT_STRING, defaultValue), property);
+        } else {
+            try {
+                colour = Integer.parseUnsignedInt(colourString, 16);
+                result[0] = 1;
+                result[1] = colour;
+            } catch (Exception e) {
+                result[0] = 0;
+                result[1] = defaultValue;
+                warnUser(colourString, String.format(HEX_FORMAT_STRING, defaultValue), property);
+            }
         }
         return result;
     }
 
-    private static float[] tryConversion(final String colourString, final float defaultValue) {
-        int colour;
+    private static float[] tryConversion(final String colourString, final String property, final float defaultValue,
+            final float minValue,
+            final float maxValue) {
+        float thickness;
         final float[] result = new float[2];
         try {
-            colour = Integer.parseInt(colourString, 16);
-            result[0] = 1;
-            result[1] = colour;
+            thickness = Float.parseFloat(colourString);
+            if (thickness < minValue || thickness > maxValue) {
+                result[0] = -1;
+                result[1] = defaultValue;
+                warnUser(colourString, String.format("%f", defaultValue), property);
+            } else {
+                result[0] = 1;
+                result[1] = thickness;
+            }
         } catch (final Exception e) {
             result[0] = -1;
             result[1] = defaultValue;
@@ -87,70 +127,118 @@ public class FixedDecorator implements Decorator {
 
     float polyBorderThickness, segThickness, vertThickness;
 
+    public FixedDecorator() {
+        // Set colours to their defaults in case they are not changed
+        polyFillColour = DEFAULT_POLY_FILL_COLOUR;
+        polyBorderColour = DEFAULT_POLY_BORDER_COLOUR;
+        segColour = DEFAULT_SEG_COLOUR;
+        vertColour = DEFAULT_VERT_COLOUR;
+        polyBorderThickness = DEFAULT_POLY_BORDER_THICKNESS;
+        segThickness = DEFAULT_SEG_THICKNESS;
+        vertThickness = DEFAULT_VERT_THICKNESS;
+    }
+
     @Override
     public boolean setPolyFillColour(final String colourString) {
-        final int[] conversion = tryConversion(colourString, DEFAULT_POLY_FILL_COLOUR);
+        final int[] conversion = tryConversion(colourString, "polygon_fill_colour", DEFAULT_POLY_FILL_COLOUR);
         polyFillColour = conversion[1];
         return conversion[0] == 1;
     }
 
     @Override
     public boolean setPolyBorderColour(final String colourString) {
-        final int[] conversion = tryConversion(colourString, DEFAULT_POLY_BORDER_COLOUR);
+        final int[] conversion = tryConversion(colourString, "polygon_border_colour", DEFAULT_POLY_BORDER_COLOUR);
         polyBorderColour = conversion[1];
         return conversion[0] == 1;
     }
 
     @Override
     public boolean setSegColour(final String colourString) {
-        final int[] conversion = tryConversion(colourString, DEFAULT_SEG_COLOUR);
+        final int[] conversion = tryConversion(colourString, "segment_colour", DEFAULT_SEG_COLOUR);
         segColour = conversion[1];
         return conversion[0] == 1;
     }
 
     @Override
     public boolean setVertColour(final String colourString) {
-        final int[] conversion = tryConversion(colourString, DEFAULT_VERT_COLOUR);
+        final int[] conversion = tryConversion(colourString, "vertex_colour", DEFAULT_VERT_COLOUR);
         vertColour = conversion[1];
         return conversion[0] == 1;
     }
 
     @Override
     public boolean setSegThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_SEG_THICKNESS);
+        final float[] conversion = tryConversion(thickness, "segment_thickness", DEFAULT_SEG_THICKNESS, MIN_SEG_THICKNESS,
+                MAX_SEG_THICKNESS);
         segThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
     }
 
     @Override
     public boolean setVertThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_VERT_THICKNESS);
+        final float[] conversion = tryConversion(thickness, "vertex_thickness", DEFAULT_VERT_THICKNESS, MIN_VERT_THICKNESS,
+                MAX_VERT_THICKNESS);
         vertThickness = conversion[1];
         return Float.compare(conversion[0], 0f) > 0;
     }
 
     @Override
     public boolean setPolyBorderThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, DEFAULT_POLY_BORDER_THICKNESS);
+        final float[] conversion = tryConversion(thickness, "polygon_border_thickness", DEFAULT_POLY_BORDER_THICKNESS, MIN_POLY_BORDER_THICKNESS,
+                MAX_POLY_BORDER_THICKNESS);
         polyBorderThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
     }
 
     @Override
+    public String getPolyFillColour() {
+        return String.format(HEX_FORMAT_STRING, polyFillColour);
+    }
+
+    @Override
+    public String getPolyBorderColour() {
+        return String.format(HEX_FORMAT_STRING, polyBorderColour);
+    }
+
+    @Override
+    public String getSegColour() {
+        return String.format(HEX_FORMAT_STRING, segColour);
+    }
+
+    @Override
+    public String getVertColour() {
+        return String.format(HEX_FORMAT_STRING, vertColour);
+    }
+
+    @Override
+    public float getPolyBorderThickness() {
+        return polyBorderThickness;
+    }
+
+    @Override
+    public float getSegThickness() {
+        return segThickness;
+    }
+
+    @Override
+    public float getVertThickness() {
+        return vertThickness;
+    }
+
+    @Override
     public void decoratePoly(final Poly p) {
-        // Get colours in rgba format
+        // Get colours in rgba format for fill
         final int[] colourValues = new int[NUM_COLOURS];
         for (int i = 0; i < NUM_COLOURS; i++) {
             colourValues[i] = extractColourValue(polyFillColour, i);
         }
-        p.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        // Prepare colour value setting for border colour and thickness.
-        // for (int i = 0; i < NUM_COLOURS; i++) {
-        // colourValues[i] = extractColourValue(polyBorderColour, i);
-        // }
-        // p.setBorderColour(colourValues[0], colourValues[1], colourValues[2],
-        // colourValues[3]);
-        // p.setBorderThickness(polyBorderThickness);
+        p.setFillColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        // Get colours for border
+        for (int i = 0; i < NUM_COLOURS; i++) {
+            colourValues[i] = extractColourValue(polyBorderColour, i);
+        }
+        p.setBorderColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        p.setBorderThickness(polyBorderThickness);
     }
 
     @Override
@@ -169,10 +257,12 @@ public class FixedDecorator implements Decorator {
         // Get colours in rgba format
         final int[] colourValues = new int[NUM_COLOURS];
         for (int i = 0; i < NUM_COLOURS; i++) {
-            colourValues[i] = extractColourValue(vertColour, i);
+            // Make sure to get the default centroid colour if the vertex is marked as a
+            // centroid
+            colourValues[i] = extractColourValue((v.isCentroid()) ? DEFAULT_CENTROID_COLOUR : vertColour, i);
         }
         v.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        v.setThickness(segThickness);
+        v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : vertThickness);
     }
 
 }

@@ -22,6 +22,17 @@ public class MeshDump {
         this.dumpVertices(aMesh);
         this.dumpSegments(aMesh);
         this.dumpPolygons(aMesh);
+        this.dumpMeshProperties(aMesh);
+    }
+
+    private void dumpMeshProperties(Mesh aMesh) {
+        System.out.println(String.format("|MeshProperties| = %d", aMesh.getPropertiesCount()));
+        StringBuffer line = new StringBuffer();
+        line.append(" [");
+        for (Property p : aMesh.getPropertiesList()) {
+            line.append(String.format("%s : %s, ", p.getKey(), p.getValue()));
+        }
+        line.append("]");
     }
 
     public void dumpPolygons(Mesh aMesh) {
