@@ -174,8 +174,8 @@ public class VoronoiGenerator implements Generator {
     List<Coordinate> randomCoords(final int height, final int width) {
         List<Coordinate> coords = new ArrayList<>();
         Set<Long> containedPoints = new HashSet<>();
-        int pointX = randomX.nextInt(width);
-        int pointY = randomY.nextInt(height);
+        int pointX;
+        int pointY;
         for (int i = 0; i < numPoints; i++) {
             do {
                 pointX = randomX.nextInt(width);
@@ -189,7 +189,7 @@ public class VoronoiGenerator implements Generator {
     }
 
     private static long hashCoordinates(int x, int y) {
-        return (long) x * PRIME + (long) y;
+        return x * PRIME + y;
 
     }
 
@@ -242,7 +242,7 @@ public class VoronoiGenerator implements Generator {
      */
     private List<double[]> getVertices(final Polygon polygon) {
         GeometryFactory geomFactory = new GeometryFactory(HUNDREDTH_PRECISION_MODEL);
-        Coordinate[] coordinates = new Coordinate[10];
+        Coordinate[] coordinates;
         List<double[]> vertices = new ArrayList<>();
         coordinates = polygon.getCoordinates();
         ConvexHull convexHull = new ConvexHull(coordinates, geomFactory);
@@ -266,8 +266,6 @@ public class VoronoiGenerator implements Generator {
     private List<Poly> convertPolygons(final List<Polygon> voronoi, final List<Polygon> delauney) {
         final List<Poly> polys = new ArrayList<>();
         Poly p, p1, p2;
-        p1 = new ca.mcmaster.cas.se2aa4.a2.components.Polygon();
-        p2 = new ca.mcmaster.cas.se2aa4.a2.components.Polygon();
         Set<Seg> segSet = new TreeSet<>();
         Seg s1, s2, s3;
         for (Polygon dPoly : delauney) {
