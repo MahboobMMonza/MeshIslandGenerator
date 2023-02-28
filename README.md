@@ -8,7 +8,7 @@
 
 ### Installation instructions
 
-This product is handled by Maven, as a multi-module project. We assume here that you have cloned the project in a directory named `A2`
+This product is handled by Maven as a multi-module project. We assume here that you have cloned the project in a directory named `A2`
 
 To install the different tooling on your computer, simply run:
 
@@ -20,7 +20,7 @@ After installation, you'll find an application named `generator.jar` in the `gen
 
 ### Generator
 
-To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes multiple arguments, each with it's own switch as described below, the name of the file where the generated mesh will be stored as binary. Follow the instructions below.
+To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes multiple arguments, each with its own switch as described below, the name of the file where the generated mesh will be stored as binary. Follow the instructions below.
 ```
 usage: java -jar generator.jar -mt type_arg [option 1] arg1 [option 2] arg2
             ...
@@ -54,6 +54,7 @@ conversions
 ```
 
 For a Grid Mesh with some default options for every color:
+
 ```
 mosser@azrael A2 % cd generator
 mosser@azrael generator % java -jar generator.jar -mt Grid -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 7 -st 2 -bt 7 -sl 100 -mt grid -f grid.mesh
@@ -62,6 +63,7 @@ mosser@azrael generator % ls -lh grid.mesh
 mosser@azrael generator %
 ```
 For a Voronoi Mesh with some default options for every color:
+
 ```
 mosser@azrael A2 % cd generator
 mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 7 -st 2 -bt 7 -rl 23 -sp 55 -mt voronoi -f voronoi.mesh
@@ -69,7 +71,7 @@ mosser@azrael generator % ls -lh voronoi.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 voronoi.mesh
 mosser@azrael generator %
 ```
-
+__NOTE__: Some options may be skipped and compensated for by the generator program, but the mesh type and file name must be specified before running.
 
 ### Visualizer
 
