@@ -5,7 +5,7 @@ package ca.mcmaster.cas.se2aa4.a2.components;
  * the Generator and any properties from the Mesh when finalized before
  * conversion.
  */
-public class Segment implements Seg, Comparable<Seg> {
+public class Segment implements Seg {
 
     private double x1, y1, x2, y2;
     private int[] colour;
