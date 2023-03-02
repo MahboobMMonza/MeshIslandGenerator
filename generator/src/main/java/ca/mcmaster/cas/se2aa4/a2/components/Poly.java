@@ -51,6 +51,14 @@ public interface Poly extends Comparable<Poly> {
     void setFillColour(int r, int g, int b, int a);
 
     /**
+     * Sets the fill colour property to Java's sRGB colour representation with the
+     * given colour value.
+     *
+     * @param rgba the colour value to set to.
+     */
+    void setFillColour(int rgba);
+
+    /**
      * Sets the details for the border colour of this Poly.
      *
      * <p>
@@ -64,6 +72,14 @@ public interface Poly extends Comparable<Poly> {
      * @param a the <em>alpha</em> (transparency) value for the colour.
      */
     void setBorderColour(int r, int g, int b, int a);
+
+    /**
+     * Sets the border colour property to Java's sRGB colour representation with the
+     * given colour value.
+     *
+     * @param rgba the colour value to set to.
+     */
+    void setBorderColour(int rgba);
 
     /**
      * Sets the thickness of the border of this Poly.
@@ -110,19 +126,21 @@ public interface Poly extends Comparable<Poly> {
     float getBorderThickness();
 
     /**
-     * Gets the fill colour information of this Poly as a 4-element integer array,
-     * in RGBA order.
+     * Gets the fill colour information of this Poly as an integer with its bits
+     * representing the colour in the format specified by Java's
+     * {@link java.awt.Color.getRGB} method.
      *
      * @return the fill colour information of this Poly.
      */
-    int[] getFillColour();
+    int getFillColour();
 
     /**
-     * Gets the border colour information of this Poly as a 4-element integer array,
-     * in RGBA order.
+     * Gets the border colour information of this Poly as an integer with its bits
+     * representing the colour in the format specified by Java's
+     * {@link java.awt.Color.getRGB} method.
      *
      * @return the border colour information of this Poly.
      */
-    int[] getBorderColour();
+    int getBorderColour();
 
 }

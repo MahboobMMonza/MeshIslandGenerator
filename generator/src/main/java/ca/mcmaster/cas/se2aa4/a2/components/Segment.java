@@ -7,16 +7,39 @@ package ca.mcmaster.cas.se2aa4.a2.components;
  */
 public class Segment implements Seg {
 
+    static int COLOUR_BIT_SIZE = 8;
+
+    /**
+     * Converts the given red, green, blue, and alpha values into a single integer
+     * following Java's sRGB model.
+     *
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return the colour in Java's sRGB format.
+     */
+    private static int toSRGB(int r, int g, int b, int a) {
+        return (((((a << COLOUR_BIT_SIZE) | r) << COLOUR_BIT_SIZE) | g) << COLOUR_BIT_SIZE) | b;
+    }
+
     private double x1, y1, x2, y2;
-    private int[] colour;
+    private int colour;
+
     private float thickness;
 
     public Segment() {
-        colour = new int[4];
     }
 
+    /**
+     * Creates a new Segment instance with the endpoints set to the given values.
+     *
+     * @param x1 The X-coordinate of the first endpoint.
+     * @param y1 The Y-coordinate of the first endpoint.
+     * @param x2 The X-coordinate of the second endpoint.
+     * @param y2 The Y-coordinate of the second endpoint.
+     */
     public Segment(double x1, double y1, double x2, double y2) {
-        this();
         setEndpoints(x1, y1, x2, y2);
     }
 
@@ -36,10 +59,12 @@ public class Segment implements Seg {
 
     @Override
     public void setColour(int r, int g, int b, int a) {
-        colour[0] = r;
-        colour[1] = g;
-        colour[2] = b;
-        colour[3] = a;
+        colour = toSRGB(r, g, b, a);
+    }
+
+    @Override
+    public void setColour(int rgba) {
+        colour = rgba;
     }
 
     @Override
@@ -63,7 +88,7 @@ public class Segment implements Seg {
     }
 
     @Override
-    public int[] getColour() {
+    public int getColour() {
         return colour;
     }
 

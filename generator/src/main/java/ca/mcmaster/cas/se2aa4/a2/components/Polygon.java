@@ -9,17 +9,16 @@ import java.util.List;
  */
 public class Polygon implements Poly {
 
+    static int COLOUR_BIT_SIZE = 8;
     private double centroidX, centroidY;
     private float borderThickness;
-    private int[] fillColour, borderColour;
+    private int fillColour, borderColour;
 
     private List<double[]> verticesList;
 
     private List<double[]> neighbourList;
 
     public Polygon() {
-        fillColour = new int[4];
-        borderColour = new int[4];
     }
 
     public Polygon(double x, double y) {
@@ -59,12 +58,12 @@ public class Polygon implements Poly {
     }
 
     @Override
-    public int[] getFillColour() {
+    public int getFillColour() {
         return fillColour;
     }
 
     @Override
-    public int[] getBorderColour() {
+    public int getBorderColour() {
         return borderColour;
     }
 
@@ -91,18 +90,36 @@ public class Polygon implements Poly {
 
     @Override
     public void setFillColour(int r, int g, int b, int a) {
-        fillColour[0] = r;
-        fillColour[1] = g;
-        fillColour[2] = b;
-        fillColour[3] = a;
+        fillColour = toSRGB(r, g, b, a);
     }
 
     @Override
     public void setBorderColour(int r, int g, int b, int a) {
-        borderColour[0] = r;
-        borderColour[1] = g;
-        borderColour[2] = b;
-        borderColour[3] = a;
+        borderColour = toSRGB(r, g, b, a);
+    }
+
+    @Override
+    public void setFillColour(int rgba) {
+        fillColour = rgba;
+    }
+
+    @Override
+    public void setBorderColour(int rgba) {
+        borderColour = rgba;
+    }
+
+    /**
+     * Converts the given red, green, blue, and alpha values into a single integer
+     * following Java's sRGB model.
+     *
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return the colour in Java's sRGB format.
+     */
+    private static int toSRGB(int r, int g, int b, int a) {
+        return (((((a << COLOUR_BIT_SIZE) | r) << COLOUR_BIT_SIZE) | g) << COLOUR_BIT_SIZE) | b;
     }
 
 }

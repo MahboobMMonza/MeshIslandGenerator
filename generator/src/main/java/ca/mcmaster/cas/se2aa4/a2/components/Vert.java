@@ -18,6 +18,14 @@ public interface Vert extends Comparable<Vert> {
     void setColour(int r, int g, int b, int a);
 
     /**
+     * Sets the colour property to Java's sRGB colour representation with the
+     * given colour value.
+     *
+     * @param rgba the colour value to set to.
+     */
+    void setColour(int rgba);
+
+    /**
      * Gets the thickness of this Vert.
      *
      * @return the thickness.
@@ -34,12 +42,12 @@ public interface Vert extends Comparable<Vert> {
     void setPosition(double x, double y);
 
     /**
-     * Gets the colour information of this Vert as a 4-element integer array,
-     * in RGBA order.
+     * Sets the colour property to Java's sRGB colour representation with the
+     * given colour value.
      *
-     * @return the fill colour information of this Vert.
+     * @param rgba the colour value to set to.
      */
-    int[] getColour();
+    int getColour();
 
     /**
      * Gets the X-coordinate of this Vert.

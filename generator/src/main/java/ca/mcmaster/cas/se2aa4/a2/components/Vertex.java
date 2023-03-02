@@ -7,7 +7,23 @@ package ca.mcmaster.cas.se2aa4.a2.components;
  */
 public class Vertex implements Vert {
 
-    private int[] colour;
+    static int COLOUR_BIT_SIZE = 8;
+
+    /**
+     * Converts the given red, green, blue, and alpha values into a single integer
+     * following Java's sRGB model.
+     *
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return the colour in Java's sRGB format.
+     */
+    private static int toSRGB(int r, int g, int b, int a) {
+        return (((((a << COLOUR_BIT_SIZE) | r) << COLOUR_BIT_SIZE) | g) << COLOUR_BIT_SIZE) | b;
+    }
+
+    private int colour;
 
     private float thickness;
 
@@ -16,7 +32,6 @@ public class Vertex implements Vert {
     private boolean centroid;
 
     public Vertex() {
-        colour = new int[4];
         centroid = false;
     }
 
@@ -33,10 +48,12 @@ public class Vertex implements Vert {
 
     @Override
     public void setColour(int r, int g, int b, int a) {
-        colour[0] = r;
-        colour[1] = g;
-        colour[2] = b;
-        colour[3] = a;
+        colour = toSRGB(r, g, b, a);
+    }
+
+    @Override
+    public void setColour(int rgba) {
+        colour = rgba;
     }
 
     @Override
@@ -56,7 +73,7 @@ public class Vertex implements Vert {
     }
 
     @Override
-    public int[] getColour() {
+    public int getColour() {
         return colour;
     }
 

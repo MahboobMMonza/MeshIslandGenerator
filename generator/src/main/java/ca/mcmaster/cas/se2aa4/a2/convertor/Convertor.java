@@ -18,11 +18,11 @@ public class Convertor {
     private static List<Structs.Vertex> createAllVertices(final List<Vert> vertices) {
         final List<Structs.Vertex> vertexList = new ArrayList<>();
         Structs.Property colour, thickness;
-        int[] colours;
+        int colours;
         String rgba, thick;
         for (final Vert vertex : vertices) {
             colours = vertex.getColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%x", colours);
             thick = String.format("%.2f", vertex.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -46,12 +46,12 @@ public class Convertor {
         final List<Structs.Segment> segmentList = new ArrayList<>();
         Vertex idxVert;
         Structs.Property colour, thickness;
-        int[] colours;
+        int colours;
         int v1Idx, v2Idx;
         String rgba, thick;
         for (Seg segment : segments) {
             colours = segment.getColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%x", colours);
             thick = String.format("%.2f", segment.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -82,18 +82,18 @@ public class Convertor {
         Segment seg;
         List<double[]> polyVerts;
         Structs.Property fillColour, borderColour, thickness;
-        int[] colours;
+        int colours;
         String rgba, thick;
         int centIdx, segIdx;
         for (Poly polygon : polygons) {
             colours = polygon.getFillColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%x", colours);
             fillColour = Structs.Property.newBuilder()
                     .setKey("rgba_fill_color")
                     .setValue(rgba)
                     .build();
             colours = polygon.getBorderColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%x", colours);
             borderColour = Structs.Property.newBuilder()
                     .setKey("rgba_border_color")
                     .setValue(rgba)

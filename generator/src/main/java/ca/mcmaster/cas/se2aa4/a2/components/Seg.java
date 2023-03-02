@@ -18,6 +18,14 @@ public interface Seg extends Comparable<Seg> {
     void setColour(int r, int g, int b, int a);
 
     /**
+     * Sets the colour property to Java's sRGB colour representation with the
+     * given colour value.
+     *
+     * @param rgba the colour value to set to.
+     */
+    void setColour(int rgba);
+
+    /**
      * Gets the thickness of this Seg.
      *
      * @return the thickness.
@@ -36,12 +44,12 @@ public interface Seg extends Comparable<Seg> {
     void setEndpoints(double x1, double y1, double x2, double y2);
 
     /**
-     * Gets the colour information of this Seg as a 4-element integer array,
-     * in RGBA order.
+     * Sets the border colour property to Java's sRGB colour representation with the
+     * given colour value.
      *
-     * @return the colour information of this Seg.
+     * @param rgba the colour value to set to.
      */
-    int[] getColour();
+    int getColour();
 
     /**
      * Gets the X-coordinate of the first endpoint of this Seg.

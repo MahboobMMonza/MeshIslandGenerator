@@ -25,12 +25,13 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
+    private static final int ALPHA_MASK = 0x000000ff;
     private static final float DEFAULT_SEGMENT_THICKNESS = 1;
     private static final float DEFAULT_VERTEX_THICKNESS = 8;
     private static final float DEFAULT_POLYGON_THICKNESS = 5;
     private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
     private static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
-    private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0,0xf0,0xf0,0xd9);
+    private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0, 0xf0, 0xf0, 0xd9);
     private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
     private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
     private static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
@@ -238,7 +239,6 @@ public class GraphicRenderer {
                 return DEFAULT_POLYGON_BORDER_COLOR;
             else
                 return DEFAULT_POLYGON_FILL_COLOR;
-
         }
         String val = new String();
         for (Property p : poly.getPropertiesList()) {
@@ -250,12 +250,7 @@ public class GraphicRenderer {
         if (val.isEmpty()) {
             return DEFAULT_POLYGON_BORDER_COLOR;
         }
-        String[] raw = val.split(",");
-        int red = Integer.parseInt(raw[0]);
-        int green = Integer.parseInt(raw[1]);
-        int blue = Integer.parseInt(raw[2]);
-        int alpha = Integer.parseInt(raw[3]);
-        return new Color(red, green, blue, alpha);
+        return new Color(Integer.parseUnsignedInt(val, 16), true);
     }
 
     private Color extractColor(Segment seg) {
@@ -271,16 +266,12 @@ public class GraphicRenderer {
         if (val.isEmpty()) {
             return DEFAULT_SEGMENT_COLOR;
         }
-        String[] raw = val.split(",");
-        int red = Integer.parseInt(raw[0]);
-        int green = Integer.parseInt(raw[1]);
-        int blue = Integer.parseInt(raw[2]);
-        int alpha = Integer.parseInt(raw[3]);
-        return new Color(red, green, blue, alpha);
+        return new Color(Integer.parseUnsignedInt(val, 16), true);
     }
 
     private Color extractColor(Vertex vert) {
         String val = new String();
+        int color;
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
                 val = p.getValue();
@@ -289,17 +280,13 @@ public class GraphicRenderer {
         if (val.isEmpty()) {
             return DEFAULT_VERTEX_COLOR;
         }
-        String[] raw = val.split(",");
-        int red = Integer.parseInt(raw[0]);
-        int green = Integer.parseInt(raw[1]);
-        int blue = Integer.parseInt(raw[2]);
-        int alpha = Integer.parseInt(raw[3]);
+        color = Integer.parseUnsignedInt(val, 16);
         if (debug) {
-            if (alpha == 0) {
+            if ((color & ALPHA_MASK) == 0) {
                 return DEFAULT_CENTROID_COLOR;
             }
             return DEFAULT_VERTEX_COLOR;
         }
-        return new Color(red, green, blue, alpha);
+        return new Color(color, true);
     }
 }
