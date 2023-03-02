@@ -25,7 +25,7 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
-    private static final int ALPHA_MASK = 0x000000ff;
+    private static final int ALPHA_MASK = 0xff000000;
     private static final float DEFAULT_SEGMENT_THICKNESS = 1;
     private static final float DEFAULT_VERTEX_THICKNESS = 8;
     private static final float DEFAULT_POLYGON_THICKNESS = 5;
