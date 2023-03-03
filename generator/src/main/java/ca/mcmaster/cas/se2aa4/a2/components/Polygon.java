@@ -9,9 +9,33 @@ import java.util.List;
  */
 public class Polygon implements Poly {
 
-    static int COLOUR_BIT_SIZE = 8;
+    static int COLOUR_BIT_SIZE = 8, MAX_COLOUR_VALUE = 0xff, MIN_COLOUR_VALUE = 0x00;
+
+    /**
+     * Converts the given red, green, blue, and alpha values into a single integer
+     * following Java's sRGB model.
+     *
+     * @param r
+     * @param g
+     * @param b
+     * @param a
+     * @return the colour in Java's sRGB format.
+     */
+    private static int toSRGB(int r, int g, int b, int a) {
+        r = rangeRestrict(r);
+        g = rangeRestrict(g);
+        b = rangeRestrict(b);
+        a = rangeRestrict(a);
+        return (((((a << COLOUR_BIT_SIZE) | r) << COLOUR_BIT_SIZE) | g) << COLOUR_BIT_SIZE) | b;
+    }
+
+    private static int rangeRestrict(int val) {
+        return Math.max(Math.min(MAX_COLOUR_VALUE, val), MIN_COLOUR_VALUE);
+    }
+
     private double centroidX, centroidY;
     private float borderThickness;
+
     private int fillColour, borderColour;
 
     private List<double[]> verticesList;
@@ -106,20 +130,6 @@ public class Polygon implements Poly {
     @Override
     public void setBorderColour(int rgba) {
         borderColour = rgba;
-    }
-
-    /**
-     * Converts the given red, green, blue, and alpha values into a single integer
-     * following Java's sRGB model.
-     *
-     * @param r
-     * @param g
-     * @param b
-     * @param a
-     * @return the colour in Java's sRGB format.
-     */
-    private static int toSRGB(int r, int g, int b, int a) {
-        return (((((a << COLOUR_BIT_SIZE) | r) << COLOUR_BIT_SIZE) | g) << COLOUR_BIT_SIZE) | b;
     }
 
 }
