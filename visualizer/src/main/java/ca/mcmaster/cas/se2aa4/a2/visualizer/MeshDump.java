@@ -10,7 +10,14 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Segment;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+
 public class MeshDump {
+    private static final Logger logger = LogManager.getLogger(MeshDump.class);
+    
+
 
     public void dump(String fileName) throws IOException {
         MeshFactory factory = new MeshFactory();
@@ -26,7 +33,7 @@ public class MeshDump {
     }
 
     private void dumpMeshProperties(Mesh aMesh) {
-        System.out.println(String.format("|MeshProperties| = %d", aMesh.getPropertiesCount()));
+        logger.info(String.format("|MeshProperties| = %d", aMesh.getPropertiesCount()));
         StringBuffer line = new StringBuffer();
         line.append(" [");
         for (Property p : aMesh.getPropertiesList()) {
@@ -37,7 +44,7 @@ public class MeshDump {
 
     public void dumpPolygons(Mesh aMesh) {
         List<Polygon> polygons = aMesh.getPolygonsList();
-        System.out.println("|Polygons| = " + polygons.size());
+        logger.info("|Polygons| = " + polygons.size());
         int i = 0;
         for (Polygon p : polygons) {
             StringBuffer line = new StringBuffer();
@@ -56,13 +63,13 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", prop.getKey(), prop.getValue()));
             }
             line.append("]");
-            System.out.println(line);
+            logger.info(line);
         }
     }
 
     public void dumpSegments(Mesh aMesh) {
         List<Segment> segments = aMesh.getSegmentsList();
-        System.out.println("|Segments| = " + segments.size());
+        logger.info("|Segments| = " + segments.size());
         int i = 0;
         for (Segment s : segments) {
             StringBuffer line = new StringBuffer();
@@ -77,13 +84,13 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", p.getKey(), p.getValue()));
             }
             line.append("]");
-            System.out.println(line);
+            logger.info(line);
         }
     }
 
     public void dumpVertices(Mesh aMesh) {
         List<Vertex> vertices = aMesh.getVerticesList();
-        System.out.println("|Vertices| = " + vertices.size());
+        logger.info("|Vertices| = " + vertices.size());
         int i = 0;
         for (Vertex v : vertices) {
             StringBuffer line = new StringBuffer();
@@ -95,7 +102,7 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", p.getKey(), p.getValue()));
             }
             line.append("]");
-            System.out.println(line);
+            logger.info(line);
         }
     }
 }
