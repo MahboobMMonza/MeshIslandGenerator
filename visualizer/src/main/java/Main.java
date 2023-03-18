@@ -25,7 +25,7 @@ public class Main {
             } else {
                 String input = cmd.inputCli(parser, args);
                 String output = cmd.outputCli(parser, args);
-                System.out.println("Input File: "+ input);
+                System.out.println("Input File: " + input);
                 System.out.println("Output File: " + output);
                 // Getting width and width for the canvas
                 Structs.Mesh aMesh = new MeshFactory().read(input);
@@ -38,10 +38,13 @@ public class Main {
                         width = Integer.parseInt(p.getValue());
                     }
                 }
-                
-                if(height<= 0 || width <= 0){
+
+                if (height <= 0 || width <= 0) {
                     System.out.println("WARNING: The height or width values were not set to dimension values");
-                    System.exit(0);
+                    for (Structs.Vertex vertex : aMesh.getVerticesList()) {
+                        height = (int) Math.ceil(Math.max(height, vertex.getY()));
+                        width = (int) Math.ceil(Math.max(height, vertex.getX()));
+                    }
                 }
                 // Creating the Canvas to draw the mesh
                 Graphics2D canvas = SVGCanvas.build(width, height);
@@ -53,7 +56,7 @@ public class Main {
                 // Dump the mesh to stdout
                 MeshDump dumper = new MeshDump();
                 dumper.dump(aMesh);
-                System.out.println("File "+output+" has been created");
+                System.out.println("File " + output + " has been created");
             }
         } catch (Exception e) {
             e.printStackTrace();
