@@ -16,7 +16,13 @@ import cli.GeneratorCommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
+    
 
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
@@ -55,25 +61,25 @@ public class Main {
             System.exit(0);
         } // Otherwise make the required generator
         if (type.equals(GeneratorTypes.VORONOI)) {
-            System.out.println("Creating Mesh Type: Voronoi");
-            System.out.println("Voronoi Relaxation Level: " + relaxationLevel);
-            System.out.println("Voronoi Number of Start Points: "+ numPoints);
+            logger.info("Creating Mesh Type: Voronoi");
+            logger.info("Voronoi Relaxation Level: " + relaxationLevel);
+            logger.info("Voronoi Number of Start Points: "+ numPoints);
             gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {
-            System.out.println("Creating Mesh Type: Grid");
-            System.out.println("Grid Side Length: "+sideLength);
+            logger.info("Creating Mesh Type: Grid");
+            logger.info("Grid Side Length: "+sideLength);
             gen = new GridGenerator(sideLength);
         }
-        System.out.println("Mesh Vertex Colour: " + decorator.getVertThickness());
-        System.out.println("Mesh Segment Colour: " + decorator.getSegColour());
-        System.out.println("Mesh Segment Thickness: " + decorator.getSegThickness());
-        System.out.println("Mesh Polygon Fill Colour: " + decorator.getPolyFillColour());
-        System.out.println("Mesh Polygon Border Colour: " + decorator.getPolyBorderColour());
-        System.out.println("Mesh Polygon Border Thickness: " + decorator.getPolyBorderThickness());
-        System.out.println("File Name: "+ fileName);
+        logger.info("Mesh Vertex Colour: " + decorator.getVertThickness());
+        logger.info("Mesh Segment Colour: " + decorator.getSegColour());
+        logger.info("Mesh Segment Thickness: " + decorator.getSegThickness());
+        logger.info("Mesh Polygon Fill Colour: " + decorator.getPolyFillColour());
+        logger.info("Mesh Polygon Border Colour: " + decorator.getPolyBorderColour());
+        logger.info("Mesh Polygon Border Thickness: " + decorator.getPolyBorderThickness());
+        logger.info("File Name: "+ fileName);
         // Generate the mesh and convert it
         factory.write(createMesh(fMesh, gen, decorator), fileName);
-        System.out.println("File " + fileName + " has been created");
+        logger.info("File " + fileName + " has been created");
     }
 
 }
