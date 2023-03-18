@@ -25,7 +25,6 @@ import java.util.TreeSet;
 
 public class GraphicRenderer {
 
-    private static final int ALPHA_MASK = 0xff000000;
     private static final float DEFAULT_SEGMENT_THICKNESS = 1;
     private static final float DEFAULT_VERTEX_THICKNESS = 8;
     private static final float DEFAULT_POLYGON_THICKNESS = 5;
@@ -270,19 +269,23 @@ public class GraphicRenderer {
     }
 
     private Color extractColor(Vertex vert) {
-        String val = new String();
+        String colorVal = new String(), centroidVal = new String();
         int color;
+        boolean centroid = false;
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
-                val = p.getValue();
+                colorVal = p.getValue();
+            } else if (p.getKey().equals("centroid")) {
+                centroidVal = p.getValue();
             }
         }
-        if (val.isEmpty()) {
+        if (colorVal.isEmpty()) {
             return DEFAULT_VERTEX_COLOR;
         }
-        color = Integer.parseUnsignedInt(val, 16);
+        color = Integer.parseUnsignedInt(colorVal, 16);
+        centroid = Boolean.parseBoolean(centroidVal);
         if (debug) {
-            if ((color & ALPHA_MASK) == 0) {
+            if (centroid) {
                 return DEFAULT_CENTROID_COLOR;
             }
             return DEFAULT_VERTEX_COLOR;

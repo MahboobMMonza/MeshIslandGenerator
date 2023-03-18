@@ -9,15 +9,14 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
 /**
- * Convertor class converts high-level
- * {@link Mesh} into an equivalent
+ * Convertor class converts high-level {@link Mesh} into an equivalent
  * {@link Structs.Mesh}.
  */
 public class Convertor {
 
     private static List<Structs.Vertex> createAllVertices(final List<Vert> vertices) {
         final List<Structs.Vertex> vertexList = new ArrayList<>();
-        Structs.Property colour, thickness;
+        Structs.Property colour, thickness, centroid;
         int colours;
         String rgba, thick;
         for (final Vert vertex : vertices) {
@@ -32,11 +31,16 @@ public class Convertor {
                     .setKey("thickness")
                     .setValue(thick)
                     .build();
+            centroid = Structs.Property.newBuilder()
+                    .setKey("centroid")
+                    .setValue(Boolean.toString(vertex.isCentroid()))
+                    .build();
             vertexList.add(Structs.Vertex.newBuilder()
                     .setX(vertex.getX())
                     .setY(vertex.getY())
                     .addProperties(colour)
                     .addProperties(thickness)
+                    .addProperties(centroid)
                     .build());
         }
         return vertexList;
