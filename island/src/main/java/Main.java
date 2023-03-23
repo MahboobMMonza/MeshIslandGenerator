@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Random;
 
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
@@ -29,10 +28,10 @@ public class Main {
         }
         String input = cmd.inputCli(parser, args);
         String output = cmd.outputCli(parser, args);
+        long seed = cmd.getSeed(parser, args);
         Mesh inputMesh = factory.read(input);
         int height = getHeight(inputMesh), width = getWidth(inputMesh);
         System.out.println("Begin island creation");
-        long seed = new Random().nextLong();
         System.out.println("The seed used is: " + seed);
         factory.write(createIsland(inputMesh, height, width, seed), output);
         System.out.println("The file is stored as: " + output);

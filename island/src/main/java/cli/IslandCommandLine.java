@@ -1,5 +1,7 @@
 package cli;
 
+import java.util.Random;
+
 import org.apache.commons.cli.*;
 
 public class IslandCommandLine {
@@ -12,6 +14,8 @@ public class IslandCommandLine {
             "Input Option");
     private static Option outputOption = new Option("o", "output", true,
             "Output Option");
+    private static Option seed = new Option("s", "seed", true,
+            "Seed");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
@@ -21,6 +25,7 @@ public class IslandCommandLine {
         options.addOption(help);
         options.addOption(inputOption);
         options.addOption(outputOption);
+        options.addOption(seed);
     }
 
     /**
@@ -51,6 +56,25 @@ public class IslandCommandLine {
             getHelp();
         }
         return hasHelp;
+    }
+
+    /**
+     * Gets the Seed from user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Seed as a long
+     */
+    public long getSeed(CommandLineParser parser, String[] args) {
+        long seeds = new Random().nextLong();
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(seed)) {
+                seeds = Long.parseLong(cmd.getOptionValue(seed));
+            }
+        } catch (ParseException | NumberFormatException e) {
+        }
+        return seeds;
     }
 
     /**
