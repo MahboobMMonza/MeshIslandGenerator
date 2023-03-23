@@ -5,5 +5,5 @@ package ca.mcmaster.cas.se2aa4.a3.island.components;
  */
 public enum TileTypes {
 
-    OCEAN, LAGOON, LAND;
+    OCEAN, LAGOON, LAND, AQUIFER, LAKE;
 }
