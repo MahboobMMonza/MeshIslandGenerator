@@ -9,8 +9,6 @@ import ca.mcmaster.cas.se2aa4.a3.island.elevation.BasicElevation;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.Elevation;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.BasicMoisture;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.Moisture;
-import ca.mcmaster.cas.se2aa4.a3.island.noise.FlatNoise;
-import ca.mcmaster.cas.se2aa4.a3.island.noise.NoiseTiler;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.LagoonShaper;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.ShapeFilter;
 
@@ -21,7 +19,6 @@ public class IslandCreator {
 
     public static Mesh createIsland(final Mesh mesh, final int height, final int width, final long seed) {
         ShapeFilter shape = new LagoonShaper(height, width, seed);
-        NoiseTiler noise = new FlatNoise();
         ComponentCollections collection = ComponentCollections.COLLECTION;
         Elevation elev = new BasicElevation();
         Moisture moist = new BasicMoisture();
@@ -35,11 +32,6 @@ public class IslandCreator {
         collection.updateShores();
         collection.updateLagoons();
         System.out.println("Adding noise");
-        noise.overwriteTileTypes(collection);
-        System.out.println("Updating tracked sets");
-        collection.updateOceans();
-        collection.updateShores();
-        collection.updateLagoons();
         // Update lakes
         // Update aquifers
         // Update elevation
