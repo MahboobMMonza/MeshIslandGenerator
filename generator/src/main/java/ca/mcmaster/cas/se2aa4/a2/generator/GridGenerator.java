@@ -31,6 +31,7 @@ public class GridGenerator implements Generator {
                     + " will be used instead.");
             sideLength = DEFAULT_SIDE_LENGTH;
         }
+        // Round the increment to 2 decimal places (be sure of the the rounding)
         final double increment = Math.round((sideLength / 2.0) * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
         // area, and calculate the centroid bounds

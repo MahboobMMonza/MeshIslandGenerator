@@ -9,20 +9,19 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
 /**
- * Convertor class converts high-level
- * {@link Mesh} into an equivalent
+ * Convertor class converts high-level {@link Mesh} into an equivalent
  * {@link Structs.Mesh}.
  */
 public class Convertor {
 
     private static List<Structs.Vertex> createAllVertices(final List<Vert> vertices) {
         final List<Structs.Vertex> vertexList = new ArrayList<>();
-        Structs.Property colour, thickness;
-        int[] colours;
+        Structs.Property colour, thickness, centroid;
+        int colours;
         String rgba, thick;
         for (final Vert vertex : vertices) {
             colours = vertex.getColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%08x", colours);
             thick = String.format("%.2f", vertex.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -32,11 +31,16 @@ public class Convertor {
                     .setKey("thickness")
                     .setValue(thick)
                     .build();
+            centroid = Structs.Property.newBuilder()
+                    .setKey("centroid")
+                    .setValue(Boolean.toString(vertex.isCentroid()))
+                    .build();
             vertexList.add(Structs.Vertex.newBuilder()
                     .setX(vertex.getX())
                     .setY(vertex.getY())
                     .addProperties(colour)
                     .addProperties(thickness)
+                    .addProperties(centroid)
                     .build());
         }
         return vertexList;
@@ -46,12 +50,12 @@ public class Convertor {
         final List<Structs.Segment> segmentList = new ArrayList<>();
         Vertex idxVert;
         Structs.Property colour, thickness;
-        int[] colours;
+        int colours;
         int v1Idx, v2Idx;
         String rgba, thick;
         for (Seg segment : segments) {
             colours = segment.getColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%08x", colours);
             thick = String.format("%.2f", segment.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -82,18 +86,18 @@ public class Convertor {
         Segment seg;
         List<double[]> polyVerts;
         Structs.Property fillColour, borderColour, thickness;
-        int[] colours;
+        int colours;
         String rgba, thick;
         int centIdx, segIdx;
         for (Poly polygon : polygons) {
             colours = polygon.getFillColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%08x", colours);
             fillColour = Structs.Property.newBuilder()
                     .setKey("rgba_fill_color")
                     .setValue(rgba)
                     .build();
             colours = polygon.getBorderColour();
-            rgba = String.format("%d,%d,%d,%d", colours[0], colours[1], colours[2], colours[3]);
+            rgba = String.format("%08x", colours);
             borderColour = Structs.Property.newBuilder()
                     .setKey("rgba_border_color")
                     .setValue(rgba)

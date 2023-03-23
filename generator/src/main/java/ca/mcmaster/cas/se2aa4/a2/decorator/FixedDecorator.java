@@ -11,7 +11,7 @@ public class FixedDecorator implements Decorator {
 
     static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR,
             DEFAULT_CENTROID_COLOUR;
-    private static final int NUM_COLOURS, COLOUR_BIT_SIZE, TOTAL_BITS, LEFT_SHIFT;
+    private static final int COLOUR_BIT_SIZE, ALPHA_LEFT_SHIFT;
     static final float DEFAULT_POLY_BORDER_THICKNESS, DEFAULT_SEG_THICKNESS, DEFAULT_VERT_THICKNESS,
             DEFAULT_CENTROID_THICKNESS, MAX_SEG_THICKNESS, MAX_VERT_THICKNESS, MAX_POLY_BORDER_THICKNESS,
             MIN_SEG_THICKNESS, MIN_VERT_THICKNESS, MIN_POLY_BORDER_THICKNESS;
@@ -40,38 +40,21 @@ public class FixedDecorator implements Decorator {
         MAX_POLY_BORDER_THICKNESS = 30f;
 
         // Set colour-convertor-related constants
-        NUM_COLOURS = 4;
         COLOUR_BIT_SIZE = 8;
-        TOTAL_BITS = 32;
-        LEFT_SHIFT = 24;
+        ALPHA_LEFT_SHIFT = 24;
     }
 
     /**
-     * Extracts the desired colour value when decorating a component.
-     *
-     * <h3>COLOUR INFORMATION STORAGE</h3>
-     *
-     * Colours are stored in integers by leveraging bit manipulation. The colours
-     * stored here follow the following bit and index pattern:
-     *
-     * <p>
-     * 31 - 24 : RED [0]
-     * <p>
-     * 23 - 16 : GREEN [1]
-     * <p>
-     * 15 - 08 : BLUE [2]
-     * <p>
-     * 07 - 00 : ALPHA [3]
+     * Converts the desired colour value (first given in RGBA format) when
+     * decorating a component to follow Java's sRGB model.
      *
      * @param colour the the colour whose properties are being extracted.
-     * @param index  the index of the property being extracted.
-     * @return the value of the colour at the given index.
+     * @return the value of the converted.
      */
-    static int extractColourValue(final int colour, final int index) {
-        int rightShift = TOTAL_BITS - (COLOUR_BIT_SIZE * (NUM_COLOURS - index));
-        // Shift the colour so that the rightmost desired bit is at index 24, then shift
-        // so that the rightmost bit is then at index 0 (big-endian)
-        return (colour << rightShift) >>> LEFT_SHIFT;
+    static int rgbaToSRGB(final int colour) {
+        // Shift the alpha values out of the given value, leaving the first 8 bits 0, to
+        // which the alpha value will be masked into.
+        return (colour >>> COLOUR_BIT_SIZE) | (colour << ALPHA_LEFT_SHIFT);
     }
 
     private static void warnUser(final String given, final String defaultValue, final String property) {
@@ -168,7 +151,8 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public boolean setSegThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, "segment_thickness", DEFAULT_SEG_THICKNESS, MIN_SEG_THICKNESS,
+        final float[] conversion = tryConversion(thickness, "segment_thickness", DEFAULT_SEG_THICKNESS,
+                MIN_SEG_THICKNESS,
                 MAX_SEG_THICKNESS);
         segThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
@@ -176,7 +160,8 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public boolean setVertThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, "vertex_thickness", DEFAULT_VERT_THICKNESS, MIN_VERT_THICKNESS,
+        final float[] conversion = tryConversion(thickness, "vertex_thickness", DEFAULT_VERT_THICKNESS,
+                MIN_VERT_THICKNESS,
                 MAX_VERT_THICKNESS);
         vertThickness = conversion[1];
         return Float.compare(conversion[0], 0f) > 0;
@@ -184,7 +169,8 @@ public class FixedDecorator implements Decorator {
 
     @Override
     public boolean setPolyBorderThickness(final String thickness) {
-        final float[] conversion = tryConversion(thickness, "polygon_border_thickness", DEFAULT_POLY_BORDER_THICKNESS, MIN_POLY_BORDER_THICKNESS,
+        final float[] conversion = tryConversion(thickness, "polygon_border_thickness", DEFAULT_POLY_BORDER_THICKNESS,
+                MIN_POLY_BORDER_THICKNESS,
                 MAX_POLY_BORDER_THICKNESS);
         polyBorderThickness = conversion[1];
         return Float.compare(conversion[0], 0) > 0;
@@ -228,40 +214,22 @@ public class FixedDecorator implements Decorator {
     @Override
     public void decoratePoly(final Poly p) {
         // Get colours in rgba format for fill
-        final int[] colourValues = new int[NUM_COLOURS];
-        for (int i = 0; i < NUM_COLOURS; i++) {
-            colourValues[i] = extractColourValue(polyFillColour, i);
-        }
-        p.setFillColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
-        // Get colours for border
-        for (int i = 0; i < NUM_COLOURS; i++) {
-            colourValues[i] = extractColourValue(polyBorderColour, i);
-        }
-        p.setBorderColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        p.setFillColour(rgbaToSRGB(polyFillColour));
+        p.setBorderColour(rgbaToSRGB(polyBorderColour));
         p.setBorderThickness(polyBorderThickness);
     }
 
     @Override
     public void decorateSeg(final Seg s) {
         // Get colours in rgba format
-        final int[] colourValues = new int[NUM_COLOURS];
-        for (int i = 0; i < NUM_COLOURS; i++) {
-            colourValues[i] = extractColourValue(segColour, i);
-        }
-        s.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        s.setColour(rgbaToSRGB(segColour));
         s.setThickness(segThickness);
     }
 
     @Override
     public void decorateVert(final Vert v) {
         // Get colours in rgba format
-        final int[] colourValues = new int[NUM_COLOURS];
-        for (int i = 0; i < NUM_COLOURS; i++) {
-            // Make sure to get the default centroid colour if the vertex is marked as a
-            // centroid
-            colourValues[i] = extractColourValue((v.isCentroid()) ? DEFAULT_CENTROID_COLOUR : vertColour, i);
-        }
-        v.setColour(colourValues[0], colourValues[1], colourValues[2], colourValues[3]);
+        v.setColour((v.isCentroid() ) ? rgbaToSRGB(DEFAULT_CENTROID_COLOUR) : rgbaToSRGB(vertColour));
         v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : vertThickness);
     }
 

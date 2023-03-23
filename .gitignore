@@ -14,3 +14,4 @@ target
 .factorypath
 makefile
 .DS_Store
+*.log

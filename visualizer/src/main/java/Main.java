@@ -12,7 +12,14 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
+    
+
 
     public static void main(String[] args) throws IOException {
         try {
@@ -25,8 +32,8 @@ public class Main {
             } else {
                 String input = cmd.inputCli(parser, args);
                 String output = cmd.outputCli(parser, args);
-                System.out.println("Input File: "+ input);
-                System.out.println("Output File: " + output);
+                logger.info("Input File: " + input);
+                logger.info("Output File: " + output);
                 // Getting width and width for the canvas
                 Structs.Mesh aMesh = new MeshFactory().read(input);
                 int height = 0, width = 0;
@@ -38,10 +45,13 @@ public class Main {
                         width = Integer.parseInt(p.getValue());
                     }
                 }
-                
-                if(height<= 0 || width <= 0){
-                    System.out.println("WARNING: The height or width values were not set to dimension values");
-                    System.exit(0);
+
+                if (height <= 0 || width <= 0) {
+                    logger.warn("WARNING: The height or width values were not set to dimension values");
+                    for (Structs.Vertex vertex : aMesh.getVerticesList()) {
+                        height = (int) Math.ceil(Math.max(height, vertex.getY()));
+                        width = (int) Math.ceil(Math.max(height, vertex.getX()));
+                    }
                 }
                 // Creating the Canvas to draw the mesh
                 Graphics2D canvas = SVGCanvas.build(width, height);
@@ -53,7 +63,7 @@ public class Main {
                 // Dump the mesh to stdout
                 MeshDump dumper = new MeshDump();
                 dumper.dump(aMesh);
-                System.out.println("File "+output+" has been created");
+                logger.info("File " + output + " has been created");
             }
         } catch (Exception e) {
             e.printStackTrace();
