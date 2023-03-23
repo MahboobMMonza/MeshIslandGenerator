@@ -7,20 +7,17 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.*;
  */
 public class BasicElevation implements Elevation {
 
-    public static final int OCEAN_ELEV = -2, WATER_ELEV = -1, SHORE_ELEV = 0,
-            DEFAULT_ELEV = 1;
-
     @Override
     public void elevateAllTiles(ComponentCollections collection) {
         for (Tile tile : collection.getAllTiles().values()) {
             if (tile.getTileType().equals(TileTypes.OCEAN)) {
-                tile.setElevationLevel(OCEAN_ELEV);
+                tile.setElevation(ElevationLevels.OCEAN_ELEVATION);
             } else if (tile.getTileType().equals(TileTypes.LAGOON)) {
-                tile.setElevationLevel(WATER_ELEV);
+                tile.setElevation(ElevationLevels.LAGOON_ELEVATION);
             } else if (collection.getShores().contains(tile.getIndex())) {
-                tile.setElevationLevel(SHORE_ELEV);
+                tile.setElevation(ElevationLevels.LOW_ELEVATION);
             } else {
-                tile.setElevationLevel(DEFAULT_ELEV);
+                tile.setElevation(ElevationLevels.MEDIUM_ELEVATION);
             }
         }
     }
