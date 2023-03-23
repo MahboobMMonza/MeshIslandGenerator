@@ -33,6 +33,7 @@ public class Main {
         int height = getHeight(inputMesh), width = getWidth(inputMesh);
         System.out.println("Begin island creation");
         long seed = new Random().nextLong();
+        System.out.println("The seed used is: " + seed);
         factory.write(createIsland(inputMesh, height, width, seed), output);
         System.out.println("The file is stored as: " + output);
     }
