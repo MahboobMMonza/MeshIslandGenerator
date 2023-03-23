@@ -67,7 +67,7 @@ public class IslandCommandLine {
             String modes = cmd.getOptionValue(mode).toUpperCase();
             type = ModeTypes.valueOf(modes);
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            System.out.println("WARNING: A valid mesh type was not provided.");
+            System.out.println("WARNING: A valid mode type was not provided.");
             type = ModeTypes.NONE;
         }
         return type;
