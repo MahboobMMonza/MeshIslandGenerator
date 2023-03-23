@@ -33,7 +33,7 @@ public class MeshDump {
     }
 
     private void dumpMeshProperties(Mesh aMesh) {
-        logger.info(String.format("|MeshProperties| = %d", aMesh.getPropertiesCount()));
+        logger.debug(String.format("|MeshProperties| = %d", aMesh.getPropertiesCount()));
         StringBuffer line = new StringBuffer();
         line.append(" [");
         for (Property p : aMesh.getPropertiesList()) {
@@ -44,7 +44,7 @@ public class MeshDump {
 
     public void dumpPolygons(Mesh aMesh) {
         List<Polygon> polygons = aMesh.getPolygonsList();
-        logger.info("|Polygons| = " + polygons.size());
+        logger.debug("|Polygons| = " + polygons.size());
         int i = 0;
         for (Polygon p : polygons) {
             StringBuffer line = new StringBuffer();
@@ -63,13 +63,13 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", prop.getKey(), prop.getValue()));
             }
             line.append("]");
-            logger.info(line);
+            logger.debug(line);
         }
     }
 
     public void dumpSegments(Mesh aMesh) {
         List<Segment> segments = aMesh.getSegmentsList();
-        logger.info("|Segments| = " + segments.size());
+        logger.debug("|Segments| = " + segments.size());
         int i = 0;
         for (Segment s : segments) {
             StringBuffer line = new StringBuffer();
@@ -84,13 +84,13 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", p.getKey(), p.getValue()));
             }
             line.append("]");
-            logger.info(line);
+            logger.debug(line);
         }
     }
 
     public void dumpVertices(Mesh aMesh) {
         List<Vertex> vertices = aMesh.getVerticesList();
-        logger.info("|Vertices| = " + vertices.size());
+        logger.debug("|Vertices| = " + vertices.size());
         int i = 0;
         for (Vertex v : vertices) {
             StringBuffer line = new StringBuffer();
@@ -102,7 +102,7 @@ public class MeshDump {
                 line.append(String.format("%s -> %s, ", p.getKey(), p.getValue()));
             }
             line.append("]");
-            logger.info(line);
+            logger.debug(line);
         }
     }
 }
