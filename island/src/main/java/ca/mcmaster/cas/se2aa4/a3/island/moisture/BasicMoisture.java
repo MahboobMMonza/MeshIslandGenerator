@@ -14,11 +14,11 @@ public class BasicMoisture implements Moisture {
     @Override
     public void moisturizeAllTiles(ComponentCollections collection) {
         for (Tile tile : collection.getAllTiles().values()) {
-            tile.setMoistureLevel(DEFAULT_MOIST);
+            tile.setMoistureLevel(MoistureLevels.DRY_MOISTURE);
             if (tile.getTileType().equals(TileTypes.OCEAN)) {
-                tile.setMoistureLevel(OCEAN_MOIST);
+                tile.setMoistureLevel(MoistureLevels.OCEAN_MOISTURE);
             } else if (tile.getTileType().equals(TileTypes.LAGOON)) {
-                tile.setMoistureLevel(WATER_MOIST);
+                tile.setMoistureLevel(MoistureLevels.LAGOON_MOISTURE);
             }
         }
     }
