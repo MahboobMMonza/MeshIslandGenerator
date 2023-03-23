@@ -172,4 +172,5 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  |  |
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and moisture levels |  |  |  |  |
 | F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line |  |  |  |  |
-| F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | C |
+| F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
+| F20 | [Shapes 3] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
