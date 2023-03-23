@@ -155,7 +155,7 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
 | F01 | Shore level elevation with uniform slightly higher non-shore tiles | Mohammad | 03/21/2023 | 03/23/2023 | C |
-| F02 (Pre-release) | Non-shore level elevations can vary based on some factors/rules (e.g. noise generator) |  |  |  |  |
+| F02 (Pre-release) | Non-shore level elevations can vary based on some factors/rules (e.g. noise generator) | Mohammad | 03/22/2023 | 03/23/2023 | C |
 | F03 | [Shape profile 1] Round islands | |  |  |  |
 | F04 | [Reproducibility 1] Always use the same random seed |  |  |  |  |
 | F05 | [Reproducibility 2]User can provide a random seed to generate with, else use the default seed |  |  |  | D |
