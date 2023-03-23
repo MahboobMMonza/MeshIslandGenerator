@@ -12,6 +12,7 @@ public class Tile {
     private double centreX, centreY;
     private int index, colour, moistureLevel;
     private ElevationLevels elevation;
+    private MoistureLevels moisture;
 
     private List<Integer> neighbourIdxs, edgeIdxs, pointIdxs;
 
@@ -43,12 +44,12 @@ public class Tile {
         this.elevation = elevation;
     }
 
-    public int getMoistureLevel() {
-        return moistureLevel;
+    public int getMoisture() {
+        return moisture;
     }
 
-    public void setMoistureLevel(int moistureLevel) {
-        this.moistureLevel = moistureLevel;
+    public void setMoisture(MoistureLevels moisture) {
+        this.moisture = moisture;
     }
 
     public int getColour() {
