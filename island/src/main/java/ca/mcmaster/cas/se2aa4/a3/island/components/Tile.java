@@ -3,6 +3,7 @@ package ca.mcmaster.cas.se2aa4.a3.island.components;
 import java.util.*;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
+import ca.mcmaster.cas.se2aa4.a3.island.moisture.MoistureLevels;
 
 /**
  * PolyTile
@@ -10,8 +11,9 @@ import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
 public class Tile {
 
     private double centreX, centreY;
-    private int index, colour, moistureLevel;
+    private int index, colour;
     private ElevationLevels elevation;
+    private MoistureLevels moisture;
 
     private List<Integer> neighbourIdxs, edgeIdxs, pointIdxs;
 
@@ -43,12 +45,12 @@ public class Tile {
         this.elevation = elevation;
     }
 
-    public int getMoistureLevel() {
-        return moistureLevel;
+    public MoistureLevels getMoisture() {
+        return moisture;
     }
 
-    public void setMoistureLevel(int moistureLevel) {
-        this.moistureLevel = moistureLevel;
+    public void setMoisture(MoistureLevels moisture) {
+        this.moisture = moisture;
     }
 
     public int getColour() {
