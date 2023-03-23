@@ -43,11 +43,6 @@ public class LagoonShaper implements ShapeFilter {
         } else {
             tile.setTileType(TileTypes.OCEAN);
         }
-        // if (squareDist < outerRadius2) {
-        // tile.setTileType(TileTypes.LAND);
-        // } else {
-        // tile.setTileType(TileTypes.OCEAN);
-        // }
     }
 
     @Override
