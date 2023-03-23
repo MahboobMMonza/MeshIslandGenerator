@@ -21,7 +21,7 @@ public class Convertor {
         String rgba, thick;
         for (final Vert vertex : vertices) {
             colours = vertex.getColour();
-            rgba = String.format("%x", colours);
+            rgba = String.format("%08x", colours);
             thick = String.format("%.2f", vertex.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -55,7 +55,7 @@ public class Convertor {
         String rgba, thick;
         for (Seg segment : segments) {
             colours = segment.getColour();
-            rgba = String.format("%x", colours);
+            rgba = String.format("%08x", colours);
             thick = String.format("%.2f", segment.getThickness());
             colour = Structs.Property.newBuilder()
                     .setKey("rgba_color")
@@ -91,13 +91,13 @@ public class Convertor {
         int centIdx, segIdx;
         for (Poly polygon : polygons) {
             colours = polygon.getFillColour();
-            rgba = String.format("%x", colours);
+            rgba = String.format("%08x", colours);
             fillColour = Structs.Property.newBuilder()
                     .setKey("rgba_fill_color")
                     .setValue(rgba)
                     .build();
             colours = polygon.getBorderColour();
-            rgba = String.format("%x", colours);
+            rgba = String.format("%08x", colours);
             borderColour = Structs.Property.newBuilder()
                     .setKey("rgba_border_color")
                     .setValue(rgba)
