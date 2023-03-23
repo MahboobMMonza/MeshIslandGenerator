@@ -23,7 +23,7 @@ public class IslandCreator {
         ShapeFilter shape = new LagoonShaper(height, width);
         // NoiseTiler noise = new FlatNoise();
         ComponentCollections collection = ComponentCollections.COLLECTION;
-        // Elevation elev = new BasicElevation();
+        Elevation elev = new BasicElevation();
         // Moisture moist = new BasicMoisture();
         // Biome biome = new BasicBiome();
         System.out.println("Converting mesh into COLLECTION");
@@ -43,8 +43,8 @@ public class IslandCreator {
         // Update lakes
         // Update aquifers
         // Update elevation
-        // System.out.println("Assigning elevation");
-        // elev.elevateAllTiles(collection);
+        System.out.println("Assigning elevation");
+        elev.elevateAllTiles(collection);
         // Update rivers
         // Update moisture
         // System.out.println("Assigning moisture");
