@@ -19,8 +19,8 @@ import ca.mcmaster.cas.se2aa4.a3.island.shaper.ShapeFilter;
  */
 public class IslandCreator {
 
-    public static Mesh createIsland(final Mesh mesh, final int height, final int width) {
-        ShapeFilter shape = new LagoonShaper(height, width);
+    public static Mesh createIsland(final Mesh mesh, final int height, final int width, final long seed) {
+        ShapeFilter shape = new LagoonShaper(height, width, seed);
         NoiseTiler noise = new FlatNoise();
         ComponentCollections collection = ComponentCollections.COLLECTION;
         Elevation elev = new BasicElevation();
