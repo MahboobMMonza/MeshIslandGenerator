@@ -21,20 +21,18 @@ public class Main {
         IslandCommandLine cmd = new IslandCommandLine();
         cmd.addOptions();
         MeshFactory factory = new MeshFactory();
-        ModeTypes type = cmd.getModeType(parser,args);
+        ModeTypes type = cmd.getModeType(parser, args);
         if (cmd.hasHelpOption(parser, args) || type.equals(ModeTypes.NONE)) {
-        cmd.getHelp();
-                System.exit(0);
-        } else{
-            String input = cmd.inputCli(parser, args);
-            String output = cmd.outputCli(parser, args);
-            Mesh inputMesh = factory.read(input);
-            int height = getHeight(inputMesh), width = getWidth(inputMesh);
-            System.out.println("Begin island creation");
-            factory.write(createIsland(inputMesh, height, width), output);
-            System.out.println("The file is stored as: " + output);
+            cmd.getHelp();
+            System.exit(0);
         }
-
+        String input = cmd.inputCli(parser, args);
+        String output = cmd.outputCli(parser, args);
+        Mesh inputMesh = factory.read(input);
+        int height = getHeight(inputMesh), width = getWidth(inputMesh);
+        System.out.println("Begin island creation");
+        factory.write(createIsland(inputMesh, height, width), output);
+        System.out.println("The file is stored as: " + output);
     }
 
 }
