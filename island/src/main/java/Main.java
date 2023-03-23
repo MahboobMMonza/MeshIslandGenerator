@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Random;
 
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
@@ -31,7 +32,8 @@ public class Main {
         Mesh inputMesh = factory.read(input);
         int height = getHeight(inputMesh), width = getWidth(inputMesh);
         System.out.println("Begin island creation");
-        factory.write(createIsland(inputMesh, height, width), output);
+        long seed = new Random().nextLong();
+        factory.write(createIsland(inputMesh, height, width, seed), output);
         System.out.println("The file is stored as: " + output);
     }
 
