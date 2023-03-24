@@ -159,9 +159,9 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F03 | [Shapes 1] Lagoon islands | Mohammad | 03/21/2023 | 03/23/2023 | C |
 | F04 | [Reproducibility 1] Always use the same random seed |  |  |  |  |
 | F05 | [Reproducibility 2] User can provide a random seed to generate with, else use the default seed | Khalid | 03/23/2023 | 03/23/2023 | C |
-| F06 | [Lakes 1] Flat lakes where each lake tile has same elevation |  |  |  |  |
+| F06 | [Lakes 1] Flat lakes where each lake tile has same elevation | Samih | 03/24/2023 |  | S |
 | F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  |  |
-| F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed |  |  |  |  |
+| F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 |  | S |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
 | F10 | [Soil absorption 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  |  |
 | F11 | [Soil absorption 3] Singular soil profile, river has effect on absorption ability |  |  |  |  |
