@@ -16,6 +16,18 @@ public class IslandCommandLine {
             "Output Option");
     private static Option seed = new Option("s", "seed", true,
             "Seed");
+    private static Option numOfLakes = new Option("l", "lakes", true,
+            "The number of lakes");
+    private static Option numOfAquifers = new Option("a", "aquifers", true,
+            "The number of aquifers");
+    private static Option numOfRivers = new Option("r", "rivers", true,
+            "The number of rivers");
+    private static Option biome = new Option("b", "biome", true,
+            "Biome type");
+    private static Option elevation = new Option("e", "elevation", true,
+            "Elevation");
+    private static Option shape = new Option("sh", "shape", true,
+            "Shape type");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
@@ -26,6 +38,12 @@ public class IslandCommandLine {
         options.addOption(inputOption);
         options.addOption(outputOption);
         options.addOption(seed);
+        options.addOption(shape);
+        options.addOption(elevation);
+        options.addOption(biome);
+        options.addOption(numOfAquifers);
+        options.addOption(numOfLakes);
+        options.addOption(numOfRivers);
     }
 
     /**
@@ -75,6 +93,72 @@ public class IslandCommandLine {
         } catch (ParseException | NumberFormatException e) {
         }
         return seeds;
+    }
+
+    /**
+     * Gets the Number of Lakes from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Number of Lakes as an integer
+     */
+    public int getNumOfLakes(CommandLineParser parser, String[] args) {
+        int lake = 0;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(numOfLakes)) {
+                lake = Integer.parseInt(cmd.getOptionValue(numOfLakes));
+
+            }
+        } catch (ParseException | NumberFormatException e) {
+            System.err.println(e.getMessage());
+            getHelp();
+        }
+        return lake;
+    }
+
+    /**
+     * Gets the Number of Aquifers from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Number of Aquifers as an integer
+     */
+    public int getNumOfAquifers(CommandLineParser parser, String[] args) {
+        int aquifer = 0;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(numOfAquifers)) {
+                aquifer = Integer.parseInt(cmd.getOptionValue(numOfAquifers));
+
+            }
+        } catch (ParseException | NumberFormatException e) {
+            System.err.println(e.getMessage());
+            getHelp();
+        }
+        return aquifer;
+    }
+
+    /**
+     * Gets the Number of Rivers from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Number of Rivers as an integer
+     */
+    public int getNumOfRivers(CommandLineParser parser, String[] args) {
+        int rivers = 0;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(numOfRivers)) {
+                rivers = Integer.parseInt(cmd.getOptionValue(numOfRivers));
+
+            }
+        } catch (ParseException | NumberFormatException e) {
+            System.err.println(e.getMessage());
+            getHelp();
+        }
+        return rivers;
     }
 
     /**
