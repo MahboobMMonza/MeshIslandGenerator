@@ -159,12 +159,12 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | ID | Feature title | Who? | Start | End | Status |
 |:--:|---------------|------|-------|-----|--------|
 | F01 | Shore level elevation with uniform slightly higher non-shore tiles | Mohammad | 03/21/2023 | 03/23/2023 | C |
-| F02 (Pre-release) | Non-shore level elevations can vary based on some factors/rules (e.g. noise generator) | Mohammad/Khalid | 03/22/2023 | 03/23/2023 | C |
+| F02 | Non-shore level elevations can vary based on some factors/rules (e.g. noise generator) | Mohammad/Khalid | 03/22/2023 | 03/23/2023 | C |
 | F03 | [Shapes 1] Lagoon islands | Mohammad | 03/21/2023 | 03/23/2023 | C |
-| F04 | [Reproducibility 1] Always use the same random seed | Khalid/Samih | 03/23/2023 | 03/23/2023 | C |
-| F05 | [Reproducibility 2] User can provide a random seed to generate with, else use the default seed | Khalid | 03/23/2023 | 03/23/2023 | C |
-| F06 | [Lakes 1] Flat lakes where each lake tile has same elevation | Samih | 03/23/2023 | 03/24/2023  | C|
-| F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  | x |
+| F04 | [Reproducibility 1] Always use the same random seed | Khalid/Samih | 03/23/2023 | 03/23/2023 | S |
+| F05 | [Reproducibility 2] User can provide a random seed to generate with, else use the default seed | Khalid | 03/23/2023 | 03/23/2023 | S |
+| F06 | [Lakes 1] Flat lakes where each lake tile has same elevation | Samih | 03/23/2023 | 03/24/2023  | S |
+| F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  | X |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 |  | S |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
 | F10 | [Soil absorption 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
@@ -177,4 +177,4 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and tile type | Mohammad | 03/22/2023 | 03/23/2023 | C |
 | F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line |  |  |  | B |
 | F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
-| F20 | [Shapes 3] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
+
