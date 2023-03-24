@@ -46,7 +46,7 @@ public class BasicLake implements Lake {
     }
 
     @Override
-    public void assignLakeTiles(ComponentCollections collections) {
+    public Set<Integer> assignLakeTiles(ComponentCollections collections) {
         Set<Integer> lakes = new HashSet<>();
         List<Integer> lakeSources;
         List<Integer> landTilesList = new ArrayList<>(collections.getInnerLand());
@@ -75,8 +75,7 @@ public class BasicLake implements Lake {
         for (Integer lakeSource : lakeSources) {
             propogateLakes(lakeSource, collections, lakes);
         }
-        collections.updateLakes(lakes);
-
+        return lakes;
     }
 
     private void propogateLakes(int sourceIndex, ComponentCollections collections, Set<Integer> lakes) {
