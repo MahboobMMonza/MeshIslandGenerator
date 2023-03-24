@@ -16,6 +16,8 @@ public class BasicElevation implements Elevation {
                 tile.setElevation(ElevationLevels.LAGOON_ELEVATION);
             } else if (collection.getShores().contains(tile.getIndex())) {
                 tile.setElevation(ElevationLevels.LOW_ELEVATION);
+            } else if (collection.getLakes().contains(tile.getIndex())) {
+                tile.setElevation(ElevationLevels.WATER_ELEVATION);
             } else {
                 tile.setElevation(ElevationLevels.MEDIUM_ELEVATION);
             }
