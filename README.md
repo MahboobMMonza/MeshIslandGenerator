@@ -69,6 +69,9 @@ mosser@azrael generator % ls -lh voronoi.mesh
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 voronoi.mesh
 mosser@azrael generator %
 ```
+
+__NOTE__: Some options may be skipped and compensated for by the generator program, but the mesh type and file name must be specified before running.
+
 ### Island
 
 To create an island for an existing mesh, go to the `island` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. the name of the file where the generated mesh will be stored as binary.
@@ -82,8 +85,8 @@ Options
 Files must contain .mesh at the end
 ```
 ```
-mosser@azrael A2 % cd visualizer
-mosser@azrael visualizer % java -jar island.jar -i -h ../generator/sample.mesh -o sample.svg
+mosser@azrael A2 % cd island
+mosser@azrael island % java -jar island.jar -i  ../generator/sample.mesh -o output.mesh
 
 ```
 
@@ -147,6 +150,7 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 
  * __B__: Blocked (requires another feature to be implemented)
  * __C__: Conditionally completed, requires cleanup
+ * __X__: Feature is no longer being developed
  * __D__: Done, requires minimum changes and occasional bug fixes
  * __FF__: Fast-forwarded this feature to combine it with the indicated feature(s)
  * __S__: Started, WIP
@@ -157,20 +161,20 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F01 | Shore level elevation with uniform slightly higher non-shore tiles | Mohammad | 03/21/2023 | 03/23/2023 | C |
 | F02 (Pre-release) | Non-shore level elevations can vary based on some factors/rules (e.g. noise generator) | Mohammad/Khalid | 03/22/2023 | 03/23/2023 | C |
 | F03 | [Shapes 1] Lagoon islands | Mohammad | 03/21/2023 | 03/23/2023 | C |
-| F04 | [Reproducibility 1] Always use the same random seed |  |  |  |  |
+| F04 | [Reproducibility 1] Always use the same random seed | Khalid/Samih | 03/23/2023 | 03/23/2023 | C |
 | F05 | [Reproducibility 2] User can provide a random seed to generate with, else use the default seed | Khalid | 03/23/2023 | 03/23/2023 | C |
 | F06 | [Lakes 1] Flat lakes where each lake tile has same elevation | Samih | 03/23/2023 | 03/24/2023  | C|
-| F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  |  |
+| F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  | x |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 |  | S |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
-| F10 | [Soil absorption 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  |  |
-| F11 | [Soil absorption 3] Singular soil profile, river has effect on absorption ability |  |  |  |  |
-| F12 | [Soil absorption 4] Adjustable soil profile |  |  |  |  |
-| F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles |  |  |  |  |
-| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  |  |
-| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | |
-| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  |  |
+| F10 | [Soil absorption 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
+| F11 | [Soil absorption 3] Singular soil profile, river has effect on absorption ability |  |  |  | B |
+| F12 | [Soil absorption 4] Adjustable soil profile |  |  |  | B |
+| F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles |  |  |  | B |
+| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | B |
+| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | B |
+| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  | B |
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and tile type | Mohammad | 03/22/2023 | 03/23/2023 | C |
-| F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line |  |  |  |  |
+| F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line |  |  |  | B |
 | F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
 | F20 | [Shapes 3] Different shape profiles can be selected on the command line | Mohammad | 03/22/2023 | 03/23/2023 | S |
