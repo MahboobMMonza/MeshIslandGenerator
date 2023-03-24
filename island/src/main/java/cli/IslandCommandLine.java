@@ -66,7 +66,7 @@ public class IslandCommandLine {
      * @return Seed as a long
      */
     public long getSeed(CommandLineParser parser, String[] args) {
-        long seeds = new Random().nextLong();
+        long seeds = new Random().nextLong(0, Long.MAX_VALUE);
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(seed)) {
