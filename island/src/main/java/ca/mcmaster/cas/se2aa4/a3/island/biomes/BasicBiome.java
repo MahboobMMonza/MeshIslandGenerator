@@ -25,6 +25,8 @@ public class BasicBiome implements Biome {
                 tile.setColour(SHORE_COLOUR);
             } else if (tile.getElevation() == ElevationLevels.WATER_ELEVATION) {
                 tile.setColour(WATER_COLOUR);
+            } else if (collection.getAquifers().contains(tile.getIndex())) {
+                tile.setColour(0xFF00FF00);
             }
         }
 

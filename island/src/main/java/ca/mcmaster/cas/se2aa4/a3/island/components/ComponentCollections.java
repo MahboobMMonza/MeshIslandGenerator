@@ -125,6 +125,11 @@ public enum ComponentCollections {
         updateFreshWaterPoints();
     }
 
+    public void updateAquifers(Set<Integer> aquifers) {
+        this.aquifers = aquifers;
+        updateFreshWaterPoints();
+    }
+
     public void updateInnerLand() {
         innerLand = new HashSet<>();
         TileTypes type;
