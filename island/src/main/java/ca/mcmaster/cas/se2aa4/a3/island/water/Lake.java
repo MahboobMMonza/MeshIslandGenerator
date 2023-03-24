@@ -1,8 +1,9 @@
 package ca.mcmaster.cas.se2aa4.a3.island.water;
 
-import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
+import java.util.*;
+import ca.mcmaster.cas.se2aa4.a3.island.components.*;
 
 public interface Lake {
 
-    public void assignLakeTiles(ComponentCollections collection);
+    public Set<Integer> assignLakeTiles(ComponentCollections collection);
 }
