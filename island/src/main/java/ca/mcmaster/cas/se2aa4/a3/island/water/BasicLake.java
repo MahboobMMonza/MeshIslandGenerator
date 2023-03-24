@@ -41,8 +41,8 @@ public class BasicLake implements Lake {
 
     public BasicLake(long seed, int maxLakes) {
         this.rand = new Random(seed);
-        // this.numLakes = rand.nextInt(0, maxLakes + 1);
-        this.numLakes = maxLakes;
+        this.numLakes = rand.nextInt(0, maxLakes + 1);
+
     }
 
     @Override
