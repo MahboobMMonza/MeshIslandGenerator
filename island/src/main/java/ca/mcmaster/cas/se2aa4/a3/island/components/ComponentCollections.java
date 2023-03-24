@@ -119,23 +119,9 @@ public enum ComponentCollections {
         }
     }
 
-    public void updateAquifers() {
-        aquifers = new HashSet<>();
-        for (Tile tile : allTiles.values()) {
-            if (tile.getTileType().equals(TileTypes.AQUIFER)) {
-                aquifers.add(tile.getIndex());
-            }
-        }
-        updateFreshWaterPoints();
-    }
-
-    public void updateLakes() {
-        lakes = new HashSet<>();
-        for (Tile tile : allTiles.values()) {
-            if (tile.getTileType().equals(TileTypes.LAKE)) {
-                lakes.add(tile.getIndex());
-            }
-        }
+    public void updateLakes(Set<Integer> lakes) {
+        this.lakes = lakes;
+        innerLand.removeAll(lakes);
         updateFreshWaterPoints();
     }
 
@@ -144,7 +130,7 @@ public enum ComponentCollections {
         TileTypes type;
         for (Tile tile : allTiles.values()) {
             type = tile.getTileType();
-            if ((type.equals(TileTypes.LAND) || type.equals(TileTypes.AQUIFER))
+            if ((type.equals(TileTypes.LAND))
                     && !shores.contains(tile.getIndex())) {
 
                 innerLand.add(tile.getIndex());
@@ -154,10 +140,8 @@ public enum ComponentCollections {
 
     private void updateFreshWaterPoints() {
         freshWaterPoints = new HashSet<>();
-        TileTypes type;
         for (Tile tile : allTiles.values()) {
-            type = tile.getTileType();
-            if (type.equals(TileTypes.LAKE) || type.equals(TileTypes.AQUIFER)) {
+            if (lakes.contains(tile.getIndex()) || aquifers.contains(tile.getIndex())) {
                 freshWaterPoints.addAll(tile.getPointIdxs());
             }
         }
