@@ -41,6 +41,7 @@ public class IslandCreator {
         collection.updateTileColours(biome.assignTileBiomeColours(collection));
         // Make the necessary modifications to the island, then convert it with
         // convertor and return
+        collection.ready();
         System.out.println("Converting back to mesh");
         return convert(collection, height, width);
     }
