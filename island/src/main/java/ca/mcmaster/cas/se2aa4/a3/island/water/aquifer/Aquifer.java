@@ -1,4 +1,4 @@
-package ca.mcmaster.cas.se2aa4.a3.island.water;
+package ca.mcmaster.cas.se2aa4.a3.island.water.aquifer;
 
 import java.util.Set;
 
