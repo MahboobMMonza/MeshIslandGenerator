@@ -109,6 +109,14 @@ public enum ComponentCollections {
         return allTiles.get(index).getCentreY();
     }
 
+    public double getPointX(int index) {
+        return allPoints.get(index).getX();
+    }
+
+    public double getPointY(int index) {
+        return allPoints.get(index).getY();
+    }
+
     public List<Integer> getTileNeighbourIdxs(int index) {
         return allTiles.get(index).getNeighbourIdxs();
     }
@@ -271,7 +279,7 @@ public enum ComponentCollections {
         for (Tile tile : allTiles.values()) {
             type = tile.getTileType();
             if ((type.equals(TileTypes.LAND))
-            && !shores.contains(tile.getIndex())) {
+                    && !shores.contains(tile.getIndex())) {
                 innerLand.add(tile.getIndex());
             }
         }
