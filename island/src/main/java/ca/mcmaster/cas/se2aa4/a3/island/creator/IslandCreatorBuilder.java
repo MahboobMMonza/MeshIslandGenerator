@@ -15,6 +15,8 @@ public class IslandCreatorBuilder {
     Biome boime;
     Moisture moist;
     ShapeFilter shape;
+    int height;
+    int width;
 
     public IslandCreatorBuilder lake(Lake lake) {
         this.lake = lake;
@@ -43,6 +45,16 @@ public class IslandCreatorBuilder {
 
     public IslandCreatorBuilder shape(ShapeFilter shape) {
         this.shape = shape;
+        return this;
+    }
+
+    public IslandCreatorBuilder height(int height) {
+        this.height = height;
+        return this;
+    }
+
+    public IslandCreatorBuilder width(int width) {
+        this.width = width;
         return this;
     }
 
