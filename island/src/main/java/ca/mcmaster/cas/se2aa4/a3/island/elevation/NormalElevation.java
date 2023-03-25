@@ -11,7 +11,7 @@ public class NormalElevation implements Elevation {
 
     static final double DEFAULT_SHORE_ELEVATION = 0;
 
-    public static Map<Double, ElevationLevels> getElevationRanges() {
+    public Map<Double, ElevationLevels> getElevationRanges() {
         // This map is pseudo constant but declared this way for inheritance
         Map<Double, ElevationLevels> ELEVATION_RANGES = new TreeMap<>();
         ELEVATION_RANGES.put(-3.0, ElevationLevels.OCEAN_ELEVATION);
@@ -27,7 +27,7 @@ public class NormalElevation implements Elevation {
         return Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);
     }
 
-    private static ElevationLevels assignLevel(double normDist) {
+    private ElevationLevels assignLevel(double normDist) {
         for (Map.Entry<Double, ElevationLevels> rangeEntry : getElevationRanges().entrySet()) {
             if (Double.compare(normDist, rangeEntry.getKey()) <= 0) {
                 return rangeEntry.getValue();
