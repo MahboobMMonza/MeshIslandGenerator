@@ -46,10 +46,11 @@ public class BasicLake implements Lake {
     }
 
     @Override
-    public Set<Integer> assignLakeTiles(ComponentCollections collections) {
+    public Set<Integer> assignLakeTiles(ComponentCollections collection) {
         Set<Integer> lakes = new HashSet<>();
         List<Integer> lakeSources;
-        List<Integer> landTilesList = new ArrayList<>(collections.getInnerLand());
+        List<Integer> landTilesList = new ArrayList<>();
+        collection.getInnerLand().forEach((idx) -> landTilesList.add(idx));
         numLakes = Math.min(landTilesList.size(), numLakes);
         while (lakes.size() < numLakes) {
             lakes.add(landTilesList.get(rand.nextInt(0, landTilesList.size())));
@@ -73,7 +74,7 @@ public class BasicLake implements Lake {
         }
 
         for (Integer lakeSource : lakeSources) {
-            propogateLakes(lakeSource, collections, lakes);
+            propogateLakes(lakeSource, collection, lakes);
         }
         return lakes;
     }
@@ -94,8 +95,8 @@ public class BasicLake implements Lake {
             if (node.DIST + 1 > maxDist) {
                 continue;
             }
-            for (Integer neighbour : collections.getAllTiles().get(node.INDEX).getNeighbourIdxs()) {
-                if (!lakes.contains(neighbour) && !collections.getShores().contains(neighbour)) {
+            for (Integer neighbour : collections.getTileNeighbourIdxs(node.INDEX)) {
+                if (!lakes.contains(neighbour) && !collections.isShoreTile(neighbour)) {
                     toVisit.add(new BFSNodeUtil(neighbour, node.DIST + 1));
                     lakes.add(neighbour);
                 }

@@ -3,7 +3,6 @@ package ca.mcmaster.cas.se2aa4.a3.island.shaper;
 import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
-import ca.mcmaster.cas.se2aa4.a3.island.components.Tile;
 import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
 
 /**
@@ -31,25 +30,25 @@ public class LagoonShaper implements ShapeFilter {
         innerRadius = Math.min(centreX, centreY) * (INNER_MODIFIER + delta);
     }
 
-    private void assignTileType(final Tile tile) {
-        double squareDist = distSquare(tile.getCentreX(), tile.getCentreY());
+    private TileTypes assignTileType(final int tileIdx, final ComponentCollections collection) {
+        double squareDist = distSquare(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx));
         // square the radii and use them as distance square comparison
         double innerRadius2 = Math.pow(innerRadius, 2);
         double outerRadius2 = Math.pow(outerRadius, 2);
         if (squareDist < innerRadius2) {
-            tile.setTileType(TileTypes.LAGOON);
+            return TileTypes.LAGOON;
         } else if (squareDist > innerRadius2 && squareDist < outerRadius2) {
-            tile.setTileType(TileTypes.LAND);
+            return TileTypes.LAND;
         } else {
-            tile.setTileType(TileTypes.OCEAN);
+            return TileTypes.OCEAN;
         }
     }
 
     @Override
-    public void shapeAllTiles(final ComponentCollections collection) {
-        for (Tile tile : collection.getAllTiles().values()) {
-            assignTileType(tile);
-        }
+    public Map<Integer, TileTypes> shapeAllTiles(final ComponentCollections collection) {
+        Map<Integer, TileTypes> tileTypes = new HashMap<>();
+        collection.getAllTileIdxs().forEach((tileIdx) -> tileTypes.put(tileIdx, assignTileType(tileIdx, collection)));
+        return tileTypes;
     }
 
     private double distSquare(double x, double y) {

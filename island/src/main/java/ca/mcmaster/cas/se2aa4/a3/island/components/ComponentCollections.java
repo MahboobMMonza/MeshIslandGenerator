@@ -3,6 +3,7 @@ package ca.mcmaster.cas.se2aa4.a3.island.components;
 import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
+import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
 
 /**
  * TileSets
@@ -24,48 +25,140 @@ public enum ComponentCollections {
             innerLand = new HashSet<>(), aquifers = new HashSet<>(), lakes = new HashSet<>(),
             freshWaterPoints = new HashSet<>();
 
-    public Map<Integer, Tile> getAllTiles() {
-        return allTiles;
+    public Iterable<Integer> getAllTileIdxs() {
+        return allTiles.keySet();
     }
 
-    public Map<Integer, Edge> getAllEdges() {
-        return allEdges;
+    public Iterable<Integer> getAllEdgeIdxs() {
+        return allEdges.keySet();
     }
 
-    public Map<Integer, Point> getAllPoints() {
-        return allPoints;
+    public Iterable<Integer> getAllPointIdxs() {
+        return allPoints.keySet();
     }
 
     public boolean isSetup() {
         return setup;
     }
 
-    public Set<Integer> getOceans() {
+    public boolean isOceanTile(int index) {
+        return oceans.contains(index);
+    }
+
+    public boolean isLagoonTile(int index) {
+        return lagoons.contains(index);
+    }
+
+    public boolean isShoreTile(int index) {
+        return shores.contains(index);
+    }
+
+    public boolean isInnerLandTile(int index) {
+        return innerLand.contains(index);
+    }
+
+    public boolean isLakeTile(int index) {
+        return lakes.contains(index);
+    }
+
+    public boolean isAquiferTile(int index) {
+        return aquifers.contains(index);
+    }
+
+    public Iterable<Integer> getOceans() {
         return oceans;
     }
 
-    public Set<Integer> getLagoons() {
+    public Iterable<Integer> getLagoons() {
         return lagoons;
     }
 
-    public Set<Integer> getShores() {
+    public Iterable<Integer> getShores() {
         return shores;
     }
 
-    public Set<Integer> getLakes() {
+    public Iterable<Integer> getLakes() {
         return lakes;
     }
 
-    public Set<Integer> getAquifers() {
+    public Iterable<Integer> getAquifers() {
         return aquifers;
     }
 
-    public Set<Integer> getInnerLand() {
+    public Iterable<Integer> getInnerLand() {
         return innerLand;
     }
 
-    public Set<Integer> getFreshWaterPoints() {
+    public Iterable<Integer> getFreshWaterPoints() {
         return freshWaterPoints;
+    }
+
+    public ElevationLevels getTileElevationLevel(int index) {
+        return allTiles.get(index).getElevation();
+    }
+
+    public double getCentreX(int index) {
+        return allTiles.get(index).getCentreX();
+    }
+
+    public double getCentreY(int index) {
+        return allTiles.get(index).getCentreY();
+    }
+
+    public double getTileCentreY(int index) {
+        return allTiles.get(index).getCentreY();
+    }
+
+    public List<Integer> getTileNeighbourIdxs(int index) {
+        return allTiles.get(index).getNeighbourIdxs();
+    }
+
+    public List<Integer> getTileEdgeIdxs(int index) {
+        return allTiles.get(index).getEdgeIdxs();
+    }
+
+    public List<Integer> getTilePointIdxs(int index) {
+        return allTiles.get(index).getEdgeIdxs();
+    }
+
+    public TileTypes getTileType(int index) {
+        return allTiles.get(index).getTileType();
+    }
+
+    public int getTileColour(int index) {
+        return allTiles.get(index).getColour();
+    }
+
+    public int getEdgeColour(int index) {
+        return allEdges.get(index).getColour();
+    }
+
+    public int getEdgeIndex(int index) {
+        return allEdges.get(index).getIndex();
+    }
+
+    public int getEdgeV1Index(int index) {
+        return allEdges.get(index).getV1Index();
+    }
+
+    public int getEdgeV2Index(int index) {
+        return allEdges.get(index).getV1Index();
+    }
+
+    public float getEdgeThickness(int index) {
+        return allEdges.get(index).getThickness();
+    }
+
+    public Tile getTile(int index) {
+        return allTiles.get(index);
+    }
+
+    public Edge getEdge(int index) {
+        return allEdges.get(index);
+    }
+
+    public Point getPoint(int index) {
+        return allPoints.get(index);
     }
 
     public void setup(Mesh mesh) {
@@ -128,6 +221,22 @@ public enum ComponentCollections {
     public void updateAquifers(Set<Integer> aquifers) {
         this.aquifers = aquifers;
         updateFreshWaterPoints();
+    }
+
+    public void updateElevationLevels(Map<Integer, ElevationLevels> elevations) {
+        allTiles.forEach((index, tile) -> tile.setElevation(elevations.get(index)));
+    }
+
+    public void updateTileTypes(Map<Integer, TileTypes> tileTypes) {
+        allTiles.forEach((index, tile) -> tile.setTileType(tileTypes.get(index)));
+    }
+
+    public void updateTileColours(Map<Integer, Integer> colours) {
+        allTiles.forEach((index, tile) -> tile.setColour(colours.get(index)));
+    }
+
+    public void updateEdgeColours(Map<Integer, Integer> colours) {
+        allEdges.forEach((index, edge) -> edge.setColour(colours.get(index)));
     }
 
     public void updateInnerLand() {

@@ -55,7 +55,8 @@ public class BasicAquifer implements Aquifer {
     public Set<Integer> assignAquiferTiles(ComponentCollections collection) {
         Set<Integer> aquifers = new HashSet<>();
         List<Integer> aquiferSources;
-        List<Integer> landTilesList = new ArrayList<>(collection.getInnerLand());
+        List<Integer> landTilesList = new ArrayList<>();
+        collection.getInnerLand().forEach((idx) -> landTilesList.add(idx));
         numAquifers = Math.min(landTilesList.size(), numAquifers);
         while (aquifers.size() < numAquifers) {
             aquifers.add(landTilesList.get(rand.nextInt(0, landTilesList.size())));
@@ -100,9 +101,8 @@ public class BasicAquifer implements Aquifer {
                 continue;
             }
 
-            for (Integer neighbour : collection.getAllTiles().get(node.INDEX).getNeighbourIdxs()) {
-                if (!aquifers.contains(neighbour) && (collection.getShores().contains(neighbour)
-                        || collection.getInnerLand().contains(neighbour))) {
+            for (Integer neighbour : collection.getTileNeighbourIdxs(node.INDEX)) {
+                if (!aquifers.contains(neighbour) && (collection.isShoreTile(neighbour) || collection.isInnerLandTile(neighbour))) {
                     toVisit.add(new BFSNodeUtil(neighbour, node.DIST + 1));
                     aquifers.add(neighbour);
                 }

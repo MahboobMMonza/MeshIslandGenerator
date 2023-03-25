@@ -26,7 +26,7 @@ public class IslandCreator {
         System.out.println("Converting mesh into COLLECTION");
         collection.setup(mesh);
         System.out.println("Shaping tiles");
-        shape.shapeAllTiles(collection);
+        collection.updateTileTypes(shape.shapeAllTiles(collection));
         System.out.println("Updating tracked sets");
         collection.updateOceans();
         collection.updateShores();
@@ -36,14 +36,14 @@ public class IslandCreator {
         // Update aquifers
         // Update elevation
         System.out.println("Assigning elevation");
-        elev.elevateAllTiles(collection);
+        collection.updateElevationLevels(elev.elevateAllTiles(collection));
         // Update rivers
         // Update moisture
         System.out.println("Assigning moisture");
         moist.moisturizeAllTiles(collection);
         // Assign biome colours
         System.out.println("Assigning biomes");
-        biome.assignBiomes(collection);
+        collection.updateTileColours(biome.assignTileBiomeColours(collection));
         // Make the necessary modifications to the island, then convert it with
         // convertor and return
         System.out.println("Converting back to mesh");

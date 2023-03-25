@@ -3,7 +3,6 @@ package ca.mcmaster.cas.se2aa4.a3.island.shaper;
 import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
-import ca.mcmaster.cas.se2aa4.a3.island.components.Tile;
 import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
 
 /**
@@ -11,8 +10,8 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
  */
 public class RoundShaper implements ShapeFilter {
 
-    static final double GUARANTEED_MODIFIER = 0.55, OUTER_MODIFIER = 0.8, DELTA_BOUND = 0.10;
-    private double centreY, centreX, outerRadius, guaranteedRadius;
+    static final double GUARANTEED_MODIFIER = 0.55, OUTER_MODIFIER = 0.8;
+    private double centreY, centreX, guaranteedRadius;
 
     public RoundShaper(int height, int width) {
         // Centres also serve as midpoints since we start from (0,0)
@@ -20,33 +19,32 @@ public class RoundShaper implements ShapeFilter {
         // enclosed in the given rectangle
         centreY = ((double) height) / 2.0;
         centreX = ((double) width) / 2.0;
-        outerRadius = Math.min(centreX, centreY) * OUTER_MODIFIER;
         guaranteedRadius = Math.min(centreX, centreY) * GUARANTEED_MODIFIER;
     }
 
     public RoundShaper(int height, int width, long seed) {
         this(height, width);
         Random guaranteedRadiusModifier = new Random(seed);
-        double delta = guaranteedRadiusModifier.nextDouble() * DELTA_BOUND;
-        guaranteedRadius = Math.min(centreX, centreY) * (GUARANTEED_MODIFIER + delta);
+        double delta = guaranteedRadiusModifier.nextDouble(GUARANTEED_MODIFIER, OUTER_MODIFIER + Double.MIN_VALUE);
+        guaranteedRadius = Math.min(centreX, centreY) * delta;
     }
 
-    private void assignTileType(final Tile tile) {
-        double squareDist = distSquare(tile.getCentreX(), tile.getCentreY());
+    private TileTypes assignTileType(final int tileIdx, final ComponentCollections collection) {
+        double squareDist = distSquare(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx));
         // square the radii and use them as distance square comparison
         double guaranteedRadius2 = Math.pow(guaranteedRadius, 2);
         if (squareDist < guaranteedRadius2) {
-            tile.setTileType(TileTypes.LAND);
+            return TileTypes.LAND;
         } else {
-            tile.setTileType(TileTypes.OCEAN);
+            return TileTypes.OCEAN;
         }
     }
 
     @Override
-    public void shapeAllTiles(final ComponentCollections collection) {
-        for (Tile tile : collection.getAllTiles().values()) {
-            assignTileType(tile);
-        }
+    public Map<Integer, TileTypes> shapeAllTiles(final ComponentCollections collection) {
+        Map<Integer, TileTypes> tileTypes = new HashMap<>();
+        collection.getAllTileIdxs().forEach((tileIdx) -> tileTypes.put(tileIdx, assignTileType(tileIdx, collection)));
+        return tileTypes;
     }
 
     private double distSquare(double x, double y) {
@@ -61,20 +59,12 @@ public class RoundShaper implements ShapeFilter {
         return OUTER_MODIFIER;
     }
 
-    public static double getDeltaBound() {
-        return DELTA_BOUND;
-    }
-
     public double getCentreY() {
         return centreY;
     }
 
     public double getCentreX() {
         return centreX;
-    }
-
-    public double getOuterRadius() {
-        return outerRadius;
     }
 
     public double getGuaranteedRadius() {
