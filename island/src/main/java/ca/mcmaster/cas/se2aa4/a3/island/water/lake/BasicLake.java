@@ -1,7 +1,8 @@
-package ca.mcmaster.cas.se2aa4.a3.island.water;
+package ca.mcmaster.cas.se2aa4.a3.island.water.lake;
 
 import java.util.*;
 
+import ca.mcmaster.cas.se2aa4.a3.island.water.*;
 import ca.mcmaster.cas.se2aa4.a3.island.components.*;
 
 public class BasicLake implements Lake {
