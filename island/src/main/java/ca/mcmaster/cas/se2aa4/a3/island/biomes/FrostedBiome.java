@@ -9,7 +9,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 /**
  * BasicBiome
  */
-public class ArcticBiome implements Biome {
+public class FrostedBiome implements Biome {
 
     public static final int OCEAN_COLOUR = 0xFF253E92, LAGOON_COLOUR = 0xFF0096FF,
             BARE_COLOUR = 0xFFBBBBBB, WATER_COLOUR = 0xFF82EEFD,
