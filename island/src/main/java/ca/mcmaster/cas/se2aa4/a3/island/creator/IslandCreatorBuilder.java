@@ -58,4 +58,8 @@ public class IslandCreatorBuilder {
         return this;
     }
 
+    public IslandCreator build() {
+        return new IslandCreator(lake, aqua, elev, moist, boime, shape, height, width);
+    }
+
 }
