@@ -9,28 +9,37 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.*;
  */
 public class NormalElevation implements Elevation {
 
-    public static final Map<Double, ElevationLevels> ELEVATION_RANGES;
     static final double DEFAULT_SHORE_ELEVATION = 0;
 
-    static {
-        ELEVATION_RANGES = new TreeMap<>();
+    public static Map<Double, ElevationLevels> getElevationRanges() {
+        // This map is pseudo constant but declared this way for inheritance
+        Map<Double, ElevationLevels> ELEVATION_RANGES = new TreeMap<>();
         ELEVATION_RANGES.put(-3.0, ElevationLevels.OCEAN_ELEVATION);
         ELEVATION_RANGES.put(-2.0, ElevationLevels.LAGOON_ELEVATION);
         ELEVATION_RANGES.put(-1.0, ElevationLevels.WATER_ELEVATION);
         ELEVATION_RANGES.put(1.0 / 3.0, ElevationLevels.LOW_ELEVATION);
         ELEVATION_RANGES.put(2.0 / 3.0, ElevationLevels.MEDIUM_ELEVATION);
         ELEVATION_RANGES.put(Double.MAX_VALUE, ElevationLevels.HIGH_ELEVATION);
+        return ELEVATION_RANGES;
     }
 
     private static double squareDistance(double x1, double y1, double x2, double y2) {
         return Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);
     }
 
+    private static ElevationLevels assignLevel(double normDist) {
+        for (Map.Entry<Double, ElevationLevels> rangeEntry : getElevationRanges().entrySet()) {
+            if (Double.compare(normDist, rangeEntry.getKey()) <= 0) {
+                return rangeEntry.getValue();
+            }
+        }
+        return ElevationLevels.HIGH_ELEVATION;
+    }
+
     @Override
     public Map<Integer, ElevationLevels> elevateAllTiles(ComponentCollections collection) {
         double elev, maxElev = -Double.MAX_VALUE;
         final double finalMaxElev;
-        int comp;
         Iterable<Integer> shores = collection.getShores();
         Map<Integer, Double> tileElevs = new HashMap<>();
         Map<Integer, ElevationLevels> elevationLevels = new HashMap<>();
@@ -46,8 +55,8 @@ public class NormalElevation implements Elevation {
                 for (Integer idx : shores) {
                     elev = Math.max(Math.min(squareDistance(collection.getCentreX(index), collection.getCentreY(index),
                             collection.getCentreX(idx), collection.getCentreY(idx)), elev), Double.MIN_VALUE);
-                    maxElev = Math.max(maxElev, elev);
                 }
+                maxElev = Math.max(maxElev, elev);
                 tileElevs.put(index, elev);
             }
         }
@@ -55,15 +64,7 @@ public class NormalElevation implements Elevation {
         tileElevs.replaceAll(
                 (idx, elevValue) -> (Double.compare(finalMaxElev, Double.MIN_VALUE) == 0) ? DEFAULT_SHORE_ELEVATION
                         : elevValue / finalMaxElev);
-        for (Map.Entry<Integer, Double> elevEntry : tileElevs.entrySet()) {
-            for (Map.Entry<Double, ElevationLevels> levelRanges : ELEVATION_RANGES.entrySet()) {
-                comp = Double.compare(elevEntry.getValue(), levelRanges.getKey());
-                if (comp <= 0) {
-                    elevationLevels.put(elevEntry.getKey(), levelRanges.getValue());
-                    break;
-                }
-            }
-        }
+        tileElevs.forEach((tileidx, elevation) -> elevationLevels.put(tileidx, assignLevel(elevation)));
         return elevationLevels;
     }
 }
