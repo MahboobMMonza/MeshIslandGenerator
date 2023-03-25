@@ -27,11 +27,6 @@ public class IslandCreator {
         collection.setup(mesh);
         System.out.println("Shaping tiles");
         collection.updateTileTypes(shape.shapeAllTiles(collection));
-        System.out.println("Updating tracked sets");
-        collection.updateOceans();
-        collection.updateShores();
-        collection.updateLagoons();
-        System.out.println("Adding noise");
         // Update lakes
         // Update aquifers
         // Update elevation

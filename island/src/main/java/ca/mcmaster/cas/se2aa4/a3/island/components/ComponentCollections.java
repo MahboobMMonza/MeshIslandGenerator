@@ -18,7 +18,7 @@ public enum ComponentCollections {
 
     private Map<Integer, Point> allPoints = new HashMap<>();
 
-    private boolean setup = false;
+    private boolean setup = false, ready = false;
 
     /* tiles that are going to be tracked */
     private Set<Integer> oceans = new HashSet<>(), lagoons = new HashSet<>(), shores = new HashSet<>(),
@@ -149,16 +149,25 @@ public enum ComponentCollections {
         return allEdges.get(index).getThickness();
     }
 
-    public Tile getTile(int index) {
-        return allTiles.get(index);
+    public Map<Integer, Tile> getAllTiles() {
+        if (!ready) {
+            throw new UnsupportedOperationException("Cannot request the Tiles when the island is not ready.");
+        }
+        return allTiles;
     }
 
-    public Edge getEdge(int index) {
-        return allEdges.get(index);
+    public Map<Integer, Edge> getAllEdges() {
+        if (!ready) {
+            throw new UnsupportedOperationException("Cannot request the Edges when the island is not ready.");
+        }
+        return allEdges;
     }
 
-    public Point getPoint(int index) {
-        return allPoints.get(index);
+    public Map<Integer, Point> getAllPoints() {
+        if (!ready) {
+            throw new UnsupportedOperationException("Cannot request the Points when the island is not ready.");
+        }
+        return allPoints;
     }
 
     public void setup(Mesh mesh) {
@@ -177,39 +186,8 @@ public enum ComponentCollections {
         }
     }
 
-    public void updateLagoons() {
-        lagoons = new HashSet<>();
-        for (Tile tile : allTiles.values()) {
-            if (tile.getTileType().equals(TileTypes.LAGOON)) {
-                lagoons.add(tile.getIndex());
-            }
-        }
-    }
-
-    public void updateOceans() {
-        oceans = new HashSet<>();
-        for (Tile tile : allTiles.values()) {
-            if (tile.getTileType().equals(TileTypes.OCEAN)) {
-                oceans.add(tile.getIndex());
-            }
-        }
-    }
-
-    public void updateShores() {
-        TileTypes type;
-        shores = new HashSet<>();
-        for (Tile tile : allTiles.values()) {
-            if (!tile.getTileType().equals(TileTypes.LAND)) {
-                continue;
-            }
-            for (Integer neighbour : tile.getNeighbourIdxs()) {
-                type = allTiles.get(neighbour).getTileType();
-                if (type.equals(TileTypes.LAGOON) || type.equals(TileTypes.OCEAN)) {
-                    shores.add(tile.getIndex());
-                    continue;
-                }
-            }
-        }
+    public void ready() {
+        this.ready = true;
     }
 
     public void updateLakes(Set<Integer> lakes) {
@@ -229,6 +207,10 @@ public enum ComponentCollections {
 
     public void updateTileTypes(Map<Integer, TileTypes> tileTypes) {
         allTiles.forEach((index, tile) -> tile.setTileType(tileTypes.get(index)));
+        updateLagoons();
+        updateOceans();
+        updateShores();
+        updateInnerLand();
     }
 
     public void updateTileColours(Map<Integer, Integer> colours) {
@@ -239,24 +221,58 @@ public enum ComponentCollections {
         allEdges.forEach((index, edge) -> edge.setColour(colours.get(index)));
     }
 
-    public void updateInnerLand() {
-        innerLand = new HashSet<>();
-        TileTypes type;
-        for (Tile tile : allTiles.values()) {
-            type = tile.getTileType();
-            if ((type.equals(TileTypes.LAND))
-                    && !shores.contains(tile.getIndex())) {
-
-                innerLand.add(tile.getIndex());
-            }
-        }
-    }
-
     private void updateFreshWaterPoints() {
         freshWaterPoints = new HashSet<>();
         for (Tile tile : allTiles.values()) {
             if (lakes.contains(tile.getIndex()) || aquifers.contains(tile.getIndex())) {
                 freshWaterPoints.addAll(tile.getPointIdxs());
+            }
+        }
+    }
+
+    private void updateLagoons() {
+        lagoons = new HashSet<>();
+        for (Tile tile : allTiles.values()) {
+            if (tile.getTileType().equals(TileTypes.LAGOON)) {
+                lagoons.add(tile.getIndex());
+            }
+        }
+    }
+
+    private void updateOceans() {
+        oceans = new HashSet<>();
+        for (Tile tile : allTiles.values()) {
+            if (tile.getTileType().equals(TileTypes.OCEAN)) {
+                oceans.add(tile.getIndex());
+            }
+        }
+    }
+
+    private void updateShores() {
+        TileTypes type;
+        shores = new HashSet<>();
+        for (Tile tile : allTiles.values()) {
+            if (!tile.getTileType().equals(TileTypes.LAND)) {
+                continue;
+            }
+            for (Integer neighbour : tile.getNeighbourIdxs()) {
+                type = allTiles.get(neighbour).getTileType();
+                if (type.equals(TileTypes.LAGOON) || type.equals(TileTypes.OCEAN)) {
+                    shores.add(tile.getIndex());
+                    continue;
+                }
+            }
+        }
+    }
+
+    private void updateInnerLand() {
+        innerLand = new HashSet<>();
+        TileTypes type;
+        for (Tile tile : allTiles.values()) {
+            type = tile.getTileType();
+            if ((type.equals(TileTypes.LAND))
+            && !shores.contains(tile.getIndex())) {
+                innerLand.add(tile.getIndex());
             }
         }
     }

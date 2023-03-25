@@ -15,8 +15,7 @@ public class Convertor {
 
     private static List<Vertex> createAllVertices(ComponentCollections collection) {
         List<Vertex> vertices = new ArrayList<>();
-        List<Point> points = new ArrayList<>();
-        collection.getAllPointIdxs().forEach((pointIdx) -> points.add(collection.getPoint(pointIdx)));
+        List<Point> points = new ArrayList<>(collection.getAllPoints().values());
         points.sort(Comparator.comparing(Point::getIndex));
         Vertex v;
         Property colour, thickness, centroid;
@@ -49,10 +48,9 @@ public class Convertor {
     }
 
     private static List<Segment> createAllSegments(ComponentCollections collection) {
-        List<Edge> edges = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>(collection.getAllEdges().values());
         List<Segment> segments = new ArrayList<>();
         Segment s;
-        collection.getAllEdgeIdxs().forEach((edgeIdx) -> edges.add(collection.getEdge(edgeIdx)));
         edges.sort(Comparator.comparing(Edge::getIndex));
         String rgba, thick;
         Property colour, thickness;
@@ -79,12 +77,11 @@ public class Convertor {
     }
 
     private static List<Polygon> createAllPolygons(ComponentCollections collection) {
-        List<Tile> tiles = new ArrayList<>();
+        List<Tile> tiles = new ArrayList<>(collection.getAllTiles().values());
         List<Polygon> polygons = new ArrayList<>();
         Polygon.Builder polyBuilder;
         String fillRGBA, borderRGBA, thick;
         Property fill, border, thickness;
-        collection.getAllTileIdxs().forEach((tileIdx) -> tiles.add(collection.getTile(tileIdx)));
         tiles.sort(Comparator.comparing(Tile::getIndex));
         borderRGBA = String.format("%08x", TRANSPARENT_COLOUR);
         thick = String.format("%.2f", DEFAULT_THICKNESS);
