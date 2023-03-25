@@ -34,7 +34,6 @@ public class NormalElevation implements Elevation {
         Iterable<Integer> shores = collection.getShores();
         Map<Integer, Double> tileElevs = new HashMap<>();
         Map<Integer, ElevationLevels> elevationLevels = new HashMap<>();
-        Tile shoreTile;
         for (int index : collection.getAllTileIdxs()) {
             if (collection.isOceanTile(index)) {
                 elevationLevels.put(index, ElevationLevels.OCEAN_ELEVATION);
@@ -45,9 +44,8 @@ public class NormalElevation implements Elevation {
             } else {
                 elev = Double.MIN_VALUE;
                 for (Integer idx : shores) {
-                    shoreTile = collection.getTile(idx);
                     elev = Math.max(Math.min(squareDistance(collection.getCentreX(index), collection.getCentreY(index),
-                            shoreTile.getCentreX(), shoreTile.getCentreY()), elev), Double.MIN_VALUE);
+                            collection.getCentreX(idx), collection.getCentreY(idx)), elev), Double.MIN_VALUE);
                     maxElev = Math.max(maxElev, elev);
                 }
                 tileElevs.put(index, elev);
