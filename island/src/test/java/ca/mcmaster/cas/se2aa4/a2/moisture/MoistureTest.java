@@ -1,8 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.moisture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 
@@ -14,7 +12,6 @@ public class MoistureTest {
 
     @Test
     public void testNormalGetMoistureRanges() {
-        NormalMoisture moists = new NormalMoisture(SoilTypes.NORMAL);
         Map<Double, MoistureLevels> ranges = NormalMoisture.getMoistureRanges();
 
         assertEquals(MoistureLevels.OCEAN_MOISTURE, ranges.get(-3.0));

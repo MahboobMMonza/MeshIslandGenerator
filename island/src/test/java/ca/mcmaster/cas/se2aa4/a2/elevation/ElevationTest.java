@@ -1,8 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.elevation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 
