@@ -1,4 +1,4 @@
-package ca.mcmaster.cas.se2aa4.a3.island.water;
+package ca.mcmaster.cas.se2aa4.a3.island.water.aquifer;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import ca.mcmaster.cas.se2aa4.a3.island.water.*;
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
 
 public class BasicAquifer implements Aquifer {
