@@ -37,8 +37,8 @@ public class NormalMoisture implements Moisture {
         return MoistureLevels.DRY_MOISTURE;
     }
 
-    private static double squareDistance(double x1, double y1, double x2, double y2) {
-        return Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);
+    private static double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
     }
 
     @Override
@@ -57,9 +57,9 @@ public class NormalMoisture implements Moisture {
             } else if (collection.isLakeTile(tileIdx)) {
                 moistureLevels.put(tileIdx, MoistureLevels.WATER_MOISTURE);
             } else {
-                moist = Double.MIN_VALUE;
+                moist = Double.MAX_VALUE;
                 for (Integer idx : water) {
-                    moist = Math.min(squareDistance(collection.getCentreX(idx), collection.getCentreY(idx),
+                    moist = Math.min(distance(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx),
                             collection.getPointX(idx), collection.getPointY(idx)), moist);
                 }
                 maxMoist = Math.max(maxMoist, moist);
