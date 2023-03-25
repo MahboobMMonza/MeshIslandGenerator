@@ -4,6 +4,7 @@ import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
+import ca.mcmaster.cas.se2aa4.a3.island.moisture.MoistureLevels;
 
 /**
  * TileSets
@@ -95,6 +96,10 @@ public enum ComponentCollections {
 
     public ElevationLevels getTileElevationLevel(int index) {
         return allTiles.get(index).getElevation();
+    }
+
+    public MoistureLevels getTileMoistureLevel(int index) {
+        return allTiles.get(index).getMoisture();
     }
 
     public double getCentreX(int index) {
@@ -211,6 +216,10 @@ public enum ComponentCollections {
 
     public void updateElevationLevels(Map<Integer, ElevationLevels> elevations) {
         allTiles.forEach((index, tile) -> tile.setElevation(elevations.get(index)));
+    }
+
+    public void updateMoistureLevels(Map<Integer, MoistureLevels> moistures) {
+        allTiles.forEach((index, tile) -> tile.setMoisture(moistures.get(index)));
     }
 
     public void updateTileTypes(Map<Integer, TileTypes> tileTypes) {
