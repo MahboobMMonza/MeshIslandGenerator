@@ -23,8 +23,8 @@ public class NormalElevation implements Elevation {
         return ELEVATION_RANGES;
     }
 
-    private static double squareDistance(double x1, double y1, double x2, double y2) {
-        return Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0);
+    private static double distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
     }
 
     private ElevationLevels assignLevel(double normDist) {
@@ -51,9 +51,9 @@ public class NormalElevation implements Elevation {
             } else if (collection.isLakeTile(index)) {
                 elevationLevels.put(index, ElevationLevels.WATER_ELEVATION);
             } else {
-                elev = Double.MIN_VALUE;
+                elev = Double.MAX_VALUE;
                 for (Integer idx : shores) {
-                    elev = Math.max(Math.min(squareDistance(collection.getCentreX(index), collection.getCentreY(index),
+                    elev = Math.max(Math.min(distance(collection.getCentreX(index), collection.getCentreY(index),
                             collection.getCentreX(idx), collection.getCentreY(idx)), elev), Double.MIN_VALUE);
                 }
                 maxElev = Math.max(maxElev, elev);
@@ -64,7 +64,7 @@ public class NormalElevation implements Elevation {
         tileElevs.replaceAll(
                 (idx, elevValue) -> (Double.compare(finalMaxElev, Double.MIN_VALUE) == 0) ? DEFAULT_SHORE_ELEVATION
                         : elevValue / finalMaxElev);
-        tileElevs.forEach((tileidx, elevation) -> elevationLevels.put(tileidx, assignLevel(elevation)));
+        tileElevs.forEach((tileIdx, elevation) -> elevationLevels.put(tileIdx, assignLevel(elevation)));
         return elevationLevels;
     }
 }
