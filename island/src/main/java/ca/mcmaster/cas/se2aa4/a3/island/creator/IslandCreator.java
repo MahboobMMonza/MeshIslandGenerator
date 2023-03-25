@@ -1,16 +1,13 @@
 package ca.mcmaster.cas.se2aa4.a3.island.creator;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
-import ca.mcmaster.cas.se2aa4.a3.island.biomes.BasicBiome;
-import ca.mcmaster.cas.se2aa4.a3.island.biomes.Biome;
+import ca.mcmaster.cas.se2aa4.a3.island.biomes.*;
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
 import static ca.mcmaster.cas.se2aa4.a3.island.convertor.Convertor.*;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.BasicElevation;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.Elevation;
-import ca.mcmaster.cas.se2aa4.a3.island.moisture.BasicMoisture;
-import ca.mcmaster.cas.se2aa4.a3.island.moisture.Moisture;
-import ca.mcmaster.cas.se2aa4.a3.island.shaper.LagoonShaper;
-import ca.mcmaster.cas.se2aa4.a3.island.shaper.ShapeFilter;
+import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
+import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
+import ca.mcmaster.cas.se2aa4.a3.island.shaper.*;
+import ca.mcmaster.cas.se2aa4.a3.island.water.*;
 
 /**
  * IslandCreator
@@ -35,7 +32,7 @@ public class IslandCreator {
         // Update rivers
         // Update moisture
         System.out.println("Assigning moisture");
-        moist.moisturizeAllTiles(collection);
+        collection.updateMoistureLevels(moist.moisturizeAllTiles(collection));
         // Assign biome colours
         System.out.println("Assigning biomes");
         collection.updateTileColours(biome.assignTileBiomeColours(collection));
