@@ -2,7 +2,7 @@ package ca.mcmaster.cas.se2aa4.a3.island.elevation;
 
 import java.util.*;
 
-public class Steep extends NormalElevation {
+public class SteepElevation extends NormalElevation {
 
     @Override
     public Map<Double, ElevationLevels> getElevationRanges() {
