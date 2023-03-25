@@ -7,7 +7,6 @@ import static ca.mcmaster.cas.se2aa4.a3.island.convertor.Convertor.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.*;
-import ca.mcmaster.cas.se2aa4.a3.island.water.*;
 
 /**
  * IslandCreator
