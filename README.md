@@ -164,7 +164,7 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F04 | [Reproducibility 1] Always use the same random seed | Khalid/Samih | 03/23/2023 | 03/23/2023 | S |
 | F05 | [Reproducibility 2] User can provide a random seed to generate with, else use the default seed | Khalid | 03/23/2023 | 03/23/2023 | S |
 | F06 | [Lakes 1] Flat lakes where each lake tile has same elevation | Samih | 03/23/2023 | 03/24/2023  | S |
-| F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  | X |
+| F07 | [Lakes 2]Ability to add more lake profiles |  |  |  | X |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 |  | S |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
 | F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
