@@ -21,35 +21,38 @@ public class IslandCreator {
     private Moisture moisture;
     private Biome biome;
     private ShapeFilter shape;
+    private int height;
+    private int width;
 
-    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, ShapeFilter shape) {
+    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, ShapeFilter shape,
+            int height, int width) {
         this.lake = lake;
         this.aquifer = aquifer;
         this.elevation = elevation;
         this.moisture = moisture;
         this.biome = biome;
         this.shape = shape;
+        this.height = height;
+        this.width = width;
     }
 
-    public Mesh createIsland(final Mesh mesh, final int height, final int width, final long seed) {
-        ShapeFilter shape = new LagoonShaper(height, width, seed);
+    public Mesh createIsland(final Mesh mesh) {
         ComponentCollections collection = ComponentCollections.COLLECTION;
-        Elevation elev = new BasicElevation();
-        Moisture moist = new BasicMoisture();
-        Biome biome = new BasicBiome();
         System.out.println("Converting mesh into COLLECTION");
         collection.setup(mesh);
         System.out.println("Shaping tiles");
         collection.updateTileTypes(shape.shapeAllTiles(collection));
         // Update lakes
+        collection.updateLakes(lake.assignLakeTiles(collection));
         // Update aquifers
+        collection.updateAquifers(aquifer.assignAquiferTiles(collection));
         // Update elevation
         System.out.println("Assigning elevation");
-        collection.updateElevationLevels(elev.elevateAllTiles(collection));
+        collection.updateElevationLevels(elevation.elevateAllTiles(collection));
         // Update rivers
         // Update moisture
         System.out.println("Assigning moisture");
-        collection.updateMoistureLevels(moist.moisturizeAllTiles(collection));
+        collection.updateMoistureLevels(moisture.moisturizeAllTiles(collection));
         // Assign biome colours
         System.out.println("Assigning biomes");
         collection.updateTileColours(biome.assignTileBiomeColours(collection));
