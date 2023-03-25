@@ -88,13 +88,14 @@ public class IslandCommandLine {
      * @return Seed as a long
      */
     public long getSeed(CommandLineParser parser, String[] args) {
-        long seeds = new Random().nextLong(0, Long.MAX_VALUE);
+        long seeds = 0, oldSeeds = new Random().nextLong(0, Long.MAX_VALUE);
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(seed)) {
                 seeds = Long.parseLong(cmd.getOptionValue(seed));
             }
         } catch (ParseException | NumberFormatException e) {
+            seeds = oldSeeds;
         }
         return seeds;
     }
@@ -112,11 +113,9 @@ public class IslandCommandLine {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(numOfLakes)) {
                 lake = Integer.parseInt(cmd.getOptionValue(numOfLakes));
-
             }
         } catch (ParseException | NumberFormatException e) {
-            System.err.println(e.getMessage());
-            getHelp();
+            lake = 0;
         }
         return lake;
     }
@@ -137,8 +136,7 @@ public class IslandCommandLine {
 
             }
         } catch (ParseException | NumberFormatException e) {
-            System.err.println(e.getMessage());
-            getHelp();
+            aquifer = 0;
         }
         return aquifer;
     }
@@ -156,11 +154,9 @@ public class IslandCommandLine {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(numOfRivers)) {
                 rivers = Integer.parseInt(cmd.getOptionValue(numOfRivers));
-
             }
         } catch (ParseException | NumberFormatException e) {
-            System.err.println(e.getMessage());
-            getHelp();
+            rivers = 0;
         }
         return rivers;
     }
@@ -179,7 +175,6 @@ public class IslandCommandLine {
             String modes = cmd.getOptionValue(mode).toUpperCase();
             type = ModeTypes.valueOf(modes);
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            System.out.println("WARNING: A valid mode type was not provided.");
             type = ModeTypes.NONE;
         }
         return type;
@@ -200,7 +195,6 @@ public class IslandCommandLine {
             String soilType = cmd.getOptionValue(soil).toUpperCase();
             type = SoilTypes.valueOf(soilType);
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            System.out.println("WARNING: A valid mode type was not provided.");
             type = SoilTypes.NORMAL;
         }
         return type;
