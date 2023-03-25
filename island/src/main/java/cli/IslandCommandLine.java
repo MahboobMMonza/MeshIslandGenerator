@@ -1,6 +1,7 @@
 package cli;
 
 import java.util.Random;
+import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 
 import org.apache.commons.cli.*;
 
@@ -22,12 +23,14 @@ public class IslandCommandLine {
             "The number of aquifers");
     private static Option numOfRivers = new Option("r", "rivers", true,
             "The number of rivers");
-    private static Option biome = new Option("b", "biome", true,
+    private static Option biome = new Option("b", "biomes", true,
             "Biome type");
-    private static Option elevation = new Option("e", "elevation", true,
+    private static Option elevation = new Option("e", "altitude", true,
             "Elevation");
     private static Option shape = new Option("sh", "shape", true,
             "Shape type");
+    private static Option soil = new Option("so", "soil", true,
+            "Soil Absorption Type");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
@@ -44,6 +47,7 @@ public class IslandCommandLine {
         options.addOption(numOfAquifers);
         options.addOption(numOfLakes);
         options.addOption(numOfRivers);
+        options.addOption(soil);
     }
 
     /**
@@ -177,6 +181,27 @@ public class IslandCommandLine {
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
             System.out.println("WARNING: A valid mode type was not provided.");
             type = ModeTypes.NONE;
+        }
+        return type;
+    }
+
+    /**
+     * Gets the Soil Type from user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Soil Type as an enum
+     */
+
+    public SoilTypes getSoilType(CommandLineParser parser, String[] args) {
+        SoilTypes type = SoilTypes.NORMAL;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            String soilType = cmd.getOptionValue(soil).toUpperCase();
+            type = SoilTypes.valueOf(soilType);
+        } catch (ParseException | IllegalArgumentException | NullPointerException e) {
+            System.out.println("WARNING: A valid mode type was not provided.");
+            type = SoilTypes.NORMAL;
         }
         return type;
     }
