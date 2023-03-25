@@ -167,9 +167,9 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F07 | [Lakes 2]Lakes should slope towards the centre (middle of the lake is deeper than the lake shore) |  |  |  | X |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 |  | S |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
-| F10 | [Soil absorption 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
-| F11 | [Soil absorption 3] Singular soil profile, river has effect on absorption ability |  |  |  | B |
-| F12 | [Soil absorption 4] Adjustable soil profile |  |  |  | B |
+| F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
+| F11 | [Moisture 3] Singular soil profile, river has effect on absorption ability |  |  |  | B |
+| F12 | [Moisture 4] Adjustable soil profile |  |  |  | B |
 | F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles |  |  |  | B |
 | F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | B |
 | F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | B |
