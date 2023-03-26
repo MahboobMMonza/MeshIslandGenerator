@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Random;
 
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
@@ -13,7 +14,6 @@ import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.*;
 import static ca.mcmaster.cas.se2aa4.a3.island.preprocessor.MeshPreprocessor.*;
 
 import cli.IslandCommandLine;
-import cli.ModeTypes;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
@@ -44,12 +44,12 @@ public class Main {
         SoilTypes soilType;
         MeshFactory factory = new MeshFactory();
         cmd.addOptions();
-        ModeTypes type = cmd.getModeType(parser, args);
+        biomeFactory = cmd.getBiomeType(parser, args);
         boolean help = cmd.hasHelpOption(parser, args);
 
-        if (type.equals(ModeTypes.NONE)) {
+        if (biomeFactory == null) {
             if (!help) {
-                System.out.println("WARNING: A valid mode type was not provided.");
+                System.out.println("WARNING: A valid biome type was not provided.");
             }
             cmd.getHelp();
             System.exit(0);
@@ -57,19 +57,28 @@ public class Main {
         input = cmd.inputCli(parser, args);
         output = cmd.outputCli(parser, args);
         seed = cmd.getSeed(parser, args);
+        if (seed == 0) {
+            System.out.println("WARNING: A valid seed was not provided. A random seed will be used.");
+            seed = new Random().nextLong(0, Long.MAX_VALUE);
+        }
         inputMesh = factory.read(input);
         height = getHeight(inputMesh);
         width = getWidth(inputMesh);
         soilType = cmd.getSoilType(parser, args);
         numOfLakes = cmd.getNumOfLakes(parser, args);
         numOfAquifers = cmd.getNumOfAquifers(parser, args);
-        if (type.equals(ModeTypes.LAGOON)) {
-            biomeFactory = new BasicBiomeFactory();
-            moistureFactory = new BasicMoistureFactory();
-            elevationFactory = new BasicElevationFactory();
-            aquiferFactory = new BasicAquiferFactory();
-            lakeFactory = new BasicLakeFactory();
-            shapeFilterFactory = new LagoonShaperFactory();
+        shapeFilterFactory = cmd.getShapeType(parser, args);
+        moistureFactory = cmd.getMoistureType(parser, args);
+        if (biomeFactory != null) {
+            if (biomeFactory instanceof BasicBiomeFactory) {
+                numOfLakes = 0;
+                numOfAquifers = 0;
+                shapeFilterFactory = new LagoonShaperFactory();
+                moistureFactory = new BasicMoistureFactory();
+            }
+            elevationFactory = cmd.getElevationType(parser, args);
+            aquiferFactory = cmd.getAquiferType(parser, args);
+            lakeFactory = cmd.getLakeType(parser, args);
             builder.biome(biomeFactory.createBiome())
                     .moisture(moistureFactory.createMoisture(soilType))
                     .elevation(elevationFactory.createElevationProfile())
