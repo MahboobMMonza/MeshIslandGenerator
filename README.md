@@ -77,23 +77,24 @@ __NOTE__: Some options may be skipped and compensated for by the generator progr
 
 To create an island for an existing mesh, go to the `island` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. the name of the file where the generated mesh will be stored as binary.
 ```
-usage: java -jar island.jar -b <biome type> -i <input file> -o <output
+usage: java -jar island.jar -m <mode> -i <input file> -o <output
             file> [option 1] arg1 [option 2] arg2 ...
 Help
  -a,--aquifers <arg>       The number of aquifers :: MIN = 0
  -at,--aquifertype <arg>   Aquifer type :: Default is Basic
- -b,--biomes <arg>         Biome type :: This is a required option
+ -b,--biomes <arg>         Biome type :: Default is Desert
  -e,--altitude <arg>       Elevation type :: Default is Normal
  -h,--help                 Show usage help
  -i,--input <arg>          Input Option :: This is a required option
  -l,--lakes <arg>          The number of lakes :: MIN = 0
  -lt,--laketype <arg>      Lake type :: Default is Basic
+ -m,--mode <arg>           Mode type :: This is a required option
+ -mt,--moisture <arg>      Moisture type :: Default is Normal
  -o,--output <arg>         Output Option :: This is a required option
  -r,--rivers <arg>         The number of rivers :: MIN = 0
- -s,--seed <arg>           Seed
+ -s,--seed <arg>           Seed :: Provides a random seed if not provided
  -sh,--shape <arg>         Shape type :: Default is Round
  -so,--soil <arg>          Soil Absorption Type :: Default is Normal
- -m, --moisture <arg>      Moisture Type :: Default is basic 
 Files must contain .mesh at the end
 ```
 ```
