@@ -5,10 +5,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
+import ca.mcmaster.cas.se2aa4.a3.island.water.river.River;
 
 public class NormalMoisture implements Moisture {
 
-    static final double DEFAULT_MOISTURE_LEVEL = 1.0, RIVER_MODIFIER = 3.5;
+    static final double DEFAULT_MOISTURE_LEVEL = 1.0, RIVER_MODIFIER = 1.5;
 
     private SoilTypes soilType;
 
@@ -73,7 +74,7 @@ public class NormalMoisture implements Moisture {
                         riverThickness = Math.max(riverThickness, collection.getEdgeThickness(edge));
                     }
                     moist = Math.min(riverMoistureCalculation(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx),
-                            collection.getPointX(riverIdx), collection.getPointY(riverIdx)) * riverThickness, moist);
+                            collection.getPointX(riverIdx), collection.getPointY(riverIdx)) * (riverThickness / River.MIN_INIT_FLOW), moist);
                 }
                 maxMoist = Math.max(maxMoist, moist);
                 moistTiles.put(tileIdx, moist);
