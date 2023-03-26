@@ -195,13 +195,13 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F07 | [Lakes 2]Ability to add more lake profiles | Khalid | 03/25/2023 | 03/26/2023 | C |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 | 03/24/2023 | C |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
-| F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability |  |  |  | B |
-| F11 | [Moisture 3] Singular soil profile, river has effect on absorption ability |  |  |  | B |
-| F12 | [Moisture 4] Adjustable soil profile |  |  |  | B |
-| F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles |  |  |  | B |
-| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | B |
-| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | B |
-| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  | B |
+| F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability | Mohammed/Samih/Khalid | 03/24/2023 | 03/25/2023 | C |
+| F11 | [Moisture 3] Singular soil profile, river has effect on absorption ability | Mohammed | 03/26/2023 | 03/26/2023 | C |
+| F12 | [Moisture 4] Adjustable soil profile | Mohammed/Khalid | 03/24/2023 | 03/26/2023 | C |
+| F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles | Mohammed | 03/26/2023 | 03/26/2023 | C |
+| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | FF |
+| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | FF |
+| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  | FF |
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and tile type | Mohammad | 03/22/2023 | 03/23/2023 | C |
 | F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line | Mohammad/Khalid/Samih | 03/25/2023 | 03/25/2023 | C |
 | F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad/Samih/Khalid | 03/22/2023 | 03/23/2023 | C |
