@@ -8,7 +8,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
 
 public class NormalMoisture implements Moisture {
 
-    static final double DEFAULT_MOISTURE_LEVEL = 1.0;
+    static final double DEFAULT_MOISTURE_LEVEL = 1.0, RIVER_MODIFIER = 3.5;
 
     private SoilTypes soilType;
 
@@ -41,12 +41,17 @@ public class NormalMoisture implements Moisture {
         return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
     }
 
+    private static double riverMoistureCalculation(double x1, double y1, double x2, double y2) {
+        return Math.pow(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0), RIVER_MODIFIER);
+    }
+
     @Override
     public Map<Integer, MoistureLevels> moisturizeAllTiles(ComponentCollections collection) {
         double moist, maxMoist = -Double.MAX_VALUE;
+        double riverThickness;
         Iterable<Integer> tiles = collection.getAllTileIdxs();
         final double finalMaxMoist;
-        Iterable<Integer> water = collection.getFreshWaterPoints();
+        Iterable<Integer> water = collection.getFreshWaterPoints(), river = collection.getRiverPoints();
         Map<Integer, Double> moistTiles = new HashMap<>();
         Map<Integer, MoistureLevels> moistureLevels = new HashMap<>();
         for (int tileIdx : tiles) {
@@ -61,6 +66,14 @@ public class NormalMoisture implements Moisture {
                 for (Integer idx : water) {
                     moist = Math.min(distance(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx),
                             collection.getPointX(idx), collection.getPointY(idx)), moist);
+                }
+                riverThickness = 0;
+                for (int riverIdx : river) {
+                    for (int edge : collection.getTileEdgeIdxs(riverIdx)) {
+                        riverThickness = Math.max(riverThickness, collection.getEdgeThickness(edge));
+                    }
+                    moist = Math.min(riverMoistureCalculation(collection.getCentreX(tileIdx), collection.getCentreY(tileIdx),
+                            collection.getPointX(riverIdx), collection.getPointY(riverIdx)) * riverThickness, moist);
                 }
                 maxMoist = Math.max(maxMoist, moist);
                 moistTiles.put(tileIdx, moist);

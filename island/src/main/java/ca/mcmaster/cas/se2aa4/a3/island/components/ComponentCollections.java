@@ -25,7 +25,7 @@ public enum ComponentCollections {
     /* tiles that are going to be tracked */
     private Set<Integer> oceans = new HashSet<>(), lagoons = new HashSet<>(), shores = new HashSet<>(),
             innerLand = new HashSet<>(), aquifers = new HashSet<>(), lakes = new HashSet<>(),
-            freshWaterPoints = new HashSet<>();
+            freshWaterPoints = new HashSet<>(), riverPoints = new HashSet<>();
 
     public Iterable<Integer> getAllTileIdxs() {
         return allTiles.keySet();
@@ -93,6 +93,10 @@ public enum ComponentCollections {
 
     public Iterable<Integer> getFreshWaterPoints() {
         return freshWaterPoints;
+    }
+
+    public Iterable<Integer> getRiverPoints() {
+        return riverPoints;
     }
 
     public ElevationLevels getTileElevationLevel(int index) {
@@ -207,6 +211,7 @@ public enum ComponentCollections {
     public void updateRivers(PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> riverTiles) {
         for (int i = 0; i < riverTiles.FIRST.FIRST.size(); i++) {
             makeRiverEdges(riverTiles.FIRST.FIRST.get(i), riverTiles.FIRST.SECOND.get(i), riverTiles.SECOND.get(i));
+            riverPoints.addAll(riverTiles.FIRST.FIRST.get(i));
         }
         updateInnerLand();
     }
