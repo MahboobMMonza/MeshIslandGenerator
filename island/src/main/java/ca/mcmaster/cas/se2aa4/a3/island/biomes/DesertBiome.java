@@ -14,7 +14,7 @@ public class DesertBiome implements Biome {
     public static final int OCEAN_COLOUR = 0xFF253E92, LAGOON_COLOUR = 0xFF0096FF,
             SANDWET_COLOUR = 0xFFD89E7A, WATER_COLOUR = 0xFF0092A3,
             SAND_COLOUR = 0xFFF8D19F, DIRT_COLOUR = 0xFFA07040, MOUNTAIN_COLOUR = 0xFF42280E,
-            CACTUS_COLOUR = 0xFF9ACD32;
+            CACTUS_COLOUR = 0xFF9ACD32, PALE_CACTUS_COLOUR = 0xFFAFA77B;
 
     public static final Map<Integer, Map<Integer, Integer>> DESERT_COLOUR_PALETTE;
 
@@ -46,8 +46,8 @@ public class DesertBiome implements Biome {
         medColours.put(MoistureLevels.WATER_MOISTURE.getMoistureID(), WATER_COLOUR);
         medColours.put(MoistureLevels.DRY_MOISTURE.getMoistureID(), SAND_COLOUR);
         medColours.put(MoistureLevels.LOW_MOISTURE.getMoistureID(), SANDWET_COLOUR);
-        medColours.put(MoistureLevels.HUMID_MOISTURE.getMoistureID(), DIRT_COLOUR);
-        medColours.put(MoistureLevels.WET_MOISTURE.getMoistureID(), DIRT_COLOUR);
+        medColours.put(MoistureLevels.HUMID_MOISTURE.getMoistureID(), PALE_CACTUS_COLOUR);
+        medColours.put(MoistureLevels.WET_MOISTURE.getMoistureID(), PALE_CACTUS_COLOUR);
         highColours.put(MoistureLevels.OCEAN_MOISTURE.getMoistureID(), OCEAN_COLOUR);
         highColours.put(MoistureLevels.LAGOON_MOISTURE.getMoistureID(), LAGOON_COLOUR);
         highColours.put(MoistureLevels.WATER_MOISTURE.getMoistureID(), WATER_COLOUR);

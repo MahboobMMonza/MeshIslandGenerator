@@ -102,10 +102,12 @@ public class IslandCommandLine {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption(seed)) {
                 seeds = Long.parseLong(cmd.getOptionValue(seed));
+                return seeds;
             }
         } catch (ParseException | NumberFormatException e) {
         }
-        return seeds;
+        return oldSeeds;
+
     }
 
     /**
