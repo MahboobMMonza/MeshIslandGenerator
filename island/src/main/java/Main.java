@@ -9,6 +9,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.shaper.*;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.*;
+import ca.mcmaster.cas.se2aa4.a3.island.water.river.River;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.*;
 
 import static ca.mcmaster.cas.se2aa4.a3.island.preprocessor.MeshPreprocessor.*;
@@ -33,6 +34,7 @@ public class Main {
         AbstractElevationFactory elevationFactory;
         AbstractMoistureFactory moistureFactory;
         AbstractShaperFactory shapeFilterFactory;
+        River river;
         int numOfLakes;
         int numOfAquifers;
         String input;
