@@ -1,5 +1,5 @@
 package cli;
 
 public enum ElevationTypes {
-    STEEP, NORMAL, BASIC
+    STEEP, NORMAL, BASIC, LOFTY, FLAT
 }

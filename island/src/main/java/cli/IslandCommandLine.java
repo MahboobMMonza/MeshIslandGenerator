@@ -57,6 +57,7 @@ public class IslandCommandLine {
         options.addOption(numOfLakes);
         options.addOption(numOfRivers);
         options.addOption(soil);
+        options.addOption(moistureType);
     }
 
     /**
@@ -106,7 +107,7 @@ public class IslandCommandLine {
             }
         } catch (ParseException | NumberFormatException e) {
         }
-        return oldSeeds;
+        return seeds;
 
     }
 
@@ -230,6 +231,12 @@ public class IslandCommandLine {
                 case NORMAL:
                     elevationFactory = new NormalElevationFactory();
                     return elevationFactory;
+                case FLAT:
+                    elevationFactory = new FlatElevationFactory();
+                    return elevationFactory;
+                case LOFTY:
+                    elevationFactory = new LoftyElevationFactory();
+                    return elevationFactory;
                 default:
                     elevationFactory = new NormalElevationFactory();
                     return elevationFactory;
@@ -345,6 +352,9 @@ public class IslandCommandLine {
                     return shapeFilterFactory;
                 case ROUND:
                     shapeFilterFactory = new RoundShaperFactory();
+                    return shapeFilterFactory;
+                case OVAL:
+                    shapeFilterFactory = new OvalShaperFactory();
                     return shapeFilterFactory;
                 default:
                     shapeFilterFactory = new RoundShaperFactory();

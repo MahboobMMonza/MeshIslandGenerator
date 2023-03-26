@@ -1,5 +1,5 @@
 package cli;
 
 public enum ShapeTypes {
-    RECTANGLE, ROUND
+    RECTANGLE, ROUND, OVAL
 }
