@@ -14,6 +14,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
 public class River {
 
     static final int UNVISITED = -1;
+    static final float MIN_INIT_FLOW = 3.0f, MAX_INIT_FLOW = 5.0f;
 
     private int numRivers;
     private Random rand;
@@ -50,20 +51,24 @@ public class River {
 
     public River(long seed, int maxRivers) {
         rand = new Random(seed);
-        this.numRivers = rand.nextInt(0, maxRivers + 1);
+        numRivers = maxRivers;
+        // this.numRivers = rand.nextInt(0, maxRivers + 1);
     }
 
-    public List<List<Integer>> assignRiverTiles(ComponentCollections collection) {
+    public PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> assignRiverTiles(ComponentCollections collection) {
         // returns a list of tile indices for each river
-        List<Integer> innerLand = new ArrayList<>(), curRiver;
+        List<Integer> innerLand = new ArrayList<>(), curRiver, sourcePoints = new ArrayList<>();
+        List<Integer> tileEdges = new ArrayList<>();
         List<List<Integer>> riverTiles = new ArrayList<>();
         Map<Integer, Integer> parents;
         Set<Integer> riverSources = new HashSet<>();
         PairUtil<PairUtil<Integer, Map<Integer, Integer>>, Boolean> riverProp;
+        List<Float> riverThicknesses = new ArrayList<>();
         collection.getInnerLand().forEach(innerLand::add);
         numRivers = Math.min(innerLand.size(), numRivers);
         while (riverSources.size() < numRivers) {
             riverSources.add(innerLand.get(rand.nextInt(0, innerLand.size())));
+            riverThicknesses.add(rand.nextFloat(MIN_INIT_FLOW, MAX_INIT_FLOW));
         }
         baseProbability = getRangeValue(innerLand.size(), STOPPING_PROBABILTY_RANGES);
         probabilityIncrement = getRangeValue(innerLand.size(), RIVER_PROBABILTY_INCREMENTS);
@@ -82,16 +87,18 @@ public class River {
             if (riverProp.SECOND) {
                 curRiver.add(riverProp.FIRST.FIRST);
             }
+            tileEdges.clear();
+            collection.getTileEdgeIdxs(sourceIdx).forEach(tileEdges::add);
+            sourcePoints.add(tileEdges.get(rand.nextInt(0, tileEdges.size())));
         }
-        return riverTiles;
+        return new PairUtil<>(new PairUtil<>(riverTiles, sourcePoints), riverThicknesses);
     }
 
     private PairUtil<PairUtil<Integer, Map<Integer, Integer>>, Boolean> propogateRivers(int sourceIdx,
             ComponentCollections collection) {
         Deque<Integer> toVisit = new ArrayDeque<>();
         Map<Integer, List<Integer>> categorizedElevationNeighbours = new TreeMap<>();
-        int nodeIdx, nodeElevID, lastNode = sourceIdx, numTiles = UNVISITED;
-        double stopProb = baseProbability;
+        int nodeIdx, nodeElevID, lastNode = sourceIdx, numTiles = UNVISITED, next;
         boolean stop = false, hasLower, endorheic = false;
         Map<Integer, Integer> parentMap = new HashMap<>();
         List<Integer> potentialLowers = new ArrayList<>(), potentialLasts = new ArrayList<>(),
@@ -104,6 +111,8 @@ public class River {
         while (!stop) {
             numTiles++;
             potentialLowers.clear();
+            potentialNexts.clear();
+            potentialLasts.clear();
             nodeIdx = toVisit.pop();
             nodeElevID = collection.getTileElevationLevel(nodeIdx).getElevationID();
             hasLower = false;
@@ -131,19 +140,15 @@ public class River {
             if (stop) {
                 lastNode = potentialLasts.get(rand.nextInt(0, potentialLasts.size()));
             } else if (hasLower) {
-                toVisit.push(potentialLowers.get(rand.nextInt(0, potentialLowers.size())));
-                stopProb = baseProbability;
-            } else if (categorizedElevationNeighbours.get(nodeElevID).size() == 0) {
+                next = potentialLowers.get(rand.nextInt(0, potentialLowers.size()));
+                toVisit.push(next);
+            } else if (potentialNexts.size() == 0) {
                 stop = true;
                 lastNode = nodeIdx;
                 endorheic = true;
             } else {
-                stop = endorheic = ((numTiles <= 0) ? false : rand.nextDouble() < stopProb);
-                stopProb += (numTiles <= 0) ? 0 :  probabilityIncrement;
-                toVisit.push(potentialNexts.get(rand.nextInt(0, potentialNexts.size())));
-                if (stop) {
-                    lastNode = nodeIdx;
-                }
+                next = potentialNexts.get(rand.nextInt(0, potentialNexts.size()));
+                toVisit.push(next);
             }
         }
         return new PairUtil<>(new PairUtil<>(lastNode, parentMap), endorheic);
