@@ -111,7 +111,9 @@ __Command Line Options__
 |  -s,--seed | enter seed value or leave blank for random seed | 
 |  -sh,--shape | round, oval, rectangle | 
 |  -so,--soil | fertile, normal, poor |
-|  -m, --moisture | normal, basic |
+|  -mt, --moisture | normal, basic |
+|  -m,--mode | custom, lagoon |
+```
 ```
 For Custom Mode:
 ```
