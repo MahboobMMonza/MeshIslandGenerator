@@ -90,6 +90,9 @@ public class Main {
         }
         System.out.println("Begin island creation");
         System.out.println("The seed used is: " + seed);
+        System.out.println("The number of lakes is: " + numOfLakes);
+        System.out.println("The number of aquifers is: " + numOfAquifers);
+        System.out.println("The input file is: " + input);
         // Add the necessary options to the builder
         IslandCreator island = builder.build();
         factory.write(island.createIsland(inputMesh), output);
