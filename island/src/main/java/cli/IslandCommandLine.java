@@ -30,15 +30,17 @@ public class IslandCommandLine {
     private static Option aquiferTypes = new Option("at", "aquifertype", true,
             "Aquifer type :: Default is Basic");
     private static Option biome = new Option("b", "biomes", true,
-            "Biome type :: This is a required option");
+            "Biome type :: Default is Desert");
     private static Option elevation = new Option("e", "altitude", true,
             "Elevation type :: Default is Normal");
-    private static Option moistureType = new Option("m", "moisture", true,
+    private static Option moistureType = new Option("mt", "moisture", true,
             "Moisture type :: Default is Normal");
     private static Option shape = new Option("sh", "shape", true,
             "Shape type :: Default is Round");
     private static Option soil = new Option("so", "soil", true,
             "Soil Absorption Type :: Default is Normal");
+    private static Option mode = new Option("m", "mode", true,
+            "Mode type :: This is a required option");
     private static Options options = new Options();
     private static HelpFormatter formatter = new HelpFormatter();
 
@@ -58,6 +60,7 @@ public class IslandCommandLine {
         options.addOption(numOfRivers);
         options.addOption(soil);
         options.addOption(moistureType);
+        options.addOption(mode);
     }
 
     /**
@@ -172,6 +175,25 @@ public class IslandCommandLine {
     }
 
     /**
+     * Gets the Mode Type from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Mode Type as an enum
+     */
+
+    public ModeTypes getModeType(CommandLineParser parser, String[] args) {
+        ModeTypes type = ModeTypes.NONE;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            String modes = cmd.getOptionValue(mode).toUpperCase();
+            type = ModeTypes.valueOf(modes);
+        } catch (ParseException e) {
+        }
+        return type;
+    }
+
+    /**
      * Gets the Biome Type from user
      *
      * @param parser Parser that scans the command line
@@ -180,15 +202,12 @@ public class IslandCommandLine {
      */
     public AbstractBiomeFactory getBiomeType(CommandLineParser parser, String[] args) {
         BiomeTypes type;
+        AbstractBiomeFactory biomeFactory = new RainforestBiomeFactory();
         try {
             CommandLine cmd = parser.parse(options, args);
             String modes = cmd.getOptionValue(biome).toUpperCase();
             type = BiomeTypes.valueOf(modes);
-            AbstractBiomeFactory biomeFactory;
             switch (type) {
-                case LAGOON:
-                    biomeFactory = new BasicBiomeFactory();
-                    return biomeFactory;
                 case DESERT:
                     biomeFactory = new DesertBiomeFactory();
                     return biomeFactory;
@@ -199,10 +218,10 @@ public class IslandCommandLine {
                     biomeFactory = new RainforestBiomeFactory();
                     return biomeFactory;
                 default:
-                    return null;
+                    return biomeFactory;
             }
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            return null;
+            return biomeFactory;
         }
     }
 

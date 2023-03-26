@@ -15,6 +15,8 @@ import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.*;
 import static ca.mcmaster.cas.se2aa4.a3.island.preprocessor.MeshPreprocessor.*;
 
 import cli.IslandCommandLine;
+import cli.ModeTypes;
+
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 
@@ -34,7 +36,9 @@ public class Main {
         AbstractElevationFactory elevationFactory;
         AbstractMoistureFactory moistureFactory;
         AbstractShaperFactory shapeFilterFactory;
+        ModeTypes mode;
         River river;
+        int numOfRivers;
         int numOfLakes;
         int numOfAquifers;
         String input;
@@ -48,10 +52,10 @@ public class Main {
         cmd.addOptions();
         biomeFactory = cmd.getBiomeType(parser, args);
         boolean help = cmd.hasHelpOption(parser, args);
-
-        if (biomeFactory == null) {
+        mode = cmd.getModeType(parser, args);
+        if (mode == ModeTypes.NONE) {
             if (!help) {
-                System.out.println("WARNING: A valid biome type was not provided.");
+                System.out.println("WARNING: A valid mode type was not provided.");
             }
             cmd.getHelp();
             System.exit(0);
@@ -71,29 +75,27 @@ public class Main {
         numOfAquifers = cmd.getNumOfAquifers(parser, args);
         shapeFilterFactory = cmd.getShapeType(parser, args);
         moistureFactory = cmd.getMoistureType(parser, args);
-        if (biomeFactory != null) {
-            if (biomeFactory instanceof BasicBiomeFactory) {
-                numOfLakes = 0;
-                numOfAquifers = 0;
-                shapeFilterFactory = new LagoonShaperFactory();
-                moistureFactory = new BasicMoistureFactory();
-            }
-            elevationFactory = cmd.getElevationType(parser, args);
-            aquiferFactory = cmd.getAquiferType(parser, args);
-            lakeFactory = cmd.getLakeType(parser, args);
-            builder.biome(biomeFactory.createBiome())
-                    .moisture(moistureFactory.createMoisture(soilType))
-                    .elevation(elevationFactory.createElevationProfile())
-                    .aquifer(aquiferFactory.createAquifer(seed, numOfAquifers))
-                    .lake(lakeFactory.createLake(seed, numOfLakes))
-                    .shape(shapeFilterFactory.createShaper(height, width, seed));
-        } else {
-            System.exit(0);
+        numOfRivers = cmd.getNumOfRivers(parser, args);
+        if (mode == ModeTypes.LAGOON) {
+            shapeFilterFactory = new LagoonShaperFactory();
+            moistureFactory = new BasicMoistureFactory();
+            biomeFactory = new BasicBiomeFactory();
         }
+        elevationFactory = cmd.getElevationType(parser, args);
+        aquiferFactory = cmd.getAquiferType(parser, args);
+        lakeFactory = cmd.getLakeType(parser, args);
+        builder.biome(biomeFactory.createBiome())
+                .moisture(moistureFactory.createMoisture(soilType))
+                .elevation(elevationFactory.createElevationProfile())
+                .aquifer(aquiferFactory.createAquifer(seed, numOfAquifers))
+                .lake(lakeFactory.createLake(seed, numOfLakes))
+                .shape(shapeFilterFactory.createShaper(height, width, seed)).height(height).width(width)
+                .river(new River(seed, numOfRivers));
         System.out.println("Begin island creation");
         System.out.println("The seed used is: " + seed);
         System.out.println("The number of lakes is: " + numOfLakes);
         System.out.println("The number of aquifers is: " + numOfAquifers);
+        System.out.println("The number of rivers is: " + numOfRivers);
         System.out.println("The input file is: " + input);
         // Add the necessary options to the builder
         IslandCreator island = builder.build();
