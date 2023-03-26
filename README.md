@@ -64,7 +64,7 @@ mosser@azrael generator %
 For a Voronoi Mesh with some default options for every color:
 ```
 mosser@azrael A2 % cd generator
-mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 1 -st 0.25 -bt 0 -sp 3000 -rl 200 -mt voronoi -f voronoi.mesh 
+mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 1 -st 0.25 -bt 0 -sp 3000 -rl 200 -mt voronoi -f voronoi.mesh
 mosser@azrael generator % ls -lh voronoi.mesh
 
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 voronoi.mesh
@@ -97,7 +97,6 @@ Help
  -so,--soil <arg>          Soil Absorption Type :: Default is Normal
 Files must contain .mesh at the end
 ```
-```
 __Command Line Options__
 | Command | options available |
 |:-------:|-------------------|
@@ -107,14 +106,12 @@ __Command Line Options__
 |  -e,--altitude | normal, steep, flat, lofty, basic |
 |  -l,--lakes | # of lakes |
 |  -lt,--laketype | basic (extensible for future iterations) |
-|  -r,--rivers | # of rivers | 
-|  -s,--seed | enter seed value or leave blank for random seed | 
-|  -sh,--shape | round, oval, rectangle | 
+|  -r,--rivers | # of rivers |
+|  -s,--seed | enter seed value or leave blank for random seed |
+|  -sh,--shape | round, oval, rectangle |
 |  -so,--soil | fertile, normal, poor |
 |  -mt, --moisture | normal, basic |
 |  -m,--mode | custom, lagoon |
-```
-```
 For Custom Mode:
 ```
 mosser@azrael A2 % cd island
@@ -124,7 +121,7 @@ mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sam
 For Lagoon Mode:
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert  -m lagoon
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -m lagoon
 ```
 ### Visualizer
 
@@ -185,7 +182,7 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 #### Status IDs
 
  * __B__: Blocked (requires another feature to be implemented)
- * __C__: Conditionally completed, requires cleanup
+ * __C__: Conditionally completed, can require cleanup but is basically done
  * __X__: Feature is no longer being developed
  * __D__: Done, requires minimum changes and occasional bug fixes
  * __FF__: Fast-forwarded this feature to combine it with the indicated feature(s)
@@ -203,13 +200,13 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F07 | [Lakes 2]Ability to add more lake profiles | Khalid | 03/25/2023 | 03/26/2023 | C |
 | F08 | [Aquifers 1] All aquifers of the same “moisture potential”, randomly distributed | Khalid | 03/24/2023 | 03/24/2023 | C |
 | F09 | [Moisture 1] Simple moisture profile that can be affected by tile type | Mohammad/Samih | 03/22/2023 | 03/23/2023 | C |
-| F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability | Mohammed/Samih/Khalid | 03/24/2023 | 03/25/2023 | C |
-| F11 | [Moisture 3] Singular soil profile, river has effect on absorption ability | Mohammed | 03/26/2023 | 03/26/2023 | C |
-| F12 | [Moisture 4] Adjustable soil profile | Mohammed/Khalid | 03/24/2023 | 03/26/2023 | C |
-| F13 | [Rivers 1] River springs only occur at lake edge tiles/aquifer tiles | Mohammed | 03/26/2023 | 03/26/2023 | C |
-| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | FF |
-| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | FF |
-| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  | FF |
+| F10 | [Moisture 2] Singular soil profile, elevation has effect on the absorption ability | Mohammad/Samih/Khalid | 03/24/2023 | 03/25/2023 | C |
+| F11 | [Moisture 3] Singular soil profile, river has effect on absorption ability | Mohammad | 03/26/2023 | 03/26/2023 | C |
+| F12 | [Moisture 4] Adjustable soil profile | Mohammad/Khalid | 03/24/2023 | 03/26/2023 | C |
+| F13 | [Rivers 1] River springs are controlled by user input | Mohammad | 03/26/2023 | 03/26/2023 | C |
+| F14 | [Rivers 2] Rivers flow to lowest elevation point |  |  |  | FF (F13) |
+| F15 | [Rivers 3] Rivers thicken when 2 streams join together | | | | FF (F13) |
+| F16 | [Rivers 4] “Sink” for the rivers is a lake if not the ocean (lake created separately to the randomly generated ones, and not counted as such) |  |  |  | FF (F13) |
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and tile type | Mohammad | 03/22/2023 | 03/23/2023 | C |
 | F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line | Mohammad/Khalid/Samih | 03/25/2023 | 03/25/2023 | C |
 | F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad/Samih/Khalid | 03/22/2023 | 03/23/2023 | C |
