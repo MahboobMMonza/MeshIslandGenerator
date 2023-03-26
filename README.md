@@ -64,8 +64,9 @@ mosser@azrael generator %
 For a Voronoi Mesh with some default options for every color:
 ```
 mosser@azrael A2 % cd generator
-mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 7 -st 2 -bt 7 -rl 23 -sp 55 -mt voronoi -f voronoi.mesh
+mosser@azrael generator % java -jar generator.jar -dh 1000 -dw 1000 -pb FF0000FF -pf FFFF00FF -sc 000000FF -vc 008080CE -vt 1 -st 0.25 -bt 0 -sp 3000 -rl 200 -mt voronoi -f voronoi.mesh 
 mosser@azrael generator % ls -lh voronoi.mesh
+
 -rw-r--r--  1 mosser  staff    29K 29 Jan 10:52 voronoi.mesh
 mosser@azrael generator %
 ```
@@ -96,7 +97,7 @@ Files must contain .mesh at the end
 ```
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/sample.mesh -o output.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
 
 ```
 
@@ -115,7 +116,7 @@ For debugging, Add option [-X]
 For Normal Mode:
 ```
 mosser@azrael A2 % cd visualizer
-mosser@azrael visualizer % java -jar visualizer.jar -i ../generator/sample.mesh -o sample.svg
+mosser@azrael visualizer % java -jar visualizer.jar -i ../island/sample.mesh -o sample.svg
 
 ... (lots of debug information printed to stdout) ...
 
