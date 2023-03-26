@@ -76,17 +76,27 @@ __NOTE__: Some options may be skipped and compensated for by the generator progr
 
 To create an island for an existing mesh, go to the `island` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. the name of the file where the generated mesh will be stored as binary.
 ```
-usage: java -jar island.jar -m arg0 -i arg1 -o arg2
-Options
- -h,--help           Show usage help
- -i,--input <arg>    Input Option
- -m,--mode <arg>     Default::Mode
- -o,--output <arg>   Output Option
+usage: java -jar island.jar -b <biome type> -i <input file> -o <output
+            file> [option 1] arg1 [option 2] arg2 ...
+Help
+ -a,--aquifers <arg>       The number of aquifers :: MIN = 0
+ -at,--aquifertype <arg>   Aquifer type :: Default is Basic
+ -b,--biomes <arg>         Biome type :: This is a required option
+ -e,--altitude <arg>       Elevation type :: Default is Normal
+ -h,--help                 Show usage help
+ -i,--input <arg>          Input Option :: This is a required option
+ -l,--lakes <arg>          The number of lakes :: MIN = 0
+ -lt,--laketype <arg>      Lake type :: Default is Basic
+ -o,--output <arg>         Output Option :: This is a required option
+ -r,--rivers <arg>         The number of rivers :: MIN = 0
+ -s,--seed <arg>           Seed
+ -sh,--shape <arg>         Shape type :: Default is Round
+ -so,--soil <arg>          Soil Absorption Type :: Default is Normal
 Files must contain .mesh at the end
 ```
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/sample.mesh -o output.mesh
+mosser@azrael island % java -jar island.jar -i  ../generator/sample.mesh -o output.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
 
 ```
 
