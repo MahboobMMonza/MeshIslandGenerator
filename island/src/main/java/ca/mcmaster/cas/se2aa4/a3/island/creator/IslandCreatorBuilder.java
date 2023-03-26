@@ -6,6 +6,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.moisture.Moisture;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.Shaper;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.Aquifer;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.Lake;
+import ca.mcmaster.cas.se2aa4.a3.island.water.river.River;
 
 public class IslandCreatorBuilder {
 
@@ -15,6 +16,7 @@ public class IslandCreatorBuilder {
     Biome boime;
     Moisture moist;
     Shaper shape;
+    River river;
     int height;
     int width;
 
@@ -58,8 +60,13 @@ public class IslandCreatorBuilder {
         return this;
     }
 
+    public IslandCreatorBuilder river(River river) {
+        this.river = river;
+        return this;
+    }
+
     public IslandCreator build() {
-        return new IslandCreator(lake, aqua, elev, moist, boime, shape, height, width);
+        return new IslandCreator(lake, aqua, elev, moist, boime, shape, river, height, width);
     }
 
 }

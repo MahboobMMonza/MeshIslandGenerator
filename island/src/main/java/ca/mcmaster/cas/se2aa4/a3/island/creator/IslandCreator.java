@@ -9,6 +9,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.*;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.*;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.*;
+import ca.mcmaster.cas.se2aa4.a3.island.water.river.*;
 
 /**
  * IslandCreator
@@ -23,8 +24,9 @@ public class IslandCreator {
     private Shaper shape;
     private int height;
     private int width;
+    private River river;
 
-    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, Shaper shape,
+    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, Shaper shape, River river,
             int height, int width) {
         this.lake = lake;
         this.aquifer = aquifer;
@@ -32,6 +34,7 @@ public class IslandCreator {
         this.moisture = moisture;
         this.biome = biome;
         this.shape = shape;
+        this.river = river;
         this.height = height;
         this.width = width;
     }
@@ -50,12 +53,14 @@ public class IslandCreator {
         System.out.println("Assigning elevation");
         collection.updateElevationLevels(elevation.elevateAllTiles(collection));
         // Update rivers
+        collection.updateRivers(river.assignRiverTiles(collection));
         // Update moisture
         System.out.println("Assigning moisture");
         collection.updateMoistureLevels(moisture.moisturizeAllTiles(collection));
         // Assign biome colours
         System.out.println("Assigning biomes");
         collection.updateTileColours(biome.assignTileBiomeColours(collection));
+        collection.updateEdgeColours(biome.assignEdgeBiomeColours(collection));
         // Make the necessary modifications to the island, then convert it with
         // convertor and return
         collection.setReady(true);
