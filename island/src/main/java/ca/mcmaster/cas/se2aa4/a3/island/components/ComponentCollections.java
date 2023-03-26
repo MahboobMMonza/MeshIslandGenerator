@@ -199,8 +199,8 @@ public enum ComponentCollections {
         }
     }
 
-    public void ready() {
-        this.ready = true;
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     public void updateLakes(Set<Integer> lakes) {
