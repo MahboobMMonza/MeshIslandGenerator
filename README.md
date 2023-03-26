@@ -96,6 +96,7 @@ Help
  -m, --moisture <arg>      Moisture Type :: Default is basic 
 Files must contain .mesh at the end
 ```
+```
 __Command Line Options__
 | Command | options available |
 |:-------:|-------------------|
@@ -110,7 +111,7 @@ __Command Line Options__
 |  -sh,--shape | round, oval, rectangle | 
 |  -so,--soil | fertile, normal, poor |
 |  -m, --moisture | normal, basic |
-
+```
 ```
 mosser@azrael A2 % cd island
 mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
