@@ -93,8 +93,24 @@ Help
  -s,--seed <arg>           Seed
  -sh,--shape <arg>         Shape type :: Default is Round
  -so,--soil <arg>          Soil Absorption Type :: Default is Normal
+ -m, --moisture <arg>      Moisture Type :: Default is basic 
 Files must contain .mesh at the end
 ```
+__Command Line Options__
+| Command | options available |
+|:-------:|-------------------|
+|  -a,--aquifers | # of aquifers |
+|  -at,--aquifertype | basic (extensible for future iterations) |
+|  -b,--biomes | frosted, desert, lagoon, rainforest |
+|  -e,--altitude | normal, steep, flat, lofty, basic |
+|  -l,--lakes | # of lakes |
+|  -lt,--laketype | basic (extensible for future iterations) |
+|  -r,--rivers | # of rivers | 
+|  -s,--seed | enter seed value or leave blank for random seed | 
+|  -sh,--shape | round, oval, rectangle | 
+|  -so,--soil | fertile, normal, poor |
+|  -m, --moisture | normal, basic |
+
 ```
 mosser@azrael A2 % cd island
 mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
