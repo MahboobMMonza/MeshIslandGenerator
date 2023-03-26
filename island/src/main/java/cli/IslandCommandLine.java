@@ -18,7 +18,7 @@ public class IslandCommandLine {
     private static Option outputOption = new Option("o", "output", true,
             "Output Option :: This is a required option");
     private static Option seed = new Option("s", "seed", true,
-            "Seed");
+            "Seed :: Provides a random seed if not provided");
     private static Option numOfLakes = new Option("l", "lakes", true,
             "The number of lakes :: MIN = 0");
     private static Option numOfAquifers = new Option("a", "aquifers", true,
