@@ -83,13 +83,13 @@ public class BasicLake implements Lake {
     private void propogateLakes(int sourceIndex, ComponentCollections collections, Set<Integer> lakes) {
         int maxDist = 0;
         double probability = baseProbability;
-        Queue<BFSNodeUtil> toVisit = new ArrayDeque<>();
-        BFSNodeUtil node;
+        Queue<NodeUtil> toVisit = new ArrayDeque<>();
+        NodeUtil node;
         while (rand.nextDouble() > probability) {
             probability += probabilityIncrement;
             maxDist++;
         }
-        toVisit.add(new BFSNodeUtil(sourceIndex, 0));
+        toVisit.add(new NodeUtil(sourceIndex, 0));
         while (!toVisit.isEmpty()) {
             node = toVisit.remove();
 
@@ -98,7 +98,7 @@ public class BasicLake implements Lake {
             }
             for (Integer neighbour : collections.getTileNeighbourIdxs(node.INDEX)) {
                 if (!lakes.contains(neighbour) && !collections.isShoreTile(neighbour)) {
-                    toVisit.add(new BFSNodeUtil(neighbour, node.DIST + 1));
+                    toVisit.add(new NodeUtil(neighbour, node.DIST + 1));
                     lakes.add(neighbour);
                 }
 

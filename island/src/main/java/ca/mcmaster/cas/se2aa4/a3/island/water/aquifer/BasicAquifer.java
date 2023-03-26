@@ -87,14 +87,14 @@ public class BasicAquifer implements Aquifer {
     private void propogateAquifers(int sourceIdx, ComponentCollections collection, Set<Integer> aquifers) {
         int maxDist = 0;
         double probability = baseProbability;
-        Queue<BFSNodeUtil> toVisit = new ArrayDeque<>();
-        BFSNodeUtil node;
+        Queue<NodeUtil> toVisit = new ArrayDeque<>();
+        NodeUtil node;
 
         while (rand.nextDouble() > probability) {
             probability += probabilityIncrement;
             maxDist++;
         }
-        toVisit.add(new BFSNodeUtil(sourceIdx, 0));
+        toVisit.add(new NodeUtil(sourceIdx, 0));
         while (!toVisit.isEmpty()) {
             node = toVisit.remove();
 
@@ -104,7 +104,7 @@ public class BasicAquifer implements Aquifer {
 
             for (Integer neighbour : collection.getTileNeighbourIdxs(node.INDEX)) {
                 if (!aquifers.contains(neighbour) && (collection.isShoreTile(neighbour) || collection.isInnerLandTile(neighbour))) {
-                    toVisit.add(new BFSNodeUtil(neighbour, node.DIST + 1));
+                    toVisit.add(new NodeUtil(neighbour, node.DIST + 1));
                     aquifers.add(neighbour);
                 }
             }
