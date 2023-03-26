@@ -38,6 +38,9 @@ public class IslandCreator {
 
     public Mesh createIsland(final Mesh mesh) {
         ComponentCollections collection = ComponentCollections.COLLECTION;
+        Elevation elev = new BasicElevation();
+        Moisture moist = new BasicMoisture();
+        Biome biome = new BasicBiome();
         System.out.println("Converting mesh into COLLECTION");
         collection.setup(mesh);
         System.out.println("Shaping tiles");
