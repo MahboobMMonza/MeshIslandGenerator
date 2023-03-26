@@ -8,7 +8,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
 /**
  * LagoonShaper creates a lagoon.
  */
-public class LagoonShaper implements ShapeFilter {
+public class LagoonShaper implements Shaper {
 
     static final double INNER_MODIFIER = 0.40, OUTER_MODIFIER = 0.8, DELTA_BOUND = 0.05;
     private double centreY, centreX, outerRadius, innerRadius;

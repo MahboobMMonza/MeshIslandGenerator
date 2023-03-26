@@ -3,7 +3,7 @@ package ca.mcmaster.cas.se2aa4.a3.island.creator;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.Biome;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.Elevation;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.Moisture;
-import ca.mcmaster.cas.se2aa4.a3.island.shaper.ShapeFilter;
+import ca.mcmaster.cas.se2aa4.a3.island.shaper.Shaper;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.Aquifer;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.Lake;
 
@@ -14,7 +14,7 @@ public class IslandCreatorBuilder {
     Aquifer aqua;
     Biome boime;
     Moisture moist;
-    ShapeFilter shape;
+    Shaper shape;
     int height;
     int width;
 
@@ -43,7 +43,7 @@ public class IslandCreatorBuilder {
         return this;
     }
 
-    public IslandCreatorBuilder shape(ShapeFilter shape) {
+    public IslandCreatorBuilder shape(Shaper shape) {
         this.shape = shape;
         return this;
     }

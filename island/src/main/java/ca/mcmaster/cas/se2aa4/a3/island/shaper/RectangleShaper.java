@@ -8,7 +8,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
 /**
  * RectangularShaper creates a rectangular island.
  */
-public class RectangleShaper implements ShapeFilter {
+public class RectangleShaper implements Shaper {
 
     static final double GUARANTEED_MODIFIER = 0.65, OUTER_MODIFIER = 0.8, DELTA_BOUND = 0.10;
     private double centreY, centreX, minX, maxX, minY, maxY;

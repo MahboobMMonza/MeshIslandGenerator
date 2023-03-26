@@ -20,11 +20,11 @@ public class IslandCreator {
     private Elevation elevation;
     private Moisture moisture;
     private Biome biome;
-    private ShapeFilter shape;
+    private Shaper shape;
     private int height;
     private int width;
 
-    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, ShapeFilter shape,
+    IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, Shaper shape,
             int height, int width) {
         this.lake = lake;
         this.aquifer = aquifer;

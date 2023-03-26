@@ -8,7 +8,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.TileTypes;
 /**
  * RoundShaper creates a round island.
  */
-public class RoundShaper implements ShapeFilter {
+public class RoundShaper implements Shaper {
 
     static final double GUARANTEED_MODIFIER = 0.55, OUTER_MODIFIER = 0.8;
     private double centreY, centreX, guaranteedRadius;
