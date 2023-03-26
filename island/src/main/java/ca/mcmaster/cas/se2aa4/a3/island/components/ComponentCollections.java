@@ -4,6 +4,7 @@ import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
+import ca.mcmaster.cas.se2aa4.a3.island.water.*;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.MoistureLevels;
 
 /**
@@ -131,7 +132,7 @@ public enum ComponentCollections {
     }
 
     public List<Integer> getTilePointIdxs(int index) {
-        return allTiles.get(index).getEdgeIdxs();
+        return allTiles.get(index).getPointIdxs();
     }
 
     public TileTypes getTileType(int index) {
@@ -201,6 +202,13 @@ public enum ComponentCollections {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    public void updateRivers(PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> riverTiles) {
+        for (int i = 0; i < riverTiles.FIRST.FIRST.size(); i++) {
+            makeRiverEdges(riverTiles.FIRST.FIRST.get(i), riverTiles.FIRST.SECOND.get(i), riverTiles.SECOND.get(i));
+        }
+        updateInnerLand();
     }
 
     public void updateLakes(Set<Integer> lakes) {
@@ -290,6 +298,55 @@ public enum ComponentCollections {
             if ((type.equals(TileTypes.LAND))
                     && !shores.contains(tile.getIndex())) {
                 innerLand.add(tile.getIndex());
+            }
+        }
+    }
+
+    private void makeRiverEdges(List<Integer> riverTiles, int sourceEdge, float flow) {
+        int sourceTile, destTile, sourceEdgeIdx, traceEdgeIdx, targetEdge;
+        Set<Integer> commonEdges = new HashSet<>(), sourceEdges = new HashSet<>(), destEdges = new HashSet<>();
+        Set<Integer> visitedEdges = new HashSet<>();
+        List<Integer> tileEdges;
+        for (int i = 0; i < riverTiles.size() - 1; i++) {
+            sourceTile = riverTiles.get(i);
+            destTile = riverTiles.get(i + 1);
+            // allTiles.get(sourceTile).setElevation(ElevationLevels.WATER_ELEVATION);
+            commonEdges.clear();
+            sourceEdges.clear();
+            destEdges.clear();
+            sourceEdges.addAll(allTiles.get(sourceTile).getEdgeIdxs());
+            destEdges.addAll(allTiles.get(destTile).getEdgeIdxs());
+            commonEdges.addAll(sourceEdges);
+            commonEdges.retainAll(destEdges);
+            if (sourceTile == destTile) {
+                lakes.add(sourceTile);
+                allTiles.get(sourceTile).setElevation(ElevationLevels.WATER_ELEVATION);
+            } else {
+                tileEdges = allTiles.get(sourceTile).getEdgeIdxs();
+                sourceEdgeIdx = 0;
+                for (int j = 0; j < tileEdges.size(); j++) {
+                    if (tileEdges.get(j) == sourceEdge) {
+                        sourceEdgeIdx = j;
+                        break;
+                    }
+                }
+                targetEdge = 0;
+                for (int j = 0; j < allTiles.get(destTile).getEdgeIdxs().size(); j++) {
+                    targetEdge = allTiles.get(destTile).getEdgeIdxs().get(j);
+                    if (commonEdges.contains(targetEdge)) {
+                        break;
+                    }
+                }
+                traceEdgeIdx = sourceEdgeIdx;
+                traceEdgeIdx = sourceEdgeIdx;
+                while (tileEdges.get(traceEdgeIdx) != targetEdge) {
+                    if (!visitedEdges.contains(tileEdges.get(traceEdgeIdx)))
+                    allEdges.get(tileEdges.get(traceEdgeIdx)).addThickness(flow);
+                    visitedEdges.add(tileEdges.get(traceEdgeIdx));
+                    traceEdgeIdx = (traceEdgeIdx + 1) % tileEdges.size();
+                }
+                sourceEdge = targetEdge;
+                visitedEdges.add(targetEdge);
             }
         }
     }
