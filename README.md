@@ -113,12 +113,17 @@ __Command Line Options__
 |  -so,--soil | fertile, normal, poor |
 |  -m, --moisture | normal, basic |
 ```
+For Custom Mode:
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic 
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic -m custom
 
 ```
-
+For Lagoon Mode:
+```
+mosser@azrael A2 % cd island
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert  -m lagoon
+```
 ### Visualizer
 
 To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. The name of the file to store the visualization (as an SVG image).
