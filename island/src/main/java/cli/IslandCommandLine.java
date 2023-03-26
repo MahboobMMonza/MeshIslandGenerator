@@ -186,8 +186,10 @@ public class IslandCommandLine {
         ModeTypes type = ModeTypes.NONE;
         try {
             CommandLine cmd = parser.parse(options, args);
-            String modes = cmd.getOptionValue(mode).toUpperCase();
-            type = ModeTypes.valueOf(modes);
+            if (cmd.hasOption(mode)) {
+                String modes = cmd.getOptionValue(mode).toUpperCase();
+                type = ModeTypes.valueOf(modes);
+            }
         } catch (ParseException e) {
         }
         return type;
