@@ -14,7 +14,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.elevation.ElevationLevels;
 public class River {
 
     static final int UNVISITED = -1;
-    static final float MIN_INIT_FLOW = 3.0f, MAX_INIT_FLOW = 5.0f;
+    static final float MIN_INIT_FLOW = 0.50f, MAX_INIT_FLOW = 2.0f;
 
     private int numRivers;
     private Random rand;
