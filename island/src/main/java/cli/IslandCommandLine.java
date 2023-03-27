@@ -384,7 +384,7 @@ public class IslandCommandLine {
                     return shapeFilterFactory;
             }
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            System.out.println("WARNING: Invalid Shape Type, Defaulting to Round");
+            System.out.println("WARNING: Shape type will be interpreted as Round/Lagoon");
             shapeFilterFactory = new RoundShaperFactory();
             return shapeFilterFactory;
         }

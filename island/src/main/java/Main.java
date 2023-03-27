@@ -63,7 +63,7 @@ public class Main {
         output = cmd.outputCli(parser, args);
         seed = cmd.getSeed(parser, args);
         if (seed == 0) {
-            System.out.println("WARNING: A valid seed was not provided. A random seed will be used.");
+            if (mode != ModeTypes.LAGOON) System.out.println("WARNING: A valid seed was not provided. A random seed will be used.");
             seed = new Random().nextLong(0, Long.MAX_VALUE);
         }
         inputMesh = factory.read(input);
