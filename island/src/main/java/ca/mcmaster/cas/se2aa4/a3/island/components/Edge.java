@@ -18,12 +18,12 @@ public class Edge {
         v2Index = seg.getV2Idx();
     }
 
-    public int getColour() {
-        return colour;
-    }
-
     public void setColour(int colour) {
         this.colour = colour;
+    }
+
+    public int getColour() {
+        return colour;
     }
 
     public float getThickness() {

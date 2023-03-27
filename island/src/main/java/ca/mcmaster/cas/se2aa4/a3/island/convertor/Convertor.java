@@ -79,10 +79,10 @@ public class Convertor {
     private static List<Polygon> createAllPolygons(ComponentCollections collection) {
         List<Tile> tiles = new ArrayList<>(collection.getAllTiles().values());
         List<Polygon> polygons = new ArrayList<>();
-        tiles.sort(Comparator.comparing(Tile::getIndex));
         Polygon.Builder polyBuilder;
         String fillRGBA, borderRGBA, thick;
         Property fill, border, thickness;
+        tiles.sort(Comparator.comparing(Tile::getIndex));
         borderRGBA = String.format("%08x", TRANSPARENT_COLOUR);
         thick = String.format("%.2f", DEFAULT_THICKNESS);
         border = Property.newBuilder()

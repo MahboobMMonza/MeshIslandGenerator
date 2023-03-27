@@ -1,5 +1,7 @@
 package ca.mcmaster.cas.se2aa4.a3.island.moisture;
 
+import java.util.Map;
+
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
 
 /**
@@ -7,5 +9,5 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
  */
 public interface Moisture {
 
-    public void moisturizeAllTiles(final ComponentCollections collection);
+    public Map<Integer, MoistureLevels> moisturizeAllTiles(final ComponentCollections collection);
 }

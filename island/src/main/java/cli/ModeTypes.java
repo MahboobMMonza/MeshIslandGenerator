@@ -1,5 +1,5 @@
 package cli;
 
 public enum ModeTypes {
-    NONE,LAGOON
+    LAGOON, CUSTOM, NONE
 }

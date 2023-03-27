@@ -37,10 +37,6 @@ public class Tile {
         pointIdxs = new ArrayList<>(verts);
     }
 
-    public ElevationLevels getElevation() {
-        return elevation;
-    }
-
     public void setElevation(ElevationLevels elevation) {
         this.elevation = elevation;
     }
@@ -53,16 +49,20 @@ public class Tile {
         this.moisture = moisture;
     }
 
-    public int getColour() {
-        return colour;
-    }
-
     public void setColour(int colour) {
         this.colour = colour;
     }
 
     public void setTileType(TileTypes type) {
         this.tileType = type;
+    }
+
+    public ElevationLevels getElevation() {
+        return elevation;
+    }
+
+    public int getColour() {
+        return colour;
     }
 
     public double getCentreX() {
