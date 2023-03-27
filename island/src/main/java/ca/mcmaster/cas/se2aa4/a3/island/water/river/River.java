@@ -55,7 +55,8 @@ public class River {
         // this.numRivers = rand.nextInt(0, maxRivers + 1);
     }
 
-    public PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> assignRiverTiles(ComponentCollections collection) {
+    public PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> assignRiverTiles(
+            ComponentCollections collection) {
         // returns a list of tile indices for each river
         List<Integer> innerLand = new ArrayList<>(), curRiver, sourcePoints = new ArrayList<>();
         List<Integer> tileEdges = new ArrayList<>();
@@ -92,6 +93,10 @@ public class River {
             sourcePoints.add(tileEdges.get(rand.nextInt(0, tileEdges.size())));
         }
         return new PairUtil<>(new PairUtil<>(riverTiles, sourcePoints), riverThicknesses);
+    }
+
+    public int getNumRivers() {
+        return numRivers;
     }
 
     private PairUtil<PairUtil<Integer, Map<Integer, Integer>>, Boolean> propogateRivers(int sourceIdx,

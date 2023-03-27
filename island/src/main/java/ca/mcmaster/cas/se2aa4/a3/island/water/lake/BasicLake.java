@@ -80,6 +80,10 @@ public class BasicLake implements Lake {
         return lakes;
     }
 
+    public int getNumLakes() {
+        return numLakes;
+    }
+
     private void propogateLakes(int sourceIndex, ComponentCollections collections, Set<Integer> lakes) {
         int maxDist = 0;
         double probability = baseProbability;
