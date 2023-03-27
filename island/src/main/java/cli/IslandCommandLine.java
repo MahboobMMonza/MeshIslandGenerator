@@ -263,7 +263,7 @@ public class IslandCommandLine {
                     return elevationFactory;
             }
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
-            System.out.println("WARNING: Invalid Elevation Type. Defaulting to Normal");
+            System.out.println("WARNING: Elevation type will be inferred as Normal/Basic");
             AbstractElevationFactory elevationFactory = new NormalElevationFactory();
             return elevationFactory;
         }
@@ -362,31 +362,31 @@ public class IslandCommandLine {
      */
     public AbstractShaperFactory getShapeType(CommandLineParser parser, String[] args) {
         ShapeTypes type = ShapeTypes.ROUND;
-        AbstractShaperFactory shapeFilterFactory;
+        AbstractShaperFactory shaperFactory;
         try {
             CommandLine cmd = parser.parse(options, args);
             String shapeType = cmd.getOptionValue(shape).toUpperCase();
             type = ShapeTypes.valueOf(shapeType);
             switch (type) {
                 case RECTANGLE:
-                    shapeFilterFactory = new RectangleShaperFactory();
-                    return shapeFilterFactory;
+                    shaperFactory = new RectangleShaperFactory();
+                    return shaperFactory;
                 case ROUND:
-                    shapeFilterFactory = new RoundShaperFactory();
-                    return shapeFilterFactory;
+                    shaperFactory = new RoundShaperFactory();
+                    return shaperFactory;
                 case OVAL:
-                    shapeFilterFactory = new OvalShaperFactory();
-                    return shapeFilterFactory;
+                    shaperFactory = new OvalShaperFactory();
+                    return shaperFactory;
                 case LAGOON:
-                    shapeFilterFactory = new LagoonShaperFactory();
+                    shaperFactory = new LagoonShaperFactory();
                 default:
-                    shapeFilterFactory = new RoundShaperFactory();
-                    return shapeFilterFactory;
+                    shaperFactory = new RoundShaperFactory();
+                    return shaperFactory;
             }
         } catch (ParseException | IllegalArgumentException | NullPointerException e) {
             System.out.println("WARNING: Shape type will be interpreted as Round/Lagoon");
-            shapeFilterFactory = new RoundShaperFactory();
-            return shapeFilterFactory;
+            shaperFactory = new RoundShaperFactory();
+            return shaperFactory;
         }
     }
 
