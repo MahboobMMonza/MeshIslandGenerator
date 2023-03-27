@@ -84,6 +84,10 @@ public class BasicAquifer implements Aquifer {
         return aquifers;
     }
 
+    public int getNumAquifers() {
+        return numAquifers;
+    }
+
     private void propogateAquifers(int sourceIdx, ComponentCollections collection, Set<Integer> aquifers) {
         int maxDist = 0;
         double probability = baseProbability;
@@ -103,7 +107,8 @@ public class BasicAquifer implements Aquifer {
             }
 
             for (Integer neighbour : collection.getTileNeighbourIdxs(pair.FIRST)) {
-                if (!aquifers.contains(neighbour) && (collection.isShoreTile(neighbour) || collection.isInnerLandTile(neighbour))) {
+                if (!aquifers.contains(neighbour)
+                        && (collection.isShoreTile(neighbour) || collection.isInnerLandTile(neighbour))) {
                     toVisit.add(new PairUtil<>(neighbour, pair.SECOND + 1));
                     aquifers.add(neighbour);
                 }
