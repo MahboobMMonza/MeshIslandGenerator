@@ -379,6 +379,7 @@ public class IslandCommandLine {
                     return shaperFactory;
                 case LAGOON:
                     shaperFactory = new LagoonShaperFactory();
+                    return shaperFactory;
                 default:
                     shaperFactory = new RoundShaperFactory();
                     return shaperFactory;
