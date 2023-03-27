@@ -104,13 +104,13 @@ __Command Line Options__
 |:-------:|-------------------|
 |  -a,--aquifers | # of aquifers |
 |  -at,--aquifertype | basic (extensible for future iterations) |
-|  -b,--biomes | frosted, desert, lagoon, rainforest |
+|  -b,--biomes | frosted, desert, basic, rainforest |
 |  -e,--altitude | normal, steep, flat, lofty, basic |
 |  -l,--lakes | # of lakes |
 |  -lt,--laketype | basic (extensible for future iterations) |
 |  -r,--rivers | # of rivers |
 |  -s,--seed | seed value (leave blank for random seed) |
-|  -sh,--shape | round, oval, rectangle |
+|  -sh,--shape | round, oval, rectangle, lagoon |
 |  -so,--soil | fertile, normal, poor |
 |  -mt, --moisture | normal, basic |
 |  -m,--mode | custom, lagoon |
