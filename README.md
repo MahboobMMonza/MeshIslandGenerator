@@ -117,7 +117,7 @@ __Command Line Options__
 For Custom Mode:
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 12323894724383 -sh round -e normal -so normal -at basic -lt basic -m custom
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 12323894724383 -r 5 -sh round -e normal -so normal -at basic -lt basic -m custom
 
 ```
 For Lagoon Mode:
