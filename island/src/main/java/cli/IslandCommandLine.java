@@ -377,6 +377,8 @@ public class IslandCommandLine {
                 case OVAL:
                     shapeFilterFactory = new OvalShaperFactory();
                     return shapeFilterFactory;
+                case LAGOON:
+                    shapeFilterFactory = new LagoonShaperFactory();
                 default:
                     shapeFilterFactory = new RoundShaperFactory();
                     return shapeFilterFactory;

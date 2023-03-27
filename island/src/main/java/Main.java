@@ -37,7 +37,6 @@ public class Main {
         AbstractMoistureFactory moistureFactory;
         AbstractShaperFactory shapeFilterFactory;
         ModeTypes mode;
-        River river;
         int numOfRivers;
         int numOfLakes;
         int numOfAquifers;
@@ -76,20 +75,24 @@ public class Main {
         shapeFilterFactory = cmd.getShapeType(parser, args);
         moistureFactory = cmd.getMoistureType(parser, args);
         numOfRivers = cmd.getNumOfRivers(parser, args);
+        elevationFactory = cmd.getElevationType(parser, args);
+        aquiferFactory = cmd.getAquiferType(parser, args);
+        lakeFactory = cmd.getLakeType(parser, args);
         if (mode == ModeTypes.LAGOON) {
             shapeFilterFactory = new LagoonShaperFactory();
             moistureFactory = new BasicMoistureFactory();
             biomeFactory = new BasicBiomeFactory();
+            elevationFactory = new BasicElevationFactory();
+            numOfRivers = numOfAquifers = numOfLakes = 0;
         }
-        elevationFactory = cmd.getElevationType(parser, args);
-        aquiferFactory = cmd.getAquiferType(parser, args);
-        lakeFactory = cmd.getLakeType(parser, args);
         builder.biome(biomeFactory.createBiome())
                 .moisture(moistureFactory.createMoisture(soilType))
                 .elevation(elevationFactory.createElevationProfile())
                 .aquifer(aquiferFactory.createAquifer(seed, numOfAquifers))
                 .lake(lakeFactory.createLake(seed, numOfLakes))
-                .shape(shapeFilterFactory.createShaper(height, width, seed)).height(height).width(width)
+                .shape(shapeFilterFactory.createShaper(height, width, seed))
+                .height(height)
+                .width(width)
                 .river(new River(seed, numOfRivers));
         System.out.println("Begin island creation");
         System.out.println("The seed used is: " + seed);
