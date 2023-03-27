@@ -98,7 +98,7 @@ Help
 Files must contain .mesh at the end
 ```
 __Command Line Options__
-| Command | options available |
+| Command | Options Available / Description |
 |:-------:|-------------------|
 |  -a,--aquifers | # of aquifers |
 |  -at,--aquifertype | basic (extensible for future iterations) |
@@ -107,7 +107,7 @@ __Command Line Options__
 |  -l,--lakes | # of lakes |
 |  -lt,--laketype | basic (extensible for future iterations) |
 |  -r,--rivers | # of rivers |
-|  -s,--seed | enter seed value or leave blank for random seed |
+|  -s,--seed | seed value (leave blank for random seed) |
 |  -sh,--shape | round, oval, rectangle |
 |  -so,--soil | fertile, normal, poor |
 |  -mt, --moisture | normal, basic |
@@ -115,17 +115,17 @@ __Command Line Options__
 For Custom Mode:
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 1234 -sh round -e normal -so normal -at basic -lt basic -m custom
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -l 5 -a 5 -s 12323894724383 -sh round -e normal -so normal -at basic -lt basic -m custom
 
 ```
 For Lagoon Mode:
 ```
 mosser@azrael A2 % cd island
-mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh -b desert -m lagoon
+mosser@azrael island % java -jar island.jar -i  ../generator/voronoi.mesh -o sample.mesh --mode lagoon
 ```
 ### Visualizer
 
-To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product multiple arguments, each with it's own switch as described below. The name of the file to store the visualization (as an SVG image).
+To visualize an existing mesh, go to the `visualizer` directory, and use `java -jar` to run the product. The product multiple arguments, each with its own switch as described below. The name of the file to store the visualization (as an SVG image).
 ```
 usage: java -jar visualizer/visualizer.jar [-i] inputfile [-o] outputfile
 Help
