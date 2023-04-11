@@ -6,9 +6,9 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 /**
- * BasicEdgeArgumentTest
+ * BasicEdgeTest
  */
-public class BasicEdgeArgumentTest {
+public class BasicEdgeTest {
 
     private BasicEdge<Integer> basic;
 
