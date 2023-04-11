@@ -58,7 +58,7 @@ public class BasicBiEdge<T extends Number & Comparable<T>> implements VersatileE
         if (nodeIdx < 0) {
             throw new IllegalArgumentException("Cannot change index of a node to a negative number.");
         }
-        n1Index = nodeIdx;
+        n2Index = nodeIdx;
     }
 
     @Override
