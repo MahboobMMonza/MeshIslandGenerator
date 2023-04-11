@@ -15,6 +15,11 @@ public class BasicNode implements Node {
         index = -1;
     }
 
+    public BasicNode(int index) {
+        this();
+        setIndex(index);
+    }
+
     @Override
     public int getIndex() {
         return index;
