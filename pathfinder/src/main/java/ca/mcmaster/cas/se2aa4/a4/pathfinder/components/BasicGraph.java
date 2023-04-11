@@ -48,7 +48,9 @@ public class BasicGraph<T extends Number & Comparable<T>> implements Graph<T> {
         numNodes = allNodes.size();
         allNeighbouringEdges = new ArrayList<>(numNodes);
         // Reset the adjacencies whenever nodes are set
-        setAllListDefaults(allNeighbouringEdges, new ArrayList<>(), numNodes);
+        for (int i = 0; i < numNodes; i++) {
+            allNeighbouringEdges.add(new ArrayList<>());
+        }
     }
 
     @Override
