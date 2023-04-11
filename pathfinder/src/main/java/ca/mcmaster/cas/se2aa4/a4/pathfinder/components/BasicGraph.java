@@ -1,5 +1,7 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.components;
 
+import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.Utility.*;
+
 import java.util.*;
 
 /**
@@ -46,9 +48,7 @@ public class BasicGraph<T extends Number & Comparable<T>> implements Graph<T> {
         numNodes = allNodes.size();
         allNeighbouringEdges = new ArrayList<>(numNodes);
         // Reset the adjacencies whenever nodes are set
-        for (int i = 0; i < numNodes; i++) {
-            allNeighbouringEdges.set(i, new ArrayList<>());
-        }
+        setAllListDefaults(allNeighbouringEdges, new ArrayList<>(), numNodes);
     }
 
     @Override
