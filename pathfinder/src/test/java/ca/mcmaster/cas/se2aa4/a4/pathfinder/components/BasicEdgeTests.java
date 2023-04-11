@@ -6,9 +6,9 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 /**
- * BasicEdgeTest
+ * BasicEdgeTests
  */
-public class BasicEdgeTest {
+public class BasicEdgeTests {
 
     private BasicEdge<Integer> basic;
 
@@ -67,6 +67,13 @@ public class BasicEdgeTest {
         basic.setCost(1, 4);
         Optional<Integer> cost = basic.getCost(basic.getN1Idx());
         assertEquals(cost.get(), 4);
+    }
+
+    @Test
+    public void updateSourceNullCost_OptionalEmptySucceeds() {
+        basic.setCost(1, null);
+        Optional<Integer> cost = basic.getCost(basic.getN1Idx());
+        assertTrue(cost.isEmpty());
     }
 
     @Test
