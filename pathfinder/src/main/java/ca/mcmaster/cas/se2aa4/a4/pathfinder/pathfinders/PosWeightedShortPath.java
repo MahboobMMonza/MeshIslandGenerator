@@ -1,6 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.pathfinders;
 
-import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.Utility.*;
+import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.PathReconstructor.*;
 
 import java.util.*;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.PathInfoTriple;
@@ -145,12 +145,14 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
 
     void resetAllLists(int numNodes) {
         this.numNodes = numNodes;
-        costs.ensureCapacity(numNodes);
-        visited.ensureCapacity(numNodes);
-        incomingEdgeIdxs.ensureCapacity(numNodes);
-        setAllListDefaults(costs, infinity, numNodes);
-        setAllListDefaults(visited, false, numNodes);
-        setAllListDefaults(incomingEdgeIdxs, NO_INCOMING_EDGE, numNodes);
+        costs = new ArrayList<>(numNodes);
+        visited = new ArrayList<>(numNodes);
+        incomingEdgeIdxs = new ArrayList<>(numNodes);
+        for (int i = 0; i < numNodes; i++) {
+            costs.add(infinity);
+            visited.add(false);
+            incomingEdgeIdxs.add(NO_INCOMING_EDGE);
+        }
     }
 
     void dijkstra(Graph<T> graph, int sourceNodeIdx) {
