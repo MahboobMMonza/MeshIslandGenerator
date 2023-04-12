@@ -51,6 +51,15 @@ public class UnweightedShortPathTest {
     }
 
     @Test
+    public void emptyGraph_AllEmptySucceeds() {
+        Graph<Integer> graph = new BasicGraph<>();
+        Pathfinder<Integer, Integer> pathfinder = new UnweightedShortPath<>();
+        PathInfoTriple<Integer> info = pathfinder.findAllSourcePaths(graph, 0);
+        assertTrue(info.getPathEdgeIdxs().isEmpty());
+        assertTrue(info.getPathCosts().isEmpty());
+    }
+
+    @Test
     public void directedNullEdgeCostShortestPath_AllMatchSucceeds() {
         BasicGraph<Integer> graph = new BasicGraph<>();
         List<VersatileEdge<Integer>> edges = new ArrayList<>();
