@@ -118,10 +118,10 @@ public class Convertor {
                 segIdx = Collections.binarySearch(segments, seg);
                 builder = builder.addSegmentIdxs(segIdx);
             }
-            seg = new Segment(polyVerts.get(0)[0], polyVerts.get(0)[1],
-                    polyVerts.get(polyVerts.size() - 1)[0], polyVerts.get(polyVerts.size() - 1)[1]);
-            segIdx = Collections.binarySearch(segments, seg);
-            builder = builder.addSegmentIdxs(segIdx);
+            // seg = new Segment(polyVerts.get(0)[0], polyVerts.get(0)[1],
+            //         polyVerts.get(polyVerts.size() - 1)[0], polyVerts.get(polyVerts.size() - 1)[1]);
+            // segIdx = Collections.binarySearch(segments, seg);
+            // builder = builder.addSegmentIdxs(segIdx);
             for (double[] neighbourCentroid : polygon.getNeigbourList()) {
                 cent = new Vertex(neighbourCentroid[0], neighbourCentroid[1]);
                 centIdx = Collections.binarySearch(vertices, cent);

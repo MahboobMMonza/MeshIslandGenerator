@@ -75,9 +75,9 @@ public class GridGenerator implements Generator {
                 mesh.addSeg(s);
             }
             // Add the segment that connects the first vertex with the last one.
-            s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0],
-                    vertices.get(vertices.size() - 1)[1]);
-            mesh.addSeg(s);
+            // s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0],
+            //         vertices.get(vertices.size() - 1)[1]);
+            // mesh.addSeg(s);
             mesh.addPoly(p);
         }
     }
@@ -132,6 +132,7 @@ public class GridGenerator implements Generator {
             vertices.add(new double[] { polygon.getCentroidX() - increment, polygon.getCentroidY() - increment });
             vertices.add(new double[] { polygon.getCentroidX() - increment, polygon.getCentroidY() + increment });
             vertices.add(new double[] { polygon.getCentroidX() + increment, polygon.getCentroidY() + increment });
+            vertices.add(new double[] { polygon.getCentroidX() + increment, polygon.getCentroidY() - increment });
             polygon.setVertices(vertices);
         }
     }
