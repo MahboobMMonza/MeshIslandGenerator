@@ -27,7 +27,7 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
 
         @Override
         public int compareTo(NodeDistPair otherPair) {
-            return compareCosts(cost, otherPair.cost);
+            return this.cost.compareTo(otherPair.cost);
         }
     }
 
@@ -39,7 +39,6 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
     ArrayList<Integer> incomingEdgeIdxs;
     ArrayList<Boolean> visited;
     int numNodes;
-    boolean reverseOrder;
 
     public PosWeightedShortPath(Class<T> nonNullCostClass) {
         if (nonNullCostClass == null) {
@@ -50,8 +49,8 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
                 && !(nonNullCostClass.equals(Float.class))) {
             throw new UnsupportedOperationException(
                     "Cannot create a PosWeightedGraph for versatile edges with cost type '"
-                            + nonNullCostClass.getClass().getName()
-                            + "'");
+                            + nonNullCostClass.getName()
+                            + "'.");
         }
         // Should always work
         if (nonNullCostClass.equals(Integer.class)) {
@@ -67,50 +66,39 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
             zero = (T) Float.valueOf(0f);
             infinity = (T) Float.valueOf(Float.POSITIVE_INFINITY);
         }
-        reverseOrder = false;
-    }
-
-    public PosWeightedShortPath(Class<T> nonNullCostClass, boolean reverseOrder) {
-        this(nonNullCostClass);
-        this.reverseOrder = reverseOrder;
     }
 
     boolean checkValidGraph(Graph<T> graph) {
         T edgeCost = null;
+        boolean checker = true;
         for (VersatileEdge<T> edge : graph.getAllEdges()) {
             if (!edge.getCost(edge.getN1Idx()).isEmpty()) {
                 edgeCost = edge.getCost(edge.getN1Idx()).get();
-                break;
+                checker &= edgeCost.compareTo(zero) > 0;
             }
             if (!edge.getCost(edge.getN2Idx()).isEmpty()) {
                 edgeCost = edge.getCost(edge.getN2Idx()).get();
-                break;
+                checker &= edgeCost.compareTo(zero) > 0;
             }
         }
-        if (edgeCost == null) {
-            return true;
-        }
-        return edgeCost.getClass().equals(infinity.getClass());
+        return checker;
     }
 
     @Override
     public PathInfoTriple<T> findAllSourcePaths(Graph<T> graph, int sourceNodeIdx) {
         PathInfoTriple<T> allInfo = new PathInfoTriple<>();
         boolean valid = checkValidGraph(graph);
+        allInfo.setInfinityValue(infinity);
         if (!valid) {
-            throw new RuntimeException("The PosWeightedGraph was instantiated with an incorrect cost reference class.");
+            throw new IllegalArgumentException("The given edge list contains negatively weighted edges.");
         }
         resetAllLists(graph.getNumNodes());
-        dijkstra(graph, sourceNodeIdx);
+        if (numNodes > 0) {
+            dijkstra(graph, sourceNodeIdx);
+        }
         allInfo.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs, sourceNodeIdx));
         allInfo.setPathCosts(costs);
-        allInfo.setInfinityValue(infinity);
         return allInfo;
-    }
-
-    final int compareCosts(T a, T b) {
-        int comp = a.compareTo(b);
-        return (reverseOrder) ? -comp : comp;
     }
 
     /**
@@ -144,7 +132,7 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
     }
 
     void resetAllLists(int numNodes) {
-        this.numNodes = numNodes;
+        this.numNodes = Math.max(numNodes, 0);
         costs = new ArrayList<>(numNodes);
         visited = new ArrayList<>(numNodes);
         incomingEdgeIdxs = new ArrayList<>(numNodes);
@@ -177,8 +165,8 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
                 }
                 newCost = sumCostEdge(curPair.cost, edge.getCost(curPair.nodeIndex).get());
                 // If this route does not optimize then continue
-                if (compareCosts(newCost,
-                        costs.get(graph.getAllEdges().get(edgeIdx).getOtherIdx(curPair.nodeIndex))) >= 0) {
+                if (newCost.compareTo(costs.get(graph.getAllEdges().get(edgeIdx)
+                        .getOtherIdx(curPair.nodeIndex))) >= 0) {
                     continue;
                 }
                 costs.set(graph.getAllEdges().get(edgeIdx).getOtherIdx(curPair.nodeIndex), newCost);
