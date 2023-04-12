@@ -1,6 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.pathfinders;
 
-import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.Utility.*;
+import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.PathReconstructor.*;
 
 import java.util.*;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.components.Graph;
@@ -26,12 +26,17 @@ public class UnweightedShortPath<T extends Number & Comparable<T>> implements Pa
 
     void resetAllLists(int numNodes) {
         this.numNodes = numNodes;
-        costs.ensureCapacity(numNodes);
-        incomingEdgeIdxs.ensureCapacity(numNodes);
-        visited.ensureCapacity(numNodes);
-        setAllListDefaults(incomingEdgeIdxs, NO_INCOMING_EDGE, numNodes);
-        setAllListDefaults(costs, INFINITY, numNodes);
-        setAllListDefaults(visited, false, numNodes);
+        costs = new ArrayList<>(numNodes);
+        incomingEdgeIdxs = new ArrayList<>(numNodes);
+        visited = new ArrayList<>(numNodes);
+        for (int i = 0; i < numNodes; i++) {
+            costs.add(INFINITY);
+            incomingEdgeIdxs.add(NO_INCOMING_EDGE);
+            visited.add(false);
+        }
+        // setAllListDefaults(incomingEdgeIdxs, NO_INCOMING_EDGE, numNodes);
+        // setAllListDefaults(costs, INFINITY, numNodes);
+        // setAllListDefaults(visited, false, numNodes);
     }
 
     void bfs(int sourceNodeIdx, Graph<T> graph) {
