@@ -1,7 +1,5 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.components;
 
-import static ca.mcmaster.cas.se2aa4.a4.pathfinder.utility.Utility.*;
-
 import java.util.*;
 
 /**
