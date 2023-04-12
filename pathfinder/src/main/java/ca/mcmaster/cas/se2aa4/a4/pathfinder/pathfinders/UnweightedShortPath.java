@@ -69,7 +69,7 @@ public class UnweightedShortPath<T extends Number & Comparable<T>> implements Pa
         PathInfoTriple<Integer> values = new PathInfoTriple<>();
         resetAllLists(graph.getNumNodes());
         bfs(sourceNodeIdx, graph);
-        values.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs));
+        values.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs, sourceNodeIdx));
         values.setPathCosts(costs);
         values.setInfinityValue(INFINITY);
         return values;

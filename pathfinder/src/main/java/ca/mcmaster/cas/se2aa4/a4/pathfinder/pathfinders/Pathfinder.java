@@ -18,9 +18,8 @@ public interface Pathfinder<T extends Number & Comparable<T>, U extends Number &
      * represent the unreachable distance.
      *
      * <p>
-     * If the first list is empty and the node index is not the source node index,
-     * then
-     * that node is not reachable from the source node.
+     * If the ith list of the first element of the triple contains a single integer -1,
+     * then there exists no path from the given source to the ith node.
      * </p>
      *
      * @param graph         the graph to search in.

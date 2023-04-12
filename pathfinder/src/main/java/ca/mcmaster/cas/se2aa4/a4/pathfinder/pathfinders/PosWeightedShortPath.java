@@ -102,7 +102,7 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
         }
         resetAllLists(graph.getNumNodes());
         dijkstra(graph, sourceNodeIdx);
-        allInfo.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs));
+        allInfo.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs, sourceNodeIdx));
         allInfo.setPathCosts(costs);
         allInfo.setInfinityValue(infinity);
         return allInfo;
