@@ -25,11 +25,11 @@ public class UnweightedShortPath<T extends Number & Comparable<T>> implements Pa
     }
 
     void resetAllLists(int numNodes) {
-        this.numNodes = numNodes;
-        costs = new ArrayList<>(numNodes);
-        incomingEdgeIdxs = new ArrayList<>(numNodes);
-        visited = new ArrayList<>(numNodes);
-        for (int i = 0; i < numNodes; i++) {
+        this.numNodes = Math.max(numNodes, 0);
+        costs = new ArrayList<>(this.numNodes);
+        incomingEdgeIdxs = new ArrayList<>(this.numNodes);
+        visited = new ArrayList<>(this.numNodes);
+        for (int i = 0; i < this.numNodes; i++) {
             costs.add(INFINITY);
             incomingEdgeIdxs.add(NO_INCOMING_EDGE);
             visited.add(false);
@@ -68,10 +68,12 @@ public class UnweightedShortPath<T extends Number & Comparable<T>> implements Pa
     public PathInfoTriple<Integer> findAllSourcePaths(Graph<T> graph, int sourceNodeIdx) {
         PathInfoTriple<Integer> values = new PathInfoTriple<>();
         resetAllLists(graph.getNumNodes());
-        bfs(sourceNodeIdx, graph);
+        values.setInfinityValue(INFINITY);
+        if (numNodes > 0) {
+            bfs(sourceNodeIdx, graph);
+        }
         values.setPathEdgeIdxs(reconstructAllPaths(graph, incomingEdgeIdxs, sourceNodeIdx));
         values.setPathCosts(costs);
-        values.setInfinityValue(INFINITY);
         return values;
     }
 }
