@@ -34,14 +34,14 @@ public class BasicGraphTest {
         simpleBiEdges.add(new BasicBiEdge<Integer>(4, 2, 3, 2));
         basic.setAllNodes(allNodes);
         basic.setAllEdges(simpleBiEdges);
-        assocEdges.add(Arrays.asList(1, 2, 3));
-        assocEdges.add(Arrays.asList(0, 2));
-        assocEdges.add(Arrays.asList(0, 1, 3));
-        assocEdges.add(Arrays.asList(0, 2));
-        basic.setAssociatedEdgeIdxs(0, Arrays.asList(1, 2, 3));
-        basic.setAssociatedEdgeIdxs(1, Arrays.asList(0, 2));
-        basic.setAssociatedEdgeIdxs(2, Arrays.asList(0, 1, 3));
-        basic.setAssociatedEdgeIdxs(3, Arrays.asList(0, 2));
+        assocEdges.add(Arrays.asList(0, 1, 2));
+        assocEdges.add(Arrays.asList(0, 3));
+        assocEdges.add(Arrays.asList(1, 3, 4));
+        assocEdges.add(Arrays.asList(2, 4));
+        basic.setAssociatedEdgeIdxs(0, Arrays.asList(0, 1, 2));
+        basic.setAssociatedEdgeIdxs(1, Arrays.asList(0, 3));
+        basic.setAssociatedEdgeIdxs(2, Arrays.asList(1, 3, 4));
+        basic.setAssociatedEdgeIdxs(3, Arrays.asList(2, 4));
     }
 
     @Test
