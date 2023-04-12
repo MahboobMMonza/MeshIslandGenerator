@@ -15,22 +15,6 @@ import ca.mcmaster.cas.se2aa4.a4.pathfinder.components.VersatileEdge;
  */
 public class PosWeightedShortPath<T extends Number & Comparable<T>> implements Pathfinder<T, T> {
 
-    public class NodeDistPair implements Comparable<NodeDistPair> {
-
-        final int nodeIndex;
-        final T cost;
-
-        public NodeDistPair(int nodeIndex, T cost) {
-            this.nodeIndex = nodeIndex;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(NodeDistPair otherPair) {
-            return this.cost.compareTo(otherPair.cost);
-        }
-    }
-
     static final int NO_INCOMING_EDGE = -1;
 
     final T infinity, zero;
@@ -144,34 +128,33 @@ public class PosWeightedShortPath<T extends Number & Comparable<T>> implements P
     }
 
     void dijkstra(Graph<T> graph, int sourceNodeIdx) {
-        PriorityQueue<NodeDistPair> pq = new PriorityQueue<>();
-        NodeDistPair curPair;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparing(i -> costs.get(i)));
+        int curIdx;
         VersatileEdge<T> edge;
         T newCost;
         costs.set(sourceNodeIdx, zero);
-        curPair = new NodeDistPair(sourceNodeIdx, costs.get(sourceNodeIdx));
-        pq.add(curPair);
+        curIdx = sourceNodeIdx;
+        pq.add(curIdx);
         while (!pq.isEmpty()) {
-            curPair = pq.remove();
-            if (visited.get(curPair.nodeIndex)) {
+            curIdx = pq.remove();
+            if (visited.get(curIdx)) {
                 continue;
             }
-            visited.set(curPair.nodeIndex, true);
-            for (Integer edgeIdx : graph.getAssociatedEdgeIdxs(curPair.nodeIndex)) {
+            visited.set(curIdx, true);
+            for (Integer edgeIdx : graph.getAssociatedEdgeIdxs(curIdx)) {
                 edge = graph.getAllEdges().get(edgeIdx);
                 // Treat null cost as unreachable destination in given direction
-                if (edge.getCost(curPair.nodeIndex).isEmpty()) {
+                if (edge.getCost(curIdx).isEmpty()) {
                     continue;
                 }
-                newCost = sumCostEdge(curPair.cost, edge.getCost(curPair.nodeIndex).get());
+                newCost = sumCostEdge(costs.get(curIdx), edge.getCost(curIdx).get());
                 // If this route does not optimize then continue
-                if (newCost.compareTo(costs.get(graph.getAllEdges().get(edgeIdx)
-                        .getOtherIdx(curPair.nodeIndex))) >= 0) {
+                if (newCost.compareTo(costs.get(graph.getAllEdges().get(edgeIdx).getOtherIdx(curIdx))) >= 0) {
                     continue;
                 }
-                costs.set(graph.getAllEdges().get(edgeIdx).getOtherIdx(curPair.nodeIndex), newCost);
-                incomingEdgeIdxs.set(graph.getAllEdges().get(edgeIdx).getOtherIdx(curPair.nodeIndex), edgeIdx);
-                pq.add(new NodeDistPair(edge.getOtherIdx(curPair.nodeIndex), newCost));
+                costs.set(graph.getAllEdges().get(edgeIdx).getOtherIdx(curIdx), newCost);
+                incomingEdgeIdxs.set(graph.getAllEdges().get(edgeIdx).getOtherIdx(curIdx), edgeIdx);
+                pq.add(edge.getOtherIdx(curIdx));
             }
         }
     }
