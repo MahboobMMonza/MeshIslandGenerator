@@ -92,22 +92,33 @@ To create an island for an existing mesh, go to the `island` directory, and use
 own switch as described below. The name of the file where the generated mesh
 will be stored as binary.
 
+#### Cities
+
+Cities can also be rendered on islands, with roads connecting each city to a captial city. The option for this feature is `-c`, and input details
+can be found below. The capital city is displayed as a red dot, with other cities shown as black dots. The roads are shown as black line segments.
+The roads show the shortest distance from the capital city to the other cities. The shortest distance is defined as the least number of tiles required
+to traverse from a source tile to a target tile. Tiles are used as the distance metric since cities are always located at the centre of a tile, in order
+to be dual to rivers, which flow along edges and corners of the tile. Additionally, tile sizes are typically the same, so the distance from one centroid
+to its neighbouring centroid is almost the same in relaxed Voronoi meshes, with generally negligible differences in distance.
+
+
 ```
 usage: java -jar island.jar -m <mode> -i <input file> -o <output
             file> [option 1] arg1 [option 2] arg2 ...
 Help
- -a,--aquifers <arg>       The number of aquifers :: MIN = 0
+ -a,--aquifers <arg>       The maximum number of aquifers :: MIN = 0
  -at,--aquifertype <arg>   Aquifer type :: Default is Basic
  -b,--biomes <arg>         Biome type :: Default is Desert
  -e,--altitude <arg>       Elevation type :: Default is Normal
  -h,--help                 Show usage help
  -i,--input <arg>          Input Option :: This is a required option
- -l,--lakes <arg>          The number of lakes :: MIN = 0
+ -l,--lakes <arg>          The maximum number of lakes :: MIN = 0
  -lt,--laketype <arg>      Lake type :: Default is Basic
  -m,--mode <arg>           Mode type :: This is a required option
  -mt,--moisture <arg>      Moisture type :: Default is Normal
  -o,--output <arg>         Output Option :: This is a required option
- -r,--rivers <arg>         The number of rivers :: MIN = 0
+ -r,--rivers <arg>         The maximum number of rivers :: MIN = 0
+ -c,--cities <arg>         The number of cities :: MIN = 0
  -s,--seed <arg>           Seed :: Provides a random seed if not provided
  -sh,--shape <arg>         Shape type :: Default is Round
  -so,--soil <arg>          Soil Absorption Type :: Default is Normal
@@ -116,13 +127,14 @@ Files must contain .mesh at the end
 __Command Line Options__
 | Command | Options Available / Description |
 |:-------:|-------------------|
-|  -a,--aquifers | # of aquifers |
+|  -a,--aquifers | max # of aquifers |
 |  -at,--aquifertype | basic (extensible for future iterations) |
 |  -b,--biomes | frosted, desert, basic, rainforest |
 |  -e,--altitude | normal, steep, flat, lofty, basic |
-|  -l,--lakes | # of lakes |
+|  -l,--lakes | max # of lakes |
 |  -lt,--laketype | basic (extensible for future iterations) |
-|  -r,--rivers | # of rivers |
+|  -r,--rivers | max # of rivers |
+|  -c,--cities | # of cities |
 |  -s,--seed | seed value (leave blank for random seed) |
 |  -sh,--shape | round, oval, rectangle, lagoon |
 |  -so,--soil | fertile, normal, poor |
