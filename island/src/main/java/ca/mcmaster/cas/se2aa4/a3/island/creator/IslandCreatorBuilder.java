@@ -7,6 +7,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.shaper.Shaper;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.Aquifer;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.Lake;
 import ca.mcmaster.cas.se2aa4.a3.island.water.river.River;
+import ca.mcmaster.cas.se2aa4.a3.island.city.*;
 
 public class IslandCreatorBuilder {
 
@@ -19,6 +20,7 @@ public class IslandCreatorBuilder {
     River river;
     int height;
     int width;
+    CityPopulator populator;
 
     public IslandCreatorBuilder lake(Lake lake) {
         this.lake = lake;
@@ -65,8 +67,13 @@ public class IslandCreatorBuilder {
         return this;
     }
 
+    public IslandCreatorBuilder cities(CityPopulator populator) {
+        this.populator = populator;
+        return this;
+    }
+
     public IslandCreator build() {
-        return new IslandCreator(lake, aqua, elev, moist, boime, shape, river, height, width);
+        return new IslandCreator(lake, aqua, elev, moist, boime, shape, river, populator, height, width);
     }
 
 }

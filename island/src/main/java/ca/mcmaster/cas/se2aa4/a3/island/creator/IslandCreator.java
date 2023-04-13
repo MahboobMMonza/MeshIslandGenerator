@@ -2,6 +2,7 @@ package ca.mcmaster.cas.se2aa4.a3.island.creator;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.*;
+import ca.mcmaster.cas.se2aa4.a3.island.city.CityPopulator;
 import ca.mcmaster.cas.se2aa4.a3.island.components.ComponentCollections;
 import static ca.mcmaster.cas.se2aa4.a3.island.convertor.Convertor.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
@@ -25,9 +26,10 @@ public class IslandCreator {
     private int height;
     private int width;
     private River river;
+    private CityPopulator populator;
 
     IslandCreator(Lake lake, Aquifer aquifer, Elevation elevation, Moisture moisture, Biome biome, Shaper shape, River river,
-            int height, int width) {
+            CityPopulator populator, int height, int width) {
         this.lake = lake;
         this.aquifer = aquifer;
         this.elevation = elevation;
@@ -35,12 +37,13 @@ public class IslandCreator {
         this.biome = biome;
         this.shape = shape;
         this.river = river;
+        this.populator = populator;
         this.height = height;
         this.width = width;
     }
 
     public Mesh createIsland(final Mesh mesh) {
-        ComponentCollections collection = ComponentCollections.COLLECTION;
+        ComponentCollections collection = new ComponentCollections();
         System.out.println("Converting mesh into COLLECTION");
         collection.setup(mesh);
         System.out.println("Shaping tiles");
@@ -61,6 +64,10 @@ public class IslandCreator {
         System.out.println("Assigning biomes");
         collection.updateTileColours(biome.assignTileBiomeColours(collection));
         collection.updateEdgeColours(biome.assignEdgeBiomeColours(collection));
+        System.out.println("Configuring cities and their paths.");
+        populator.findPaths(collection);
+        collection.updateCityTiles(populator.getCityCentroids());
+        collection.updateRoads(populator.getCentroidPairs());
         // Make the necessary modifications to the island, then convert it with
         // convertor and return
         collection.setReady(true);
