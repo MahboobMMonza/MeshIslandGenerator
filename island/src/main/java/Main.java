@@ -1,3 +1,5 @@
+import static ca.mcmaster.cas.se2aa4.a3.island.preprocessor.MeshPreprocessor.*;
+
 import java.io.*;
 import java.util.Random;
 
@@ -5,14 +7,13 @@ import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 import ca.mcmaster.cas.se2aa4.a3.island.creator.*;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.*;
+import ca.mcmaster.cas.se2aa4.a3.island.city.CityPopulator;
 import ca.mcmaster.cas.se2aa4.a3.island.shaper.*;
 import ca.mcmaster.cas.se2aa4.a3.island.moisture.*;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.water.lake.*;
 import ca.mcmaster.cas.se2aa4.a3.island.water.river.River;
 import ca.mcmaster.cas.se2aa4.a3.island.water.aquifer.*;
-
-import static ca.mcmaster.cas.se2aa4.a3.island.preprocessor.MeshPreprocessor.*;
 
 import cli.IslandCommandLine;
 import cli.ModeTypes;
@@ -40,6 +41,7 @@ public class Main {
         int numOfRivers;
         int numOfLakes;
         int numOfAquifers;
+        int numOfCities;
         String input;
         String output;
         long seed;
@@ -63,7 +65,8 @@ public class Main {
         output = cmd.outputCli(parser, args);
         seed = cmd.getSeed(parser, args);
         if (seed == 0) {
-            if (mode != ModeTypes.LAGOON) System.out.println("WARNING: A valid seed was not provided. A random seed will be used.");
+            if (mode != ModeTypes.LAGOON)
+                System.out.println("WARNING: A valid seed was not provided. A random seed will be used.");
             seed = new Random().nextLong(0, Long.MAX_VALUE);
         }
         inputMesh = factory.read(input);
@@ -72,6 +75,7 @@ public class Main {
         soilType = cmd.getSoilType(parser, args);
         numOfLakes = cmd.getNumOfLakes(parser, args);
         numOfAquifers = cmd.getNumOfAquifers(parser, args);
+        numOfCities = cmd.getNumOfCities(parser, args);
         shapeFilterFactory = cmd.getShapeType(parser, args);
         moistureFactory = cmd.getMoistureType(parser, args);
         numOfRivers = cmd.getNumOfRivers(parser, args);
@@ -93,12 +97,14 @@ public class Main {
                 .shape(shapeFilterFactory.createShaper(height, width, seed))
                 .height(height)
                 .width(width)
+                .cities(new CityPopulator(numOfCities, seed))
                 .river(new River(seed, numOfRivers));
-        System.out.println("Begin island creation");
+        System.out.println(":: Begin island creation ::");
         System.out.println("The seed used is: " + seed);
         System.out.println("The maximum number of lakes is: " + numOfLakes);
         System.out.println("The maximum number of aquifers is: " + numOfAquifers);
         System.out.println("The maximum number of rivers is: " + numOfRivers);
+        System.out.println("The maximum number of cities is: " + numOfCities);
         System.out.println("The input file is: " + input);
         // Add the necessary options to the builder
         IslandCreator island = builder.build();

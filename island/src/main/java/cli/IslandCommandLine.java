@@ -20,11 +20,13 @@ public class IslandCommandLine {
     private static Option seed = new Option("s", "seed", true,
             "Seed :: Provides a random seed if not provided");
     private static Option numOfLakes = new Option("l", "lakes", true,
-            "The number of lakes :: MIN = 0");
+            "The maximum number of lakes :: MIN = 0");
+    private static Option numOfCities = new Option("c", "cities", true,
+            "The number of cities :: MIN = 0");
     private static Option numOfAquifers = new Option("a", "aquifers", true,
-            "The number of aquifers :: MIN = 0");
+            "The maximum number of aquifers :: MIN = 0");
     private static Option numOfRivers = new Option("r", "rivers", true,
-            "The number of rivers :: MIN = 0");
+            "The maximum number of rivers :: MIN = 0");
     private static Option lakeTypes = new Option("lt", "laketype", true,
             "Lake type :: Default is Basic");
     private static Option aquiferTypes = new Option("at", "aquifertype", true,
@@ -57,6 +59,7 @@ public class IslandCommandLine {
         options.addOption(biome);
         options.addOption(numOfAquifers);
         options.addOption(numOfLakes);
+        options.addOption(numOfCities);
         options.addOption(numOfRivers);
         options.addOption(soil);
         options.addOption(moistureType);
@@ -132,6 +135,26 @@ public class IslandCommandLine {
             lake = 0;
         }
         return lake;
+    }
+
+    /**
+     * Gets the number of cities from the user
+     *
+     * @param parser Parser that scans the command line
+     * @param args   The input arguments that the parser will scan
+     * @return Number of Lakes as an integer
+     */
+    public int getNumOfCities(CommandLineParser parser, String[] args) {
+        int cities = 0;
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption(numOfCities)) {
+                cities = Integer.parseInt(cmd.getOptionValue(numOfCities));
+            }
+        } catch (ParseException | NumberFormatException e) {
+            cities = 0;
+        }
+        return cities;
     }
 
     /**
