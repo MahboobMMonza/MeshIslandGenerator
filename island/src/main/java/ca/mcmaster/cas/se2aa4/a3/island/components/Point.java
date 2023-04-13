@@ -11,7 +11,7 @@ public class Point {
 
     private double x, y;
 
-    private boolean centroid;
+    private boolean centroid, capital, city;
 
     public Point(int index, Vertex vert) {
         this.index = index;
@@ -25,6 +25,23 @@ public class Point {
             }
         }
         centroid = (centroidVal.isEmpty()) ? false : Boolean.parseBoolean(centroidVal);
+        capital = city = false;
+    }
+
+    public boolean isCity() {
+        return city;
+    }
+
+    public void setCity(boolean city) {
+        this.city = city & centroid;
+    }
+
+    public boolean isCapital() {
+        return capital;
+    }
+
+    public void setCapital(boolean capital) {
+        this.capital = capital & centroid;
     }
 
     public int getIndex() {

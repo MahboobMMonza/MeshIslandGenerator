@@ -10,9 +10,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.moisture.MoistureLevels;
 /**
  * TileSets
  */
-public enum ComponentCollections {
-
-    COLLECTION;
+public class ComponentCollections {
 
     private Map<Integer, Tile> allTiles = new HashMap<>();
 
@@ -21,6 +19,8 @@ public enum ComponentCollections {
     private Map<Integer, Point> allPoints = new HashMap<>();
 
     private boolean setup = false, ready = false;
+
+    private List<int[]> roads;
 
     /* tiles that are going to be tracked */
     private Set<Integer> oceans = new HashSet<>(), lagoons = new HashSet<>(), shores = new HashSet<>(),
@@ -77,6 +77,10 @@ public enum ComponentCollections {
 
     public Iterable<Integer> getShores() {
         return shores;
+    }
+
+    public Iterable<int[]> getRoads() {
+        return roads;
     }
 
     public Iterable<Integer> getLakes() {
@@ -206,6 +210,15 @@ public enum ComponentCollections {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    public void updateCityTiles(List<Integer> cityTileIdxs) {
+        cityTileIdxs.forEach((cityIdx) -> allPoints.get(cityIdx).setCity(true));
+        allPoints.get(cityTileIdxs.get(0)).setCapital(true);
+    }
+
+    public void updateRoads(List<int[]> roads) {
+        this.roads = roads;
     }
 
     public void updateRivers(PairUtil<PairUtil<List<List<Integer>>, List<Integer>>, List<Float>> riverTiles) {
