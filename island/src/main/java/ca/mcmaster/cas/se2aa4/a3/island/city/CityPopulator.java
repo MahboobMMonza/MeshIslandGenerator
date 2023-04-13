@@ -85,15 +85,6 @@ public class CityPopulator {
         }
         addedCities.forEach((cityIdx) -> cityIdxs.add(cityIdx));
         result = pathfinder.findAllSourcePaths(graph, cityIdxs.get(0));
-        int pathCount = 0;
-        for (List<Integer> paths : result.getPathEdgeIdxs()) {
-            if (!paths.isEmpty() && paths.get(0) != -1) {
-                pathCount++;
-            }
-        }
-        if (pathCount == 0) {
-            throw new RuntimeException("Graph is not set right");
-        }
         for (int cityIdx : cityIdxs) {
             cityCentroids.add(nodeCentroids.get(cityIdx));
             for (Integer edgeIdx : result.getPathEdgeIdxs().get(cityIdx)) {
