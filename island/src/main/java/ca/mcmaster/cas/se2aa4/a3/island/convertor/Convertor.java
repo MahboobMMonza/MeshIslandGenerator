@@ -10,36 +10,51 @@ import ca.mcmaster.cas.se2aa4.a3.island.components.*;
  */
 public class Convertor {
 
-    public static final float DEFAULT_THICKNESS = 0f;
-    public static final int TRANSPARENT_COLOUR = 0x00FFFFFF;
+    public static final float DEFAULT_THICKNESS = 0f, CITY_VERTEX_THICKNESS = 5f, ROAD_THICKNESS = 2f;
+    public static final int TRANSPARENT_COLOUR = 0x00FFFFFF, CAPITAL_COLOUR = 0xFFFF0000, CITY_ROAD_COLOUR = 0xFF000000;
 
     private static List<Vertex> createAllVertices(ComponentCollections collection) {
         List<Vertex> vertices = new ArrayList<>();
         List<Point> points = new ArrayList<>(collection.getAllPoints().values());
         points.sort(Comparator.comparing(Point::getIndex));
         Vertex v;
-        Property colour, thickness, centroid;
-        String rgba, thick;
+        Property colour, thickness, centroid, capitalColour, cityColour, cityThickness;
+        String rgba, thick, capitalRgba, cityRgba, cityThick;
         rgba = String.format("%08x", TRANSPARENT_COLOUR);
         thick = String.format("%.2f", DEFAULT_THICKNESS);
+        capitalRgba = String.format("%08x", CAPITAL_COLOUR);
+        cityRgba = String.format("%08x", CITY_ROAD_COLOUR);
+        cityThick = String.format("%.2f", CITY_VERTEX_THICKNESS);
         colour = Property.newBuilder()
                 .setKey("rgba_color")
                 .setValue(rgba)
+                .build();
+        capitalColour = Property.newBuilder()
+                .setKey("rgba_color")
+                .setValue(capitalRgba)
+                .build();
+        cityColour = Property.newBuilder()
+                .setKey("rgba_color")
+                .setValue(cityRgba)
                 .build();
         thickness = Property.newBuilder()
                 .setKey("thickness")
                 .setValue(thick)
                 .build();
+        cityThickness = Property.newBuilder()
+                .setKey("thickness")
+                .setValue(cityThick)
+                .build();
         for (Point point : points) {
             centroid = Property.newBuilder()
-                    .setValue(Boolean.toString(point.isCentroid()))
                     .setKey("centroid")
+                    .setValue(Boolean.toString(point.isCentroid()))
                     .build();
             v = Vertex.newBuilder()
                     .setX(point.getX())
                     .setY(point.getY())
-                    .addProperties(colour)
-                    .addProperties(thickness)
+                    .addProperties((point.isCapital()) ? capitalColour : (point.isCity()) ? cityColour : colour)
+                    .addProperties((point.isCity()) ? cityThickness : thickness)
                     .addProperties(centroid)
                     .build();
             vertices.add(v);
@@ -68,6 +83,25 @@ public class Convertor {
             s = Segment.newBuilder()
                     .setV1Idx(edge.getV1Index())
                     .setV2Idx(edge.getV2Index())
+                    .addProperties(colour)
+                    .addProperties(thickness)
+                    .build();
+            segments.add(s);
+        }
+        rgba = String.format("%08x", CITY_ROAD_COLOUR);
+        thick = String.format("%.2f", ROAD_THICKNESS);
+        colour = Property.newBuilder()
+                .setKey("rgba_color")
+                .setValue(rgba)
+                .build();
+        thickness = Property.newBuilder()
+                .setKey("thickness")
+                .setValue(thick)
+                .build();
+        for (int[] centroidPair : collection.getRoads()) {
+            s = Segment.newBuilder()
+                    .setV1Idx(centroidPair[0])
+                    .setV2Idx(centroidPair[1])
                     .addProperties(colour)
                     .addProperties(thickness)
                     .build();
