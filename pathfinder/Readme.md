@@ -29,7 +29,7 @@ The sample implementations are:
  * `BasicNode` for nodes
  * `BasicEdge` for simple directed edges
  * `BasicBiEdge` for simple bidirectional edges with the same cost to traverse from either end
- * `BasicGrap` for a graph implementation
+ * `BasicGraph` for a graph implementation
 
 ### Implementing Pathfinding Algorithms
 
