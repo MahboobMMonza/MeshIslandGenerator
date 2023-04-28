@@ -1,6 +1,6 @@
-# Assignment A2/A3: Mesh Generator/Island Generator
+# Assignment A2\A3: Mesh Generator\Island Generator
 
-## Authors
+### Authors
 
   - Mohammad Mahdi Mahboob [mahbom2@mcmaster.ca]
   - Khalid Farag [faragk1@mcmaster.ca]
@@ -8,7 +8,7 @@
 
 # Assignment A4: Island Evolution
 
-## Author
+### Author
 
   Mohammad Mahdi Mahboob [mahbom2@mcmaster.ca]
 
