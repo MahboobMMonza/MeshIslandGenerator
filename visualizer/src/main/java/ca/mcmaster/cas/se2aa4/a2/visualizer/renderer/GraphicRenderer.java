@@ -1,4 +1,4 @@
-package ca.mcmaster.cas.se2aa4.a2.visualizer;
+package ca.mcmaster.cas.se2aa4.a2.visualizer.renderer;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Polygon;
@@ -23,25 +23,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class GraphicRenderer {
+public class GraphicRenderer implements Renderer {
 
     private static final float DEFAULT_SEGMENT_THICKNESS = 1;
     private static final float DEFAULT_VERTEX_THICKNESS = 8;
     private static final float DEFAULT_POLYGON_THICKNESS = 5;
-    private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
+    private static final Stroke DEFAULT_SEGMENT_STROKE = new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
+    private static final Stroke DEFAULT_POLYGON_BORDER_STROKE = new BasicStroke(DEFAULT_POLYGON_THICKNESS);
     private static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
     private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0, 0xf0, 0xf0, 0xd9);
     private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
     private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
     private static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
-    private static final Color DEFAULT_CENTROID_COLOR = Color.BLUE;
-    boolean debug = false;
 
-    public GraphicRenderer(boolean debug) {
-        this.debug = debug;
-    }
-
-    private class RadialVertexComparator implements Comparator<Vertex> {
+    protected class RadialVertexComparator implements Comparator<Vertex> {
         private Vertex anchor;
 
         RadialVertexComparator(Vertex anchor) {
@@ -69,26 +64,16 @@ public class GraphicRenderer {
         }
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    public boolean isDebug() {
-        return debug;
-    }
-
+    @Override
     public void render(Mesh aMesh, Graphics2D canvas) {
         renderPolygons(aMesh, canvas);
         renderSegments(aMesh, canvas);
-        if (debug) {
-            renderNeighbours(aMesh, canvas);
-        }
         renderVertices(aMesh, canvas);
     }
 
-    private void renderSegments(Mesh aMesh, Graphics2D canvas) {
+    protected void renderSegments(Mesh aMesh, Graphics2D canvas) {
         canvas.setColor(DEFAULT_SEGMENT_COLOR);
-        canvas.setStroke(DEFAULT_STROKE);
+        canvas.setStroke(DEFAULT_SEGMENT_STROKE);
         for (Segment s : aMesh.getSegmentsList()) {
             Color oldColor = canvas.getColor();
             Color strokeColor = extractColor(s);
@@ -107,8 +92,8 @@ public class GraphicRenderer {
         }
     }
 
-    private void renderVertices(Mesh aMesh, Graphics2D canvas) {
-        canvas.setStroke(DEFAULT_STROKE);
+    protected void renderVertices(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_SEGMENT_STROKE);
         for (Vertex v : aMesh.getVerticesList()) {
             double thickness = (double) extractThickness(v);
             double centre_x = v.getX() - (thickness / 2.0d);
@@ -123,7 +108,7 @@ public class GraphicRenderer {
         }
     }
 
-    private List<Vertex> calculatePolyPath(final Mesh aMesh, final Polygon p) {
+    protected List<Vertex> calculatePolyPath(final Mesh aMesh, final Polygon p) {
         Set<Vertex> pathVtx = new TreeSet<>(
                 Comparator.comparingDouble(Vertex::getX).thenComparing(Vertex::getY));
         for (int segIdx : p.getSegmentIdxsList()) {
@@ -135,8 +120,8 @@ public class GraphicRenderer {
         return path;
     }
 
-    private void renderPolygons(Mesh aMesh, Graphics2D canvas) {
-        canvas.setStroke(DEFAULT_STROKE);
+    protected void renderPolygons(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_SEGMENT_STROKE);
         Path2D poly;
         boolean firstPoint;
         for (Polygon p : aMesh.getPolygonsList()) {
@@ -162,8 +147,8 @@ public class GraphicRenderer {
         }
     }
 
-    private void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
-        canvas.setStroke(DEFAULT_STROKE);
+    protected void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_SEGMENT_STROKE);
         canvas.setColor(DEFAULT_NEIGHBOR_COLOR);
         Set<Integer> visited = new TreeSet<>();
         for (Polygon p : aMesh.getPolygonsList()) {
@@ -182,10 +167,7 @@ public class GraphicRenderer {
         }
     }
 
-    private float extractThickness(final Vertex vert) {
-        if (debug) {
-            return DEFAULT_VERTEX_THICKNESS;
-        }
+    protected float extractThickness(final Vertex vert) {
         String val = new String();
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
@@ -198,10 +180,7 @@ public class GraphicRenderer {
         return DEFAULT_VERTEX_THICKNESS;
     }
 
-    private Stroke extractThickness(final Polygon poly) {
-        if (debug) {
-            return new BasicStroke(DEFAULT_POLYGON_THICKNESS);
-        }
+    protected Stroke extractThickness(final Polygon poly) {
         String val = new String();
         for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
@@ -209,16 +188,13 @@ public class GraphicRenderer {
             }
         }
         if (val.isEmpty()) {
-            return DEFAULT_STROKE;
+            return DEFAULT_POLYGON_BORDER_STROKE;
         }
         float f = Float.parseFloat(val);
         return new BasicStroke(f);
     }
 
-    private Stroke extractThickness(final Segment seg) {
-        if (debug) {
-            return new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
-        }
+    protected Stroke extractThickness(final Segment seg) {
         String val = new String();
         for (Property p : seg.getPropertiesList()) {
             if (p.getKey().equals("thickness")) {
@@ -226,19 +202,13 @@ public class GraphicRenderer {
             }
         }
         if (val.isEmpty()) {
-            return DEFAULT_STROKE;
+            return DEFAULT_SEGMENT_STROKE;
         }
         float f = Float.parseFloat(val);
         return new BasicStroke(f);
     }
 
-    private Color extractColor(Polygon poly, String key) {
-        if (debug) {
-            if (key.equals("rgba_border_color"))
-                return DEFAULT_POLYGON_BORDER_COLOR;
-            else
-                return DEFAULT_POLYGON_FILL_COLOR;
-        }
+    protected Color extractColor(Polygon poly, String key) {
         String val = new String();
         for (Property p : poly.getPropertiesList()) {
             if (p.getKey().equals(key)) {
@@ -247,15 +217,12 @@ public class GraphicRenderer {
             }
         }
         if (val.isEmpty()) {
-            return DEFAULT_POLYGON_BORDER_COLOR;
+             return (key.equals("rgba_fill_color")) ? DEFAULT_POLYGON_FILL_COLOR : DEFAULT_POLYGON_BORDER_COLOR;
         }
         return new Color(Integer.parseUnsignedInt(val, 16), true);
     }
 
-    private Color extractColor(Segment seg) {
-        if (debug) {
-            return DEFAULT_SEGMENT_COLOR;
-        }
+    protected Color extractColor(Segment seg) {
         String val = new String();
         for (Property p : seg.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
@@ -268,28 +235,19 @@ public class GraphicRenderer {
         return new Color(Integer.parseUnsignedInt(val, 16), true);
     }
 
-    private Color extractColor(Vertex vert) {
-        String colorVal = new String(), centroidVal = new String();
+    protected Color extractColor(Vertex vert) {
+        String colorVal = new String();
         int color;
-        boolean centroid = false;
         for (Property p : vert.getPropertiesList()) {
             if (p.getKey().equals("rgba_color")) {
                 colorVal = p.getValue();
-            } else if (p.getKey().equals("centroid")) {
-                centroidVal = p.getValue();
+                break;
             }
         }
         if (colorVal.isEmpty()) {
             return DEFAULT_VERTEX_COLOR;
         }
         color = Integer.parseUnsignedInt(colorVal, 16);
-        centroid = Boolean.parseBoolean(centroidVal);
-        if (debug) {
-            if (centroid) {
-                return DEFAULT_CENTROID_COLOR;
-            }
-            return DEFAULT_VERTEX_COLOR;
-        }
         return new Color(color, true);
     }
 }
