@@ -1,7 +1,7 @@
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Property;
-import ca.mcmaster.cas.se2aa4.a2.visualizer.GraphicRenderer;
+import ca.mcmaster.cas.se2aa4.a2.visualizer.renderer.*;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.MeshDump;
 import ca.mcmaster.cas.se2aa4.a2.visualizer.SVGCanvas;
 import cli.VisualizerCommandLine;
@@ -15,11 +15,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
-    
-
 
     public static void main(String[] args) throws IOException {
         try {
@@ -55,7 +52,7 @@ public class Main {
                 }
                 // Creating the Canvas to draw the mesh
                 Graphics2D canvas = SVGCanvas.build(width, height);
-                GraphicRenderer renderer = new GraphicRenderer(cmd.hasDebugOption(parser, args));
+                Renderer renderer = new RendererFactory().createRenderer(cmd.hasDebugOption(parser, args));
                 // Painting the mesh on the canvas
                 renderer.render(aMesh, canvas);
                 // Storing the result in an SVG file
