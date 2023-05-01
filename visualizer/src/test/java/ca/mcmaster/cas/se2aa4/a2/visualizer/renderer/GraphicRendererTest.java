@@ -214,4 +214,22 @@ public class GraphicRendererTest {
         }
         assertEquals(vertColors, extracted);
     }
+
+    @Test
+    public void extractSegmentColor_AllMatchSucceeds() {
+        List<Color> extracted = new ArrayList<>();
+        for (Segment seg : segments) {
+            extracted.add(rend.extractColor(seg));
+        }
+        assertEquals(segColors, extracted);
+    }
+
+    @Test
+    public void extractSegmentThickness_AllMatchSucceeds() {
+        List<Stroke> extracted = new ArrayList<>();
+        for (Segment seg : segments) {
+            extracted.add(rend.extractThickness(seg));
+        }
+        assertEquals(segStrokes, extracted);
+    }
 }
