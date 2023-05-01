@@ -232,4 +232,23 @@ public class GraphicRendererTest {
         }
         assertEquals(segStrokes, extracted);
     }
+
+    @Test
+    public void extractPolygonThickness_AllMatchSucceeds() {
+        List<Stroke> extracted = new ArrayList<>();
+        for (Polygon p : polygons) {
+            extracted.add(rend.extractThickness(p));
+        }
+        assertEquals(polyStrokes, extracted);
+    }
+
+    @Test
+    public void extractPolygonColour_AllMatchSucceeds() {
+        List<Color> extracted = new ArrayList<>();
+        for (Polygon p : polygons) {
+            extracted.add(rend.extractColor(p, "rgba_fill_color"));
+            extracted.add(rend.extractColor(p, "rgba_border_color"));
+        }
+        assertEquals(polyColor, extracted);
+    }
 }
