@@ -147,26 +147,6 @@ public class GraphicRenderer implements Renderer {
         }
     }
 
-    protected void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
-        canvas.setStroke(DEFAULT_SEGMENT_STROKE);
-        canvas.setColor(DEFAULT_NEIGHBOR_COLOR);
-        Set<Integer> visited = new TreeSet<>();
-        for (Polygon p : aMesh.getPolygonsList()) {
-            for (int idx : p.getNeighborIdxsList()) {
-                if (visited.contains(idx)) {
-                    continue;
-                }
-                Point2D p1 = new Point2D.Double(aMesh.getVertices(p.getCentroidIdx()).getX(),
-                        aMesh.getVertices(p.getCentroidIdx()).getY());
-                Point2D p2 = new Point2D.Double(aMesh.getVertices(idx).getX(),
-                        aMesh.getVertices(idx).getY());
-                Line2D line = new Line2D.Double(p1, p2);
-                canvas.draw(line);
-            }
-            visited.add(p.getCentroidIdx());
-        }
-    }
-
     protected float extractThickness(final Vertex vert) {
         String val = new String();
         for (Property p : vert.getPropertiesList()) {
