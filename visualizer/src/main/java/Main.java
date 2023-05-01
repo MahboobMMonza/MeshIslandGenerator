@@ -52,7 +52,7 @@ public class Main {
                 }
                 // Creating the Canvas to draw the mesh
                 Graphics2D canvas = SVGCanvas.build(width, height);
-                Renderer renderer = new RendererFactory().createRenderer(cmd.hasDebugOption(parser, args));
+                Renderer renderer = RendererFactory.createRenderer(cmd.hasDebugOption(parser, args));
                 // Painting the mesh on the canvas
                 renderer.render(aMesh, canvas);
                 // Storing the result in an SVG file

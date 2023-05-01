@@ -5,7 +5,7 @@ package ca.mcmaster.cas.se2aa4.a2.visualizer.renderer;
  */
 public class RendererFactory {
 
-    public Renderer createRenderer(boolean debug) {
+    public static Renderer createRenderer(boolean debug) {
         return debug ? new DebugRenderer() : new GraphicRenderer();
     }
 }
