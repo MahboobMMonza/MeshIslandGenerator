@@ -15,7 +15,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
  */
 public class GraphicRendererTest {
 
-    static List<Vertex> vertices;
+    static List<Vertex> vertices, pathVerts;
     static List<Segment> segments;
     static List<Polygon> polygons;
     static List<Color> vertColors, segColors, polyColor;
@@ -182,6 +182,7 @@ public class GraphicRendererTest {
                 .setCentroidIdx(5)
                 .addAllSegmentIdxs(List.of(4, 1, 0, 2, 3))
                 .build());
+        pathVerts = List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4), vertices.get(3));
     }
 
     @BeforeAll
@@ -250,5 +251,11 @@ public class GraphicRendererTest {
             extracted.add(rend.extractColor(p, "rgba_border_color"));
         }
         assertEquals(polyColor, extracted);
+    }
+
+    @Test
+    public void calculatePolyPath_CorrectOrderSucceeds() {
+        List<Vertex> path = rend.calculatePolyPath(aMesh, polygons.get(0));
+        assertEquals(pathVerts, path);
     }
 }
