@@ -25,16 +25,15 @@ import java.util.TreeSet;
 
 public class GraphicRenderer implements Renderer {
 
-    private static final float DEFAULT_SEGMENT_THICKNESS = 1;
-    private static final float DEFAULT_VERTEX_THICKNESS = 8;
-    private static final float DEFAULT_POLYGON_THICKNESS = 5;
-    private static final Stroke DEFAULT_SEGMENT_STROKE = new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
-    private static final Stroke DEFAULT_POLYGON_BORDER_STROKE = new BasicStroke(DEFAULT_POLYGON_THICKNESS);
-    private static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
-    private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0, 0xf0, 0xf0, 0xd9);
-    private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
-    private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
-    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
+    public static final float DEFAULT_SEGMENT_THICKNESS = 1;
+    public static final float DEFAULT_VERTEX_THICKNESS = 8;
+    public static final float DEFAULT_POLYGON_THICKNESS = 5;
+    public static final Stroke DEFAULT_SEGMENT_STROKE = new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
+    public static final Stroke DEFAULT_POLYGON_BORDER_STROKE = new BasicStroke(DEFAULT_POLYGON_THICKNESS);
+    public static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
+    public static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0, 0xf0, 0xf0, 0xd9);
+    public static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
+    public static final Color DEFAULT_VERTEX_COLOR = Color.RED;
 
     protected class RadialVertexComparator implements Comparator<Vertex> {
         private Vertex anchor;
