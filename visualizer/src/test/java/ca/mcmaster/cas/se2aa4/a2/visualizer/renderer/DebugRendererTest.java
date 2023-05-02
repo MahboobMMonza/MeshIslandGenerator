@@ -6,8 +6,8 @@ import org.junit.jupiter.api.*;
 
 import java.util.*;
 import java.awt.Color;
+import java.awt.geom.Line2D;
 import java.awt.Stroke;
-import java.awt.BasicStroke;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
 
 /**
@@ -23,6 +23,7 @@ public class DebugRendererTest {
     static List<Stroke> segStrokes, polyStrokes;
     static List<Float> vertStrokes;
     static List<Boolean> vertCentroids;
+    static List<Line2D> neighbours;
     static Mesh aMesh;
     static DebugRenderer rend;
 
@@ -259,6 +260,7 @@ public class DebugRendererTest {
                 .build());
         pathVerts.add(List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4), vertices.get(3)));
         pathVerts.add(List.of(vertices.get(7), vertices.get(6), vertices.get(1), vertices.get(2)));
+        neighbours = List.of(new Line2D.Double(3.6, 0.6, 6, 4));
     }
 
     @BeforeAll
