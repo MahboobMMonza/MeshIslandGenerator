@@ -15,7 +15,8 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.*;
  */
 public class GraphicRendererTest {
 
-    static List<Vertex> vertices, pathVerts;
+    static List<Vertex> vertices;
+    static List<List<Vertex>> pathVerts;
     static List<Segment> segments;
     static List<Polygon> polygons;
     static List<Color> vertColors, segColors, polyColor;
@@ -94,13 +95,50 @@ public class GraphicRendererTest {
                 .build());
         colour = colour.toBuilder().setValue("00000000").build();
         thickness = thickness.toBuilder().setValue("3.0").build();
+        centroid = centroid.toBuilder().setValue("true").build();
         vertColors.add(new Color(0x00000000, true));
         vertStrokes.add(3.0f);
         vertCentroids.add(true);
-        centroid = centroid.toBuilder().setValue("true").build();
         vertices.add(Vertex.newBuilder()
                 .setX(3.6)
                 .setY(0.6)
+                .addProperties(centroid)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        colour = colour.toBuilder().setValue("400000FF").build();
+        thickness = thickness.toBuilder().setValue("3.0").build();
+        vertStrokes.add(3.0f);
+        vertColors.add(new Color(0x400000FF, true));
+        vertCentroids.add(false);
+        vertices.add(Vertex.newBuilder()
+                .setX(6.0)
+                .setY(6.0)
+                .addProperties(centroid)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        colour = colour.toBuilder().setValue("400000FF").build();
+        thickness = thickness.toBuilder().setValue("3.0").build();
+        vertStrokes.add(3.0f);
+        vertColors.add(new Color(0x400000FF, true));
+        vertCentroids.add(false);
+        vertices.add(Vertex.newBuilder()
+                .setX(9.0)
+                .setY(4.0)
+                .addProperties(centroid)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        colour = colour.toBuilder().setValue("00000000").build();
+        thickness = thickness.toBuilder().setValue("3.0").build();
+        centroid = centroid.toBuilder().setValue("true").build();
+        vertColors.add(new Color(0x00000000, true));
+        vertStrokes.add(3.0f);
+        vertCentroids.add(true);
+        vertices.add(Vertex.newBuilder()
+                .setX(6)
+                .setY(4)
                 .addProperties(centroid)
                 .addProperties(colour)
                 .addProperties(thickness)
@@ -162,12 +200,37 @@ public class GraphicRendererTest {
                 .addProperties(colour)
                 .addProperties(thickness)
                 .build());
+        segColors.add(new Color(0xCCCCCCCC, true));
+        segStrokes.add(new BasicStroke(1.50f));
+        segments.add(Segment.newBuilder()
+                .setV1Idx(1)
+                .setV2Idx(6)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        segColors.add(new Color(0xCCCCCCCC, true));
+        segStrokes.add(new BasicStroke(1.50f));
+        segments.add(Segment.newBuilder()
+                .setV1Idx(7)
+                .setV2Idx(6)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        segColors.add(new Color(0xCCCCCCCC, true));
+        segStrokes.add(new BasicStroke(1.50f));
+        segments.add(Segment.newBuilder()
+                .setV1Idx(7)
+                .setV2Idx(2)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
     }
 
     private static void addAllPolygons() {
         polygons = new ArrayList<>();
         polyColor = new ArrayList<>();
         polyStrokes = new ArrayList<>();
+        pathVerts = new ArrayList<>();
         Property fill, border, thickness;
         fill = Property.newBuilder().setKey("rgba_fill_color").setValue("80FF00FF").build();
         border = Property.newBuilder().setKey("rgba_border_color").setValue("FF00FFFF").build();
@@ -182,7 +245,18 @@ public class GraphicRendererTest {
                 .setCentroidIdx(5)
                 .addAllSegmentIdxs(List.of(4, 1, 0, 2, 3))
                 .build());
-        pathVerts = List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4), vertices.get(3));
+        polyColor.add(new Color(0x80ff00ff, true));
+        polyColor.add(new Color(0xff00ffff, true));
+        polyStrokes.add(new BasicStroke(0.75f));
+        polygons.add(Polygon.newBuilder()
+                .addProperties(fill)
+                .addProperties(border)
+                .addProperties(thickness)
+                .setCentroidIdx(8)
+                .addAllSegmentIdxs(List.of(7, 1, 6, 5))
+                .build());
+        pathVerts.add(List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4), vertices.get(3)));
+        pathVerts.add(List.of(vertices.get(7), vertices.get(6), vertices.get(1), vertices.get(2)));
     }
 
     @BeforeAll
@@ -255,7 +329,13 @@ public class GraphicRendererTest {
 
     @Test
     public void calculatePolyPath_CorrectOrderSucceeds() {
-        List<Vertex> path = rend.calculatePolyPath(aMesh, polygons.get(0));
-        assertEquals(pathVerts, path);
+        List<List<Vertex>> path = new ArrayList<>();
+        for (Polygon p : polygons) {
+            path.add(rend.calculatePolyPath(aMesh, p));
+        }
+        assertAll(
+                "Polygon Path Assertions",
+                () -> assertEquals(pathVerts.get(0), path.get(0), "First polygon path"),
+                () -> assertEquals(pathVerts.get(1), path.get(1), "Right angled from centroid polygon path"));
     }
 }
