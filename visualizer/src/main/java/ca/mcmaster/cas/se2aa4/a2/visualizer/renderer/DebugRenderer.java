@@ -10,28 +10,18 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
-
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * DebugRenderer is a GraphicRenderer that renders components in debug mode.
  */
 public class DebugRenderer extends GraphicRenderer {
 
-    private static final float DEFAULT_SEGMENT_THICKNESS = 1;
-    private static final float DEFAULT_VERTEX_THICKNESS = 8;
-    private static final float DEFAULT_POLYGON_THICKNESS = 5;
-    private static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
-    private static final Color DEFAULT_POLYGON_BORDER_COLOR = new Color(0x43, 0xff, 0x64, 0xd9);
-    private static final Color DEFAULT_POLYGON_FILL_COLOR = new Color(0xf0, 0xf0, 0xf0, 0xd9);
-    private static final Color DEFAULT_SEGMENT_COLOR = Color.BLACK;
-    private static final Color DEFAULT_VERTEX_COLOR = Color.RED;
-    private static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
-    private static final Color DEFAULT_CENTROID_COLOR = Color.BLUE;
+    public static final Stroke DEFAULT_STROKE = new BasicStroke(1f);
+    public static final Color DEFAULT_NEIGHBOR_COLOR = Color.GRAY;
+    public static final Color DEFAULT_CENTROID_COLOR = Color.BLUE;
 
     @Override
     public void render(Mesh aMesh, Graphics2D canvas) {
@@ -41,9 +31,8 @@ public class DebugRenderer extends GraphicRenderer {
         renderVertices(aMesh, canvas);
     }
 
-    protected void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
-        canvas.setStroke(DEFAULT_STROKE);
-        canvas.setColor(DEFAULT_NEIGHBOR_COLOR);
+    protected List<Line2D> getNeighbours(Mesh aMesh) {
+        List<Line2D> neighbourSegments = new ArrayList<>();
         Set<Integer> visited = new TreeSet<>();
         for (Polygon p : aMesh.getPolygonsList()) {
             for (int idx : p.getNeighborIdxsList()) {
@@ -55,9 +44,19 @@ public class DebugRenderer extends GraphicRenderer {
                 Point2D p2 = new Point2D.Double(aMesh.getVertices(idx).getX(),
                         aMesh.getVertices(idx).getY());
                 Line2D line = new Line2D.Double(p1, p2);
-                canvas.draw(line);
+                neighbourSegments.add(line);
             }
             visited.add(p.getCentroidIdx());
+        }
+        return neighbourSegments;
+    }
+
+    protected void renderNeighbours(Mesh aMesh, Graphics2D canvas) {
+        canvas.setStroke(DEFAULT_STROKE);
+        canvas.setColor(DEFAULT_NEIGHBOR_COLOR);
+        List<Line2D> neighbours = getNeighbours(aMesh);
+        for (Line2D neighbour : neighbours) {
+            canvas.draw(neighbour);
         }
     }
 
@@ -68,12 +67,12 @@ public class DebugRenderer extends GraphicRenderer {
 
     @Override
     protected Stroke extractThickness(final Polygon poly) {
-        return new BasicStroke(DEFAULT_POLYGON_THICKNESS);
+        return DEFAULT_POLYGON_BORDER_STROKE;
     }
 
     @Override
     protected Stroke extractThickness(final Segment seg) {
-        return new BasicStroke(DEFAULT_SEGMENT_THICKNESS);
+        return DEFAULT_SEGMENT_STROKE;
     }
 
     @Override
@@ -101,9 +100,6 @@ public class DebugRenderer extends GraphicRenderer {
             }
         }
         centroid = Boolean.parseBoolean(centroidVal);
-        if (centroid) {
-            return DEFAULT_CENTROID_COLOR;
-        }
-        return DEFAULT_VERTEX_COLOR;
+        return (centroid) ? DEFAULT_CENTROID_COLOR : DEFAULT_VERTEX_COLOR;
     }
 }
