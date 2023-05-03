@@ -109,6 +109,7 @@ public class DebugRendererTest {
                 .build());
         colour = colour.toBuilder().setValue("400000FF").build();
         thickness = thickness.toBuilder().setValue("3.0").build();
+        centroid = centroid.toBuilder().setValue("false").build();
         vertStrokes.add(DebugRenderer.DEFAULT_VERTEX_THICKNESS);
         vertColors.add(DebugRenderer.DEFAULT_VERTEX_COLOR);
         vertCentroids.add(false);
@@ -258,7 +259,8 @@ public class DebugRendererTest {
                 .addAllSegmentIdxs(List.of(7, 1, 6, 5))
                 .addNeighborIdxs(5)
                 .build());
-        pathVerts.add(List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4), vertices.get(3)));
+        pathVerts.add(List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4),
+                vertices.get(3)));
         pathVerts.add(List.of(vertices.get(7), vertices.get(6), vertices.get(1), vertices.get(2)));
         neighbours = List.of(new Line2D.Double(3.6, 0.6, 6, 4));
     }
@@ -274,5 +276,84 @@ public class DebugRendererTest {
                 .addAllSegments(segments)
                 .build();
         rend = new DebugRenderer();
+    }
+
+    @Test
+    public void extractVertexThickness_AllMatchSucceeds() {
+        List<Float> extracted = new ArrayList<>();
+        for (Vertex v : vertices) {
+            extracted.add(rend.extractThickness(v));
+        }
+        assertEquals(vertStrokes, extracted);
+    }
+
+    @Test
+    public void extractVertexColor_AllMatchSucceeds() {
+        List<Color> extracted = new ArrayList<>();
+        for (Vertex v : vertices) {
+            extracted.add(rend.extractColor(v));
+        }
+        assertEquals(vertColors, extracted);
+    }
+
+    @Test
+    public void extractSegmentColor_AllMatchSucceeds() {
+        List<Color> extracted = new ArrayList<>();
+        for (Segment seg : segments) {
+            extracted.add(rend.extractColor(seg));
+        }
+        assertEquals(segColors, extracted);
+    }
+
+    @Test
+    public void extractSegmentThickness_AllMatchSucceeds() {
+        List<Stroke> extracted = new ArrayList<>();
+        for (Segment seg : segments) {
+            extracted.add(rend.extractThickness(seg));
+        }
+        assertEquals(segStrokes, extracted);
+    }
+
+    @Test
+    public void extractPolygonThickness_AllMatchSucceeds() {
+        List<Stroke> extracted = new ArrayList<>();
+        for (Polygon p : polygons) {
+            extracted.add(rend.extractThickness(p));
+        }
+        assertEquals(polyStrokes, extracted);
+    }
+
+    @Test
+    public void extractPolygonColour_AllMatchSucceeds() {
+        List<Color> extracted = new ArrayList<>();
+        for (Polygon p : polygons) {
+            extracted.add(rend.extractColor(p, "rgba_fill_color"));
+            extracted.add(rend.extractColor(p, "rgba_border_color"));
+        }
+        assertEquals(polyColors, extracted);
+    }
+
+    @Test
+    public void calculatePolyPath_CorrectOrderSucceeds() {
+        List<List<Vertex>> path = new ArrayList<>();
+        for (Polygon p : polygons) {
+            path.add(rend.calculatePolyPath(aMesh, p));
+        }
+        assertAll(
+                "Polygon Path Assertions",
+                () -> assertEquals(pathVerts.get(0), path.get(0), "First polygon path"),
+                () -> assertEquals(pathVerts.get(1), path.get(1), "Right angled from centroid polygon path"));
+    }
+
+    @Test
+    public void getNeighbours_MatchSucceeds() {
+        List<Line2D> neighboursActual = rend.getNeighbours(aMesh);
+        assertAll(
+                "Neighbourhood Assertions",
+                () -> assertEquals(neighbours.size(), neighboursActual.size(), "Size check"),
+                () -> assertEquals(neighbours.get(0).getX1(), neighboursActual.get(0).getX1(), "X1 check"),
+                () -> assertEquals(neighbours.get(0).getY1(), neighboursActual.get(0).getY1(), "Y1 check"),
+                () -> assertEquals(neighbours.get(0).getX2(), neighboursActual.get(0).getX2(), "X2 check"),
+                () -> assertEquals(neighbours.get(0).getY2(), neighboursActual.get(0).getY2(), "Y2 check"));
     }
 }
