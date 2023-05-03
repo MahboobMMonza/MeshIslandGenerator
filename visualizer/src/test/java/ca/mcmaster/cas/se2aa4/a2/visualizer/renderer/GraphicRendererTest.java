@@ -19,7 +19,7 @@ public class GraphicRendererTest {
     static List<List<Vertex>> pathVerts;
     static List<Segment> segments;
     static List<Polygon> polygons;
-    static List<Color> vertColors, segColors, polyColor;
+    static List<Color> vertColors, segColors, polyColors;
     static List<Stroke> segStrokes, polyStrokes;
     static List<Float> vertStrokes;
     static List<Boolean> vertCentroids;
@@ -228,15 +228,15 @@ public class GraphicRendererTest {
 
     private static void addAllPolygons() {
         polygons = new ArrayList<>();
-        polyColor = new ArrayList<>();
+        polyColors = new ArrayList<>();
         polyStrokes = new ArrayList<>();
         pathVerts = new ArrayList<>();
         Property fill, border, thickness;
         fill = Property.newBuilder().setKey("rgba_fill_color").setValue("80FF00FF").build();
         border = Property.newBuilder().setKey("rgba_border_color").setValue("FF00FFFF").build();
         thickness = Property.newBuilder().setKey("thickness").setValue("0.75").build();
-        polyColor.add(new Color(0x80ff00ff, true));
-        polyColor.add(new Color(0xff00ffff, true));
+        polyColors.add(new Color(0x80ff00ff, true));
+        polyColors.add(new Color(0xff00ffff, true));
         polyStrokes.add(new BasicStroke(0.75f));
         polygons.add(Polygon.newBuilder()
                 .addProperties(fill)
@@ -245,8 +245,8 @@ public class GraphicRendererTest {
                 .setCentroidIdx(5)
                 .addAllSegmentIdxs(List.of(4, 1, 0, 2, 3))
                 .build());
-        polyColor.add(new Color(0x80ff00ff, true));
-        polyColor.add(new Color(0xff00ffff, true));
+        polyColors.add(new Color(0x80ff00ff, true));
+        polyColors.add(new Color(0xff00ffff, true));
         polyStrokes.add(new BasicStroke(0.75f));
         polygons.add(Polygon.newBuilder()
                 .addProperties(fill)
@@ -324,7 +324,7 @@ public class GraphicRendererTest {
             extracted.add(rend.extractColor(p, "rgba_fill_color"));
             extracted.add(rend.extractColor(p, "rgba_border_color"));
         }
-        assertEquals(polyColor, extracted);
+        assertEquals(polyColors, extracted);
     }
 
     @Test
