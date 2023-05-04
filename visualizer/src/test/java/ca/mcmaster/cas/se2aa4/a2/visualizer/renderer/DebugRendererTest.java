@@ -145,6 +145,32 @@ public class DebugRendererTest {
                 .addProperties(colour)
                 .addProperties(thickness)
                 .build());
+        colour = colour.toBuilder().setValue("400000FF").build();
+        thickness = thickness.toBuilder().setValue("3.0").build();
+        centroid = centroid.toBuilder().setValue("false").build();
+        vertStrokes.add(DebugRenderer.DEFAULT_VERTEX_THICKNESS);
+        vertColors.add(DebugRenderer.DEFAULT_VERTEX_COLOR);
+        vertCentroids.add(false);
+        vertices.add(Vertex.newBuilder()
+                .setX(8.0)
+                .setY(-2.0)
+                .addProperties(centroid)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        colour = colour.toBuilder().setValue("00000000").build();
+        thickness = thickness.toBuilder().setValue("3.0").build();
+        centroid = centroid.toBuilder().setValue("true").build();
+        vertColors.add(DebugRenderer.DEFAULT_CENTROID_COLOR);
+        vertStrokes.add(DebugRenderer.DEFAULT_VERTEX_THICKNESS);
+        vertCentroids.add(true);
+        vertices.add(Vertex.newBuilder()
+                .setX(7.0)
+                .setY(0.75)
+                .addProperties(centroid)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
     }
 
     private static void addAllSegments() {
@@ -226,6 +252,22 @@ public class DebugRendererTest {
                 .addProperties(colour)
                 .addProperties(thickness)
                 .build());
+        segColors.add(DebugRenderer.DEFAULT_SEGMENT_COLOR);
+        segStrokes.add(DebugRenderer.DEFAULT_SEGMENT_STROKE);
+        segments.add(Segment.newBuilder()
+                .setV1Idx(7)
+                .setV2Idx(9)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
+        segColors.add(DebugRenderer.DEFAULT_SEGMENT_COLOR);
+        segStrokes.add(DebugRenderer.DEFAULT_SEGMENT_STROKE);
+        segments.add(Segment.newBuilder()
+                .setV1Idx(9)
+                .setV2Idx(3)
+                .addProperties(colour)
+                .addProperties(thickness)
+                .build());
     }
 
     private static void addAllPolygons() {
@@ -247,6 +289,7 @@ public class DebugRendererTest {
                 .setCentroidIdx(5)
                 .addAllSegmentIdxs(List.of(4, 1, 0, 2, 3))
                 .addNeighborIdxs(8)
+                .addNeighborIdxs(10)
                 .build());
         polyColors.add(DebugRenderer.DEFAULT_POLYGON_FILL_COLOR);
         polyColors.add(DebugRenderer.DEFAULT_POLYGON_BORDER_COLOR);
@@ -258,11 +301,26 @@ public class DebugRendererTest {
                 .setCentroidIdx(8)
                 .addAllSegmentIdxs(List.of(7, 1, 6, 5))
                 .addNeighborIdxs(5)
+                .addNeighborIdxs(10)
+                .build());
+        polyColors.add(DebugRenderer.DEFAULT_POLYGON_FILL_COLOR);
+        polyColors.add(DebugRenderer.DEFAULT_POLYGON_BORDER_COLOR);
+        polyStrokes.add(DebugRenderer.DEFAULT_POLYGON_BORDER_STROKE);
+        polygons.add(Polygon.newBuilder()
+                .addProperties(fill)
+                .addProperties(border)
+                .addProperties(thickness)
+                .setCentroidIdx(10)
+                .addAllSegmentIdxs(List.of(7, 2, 8, 9))
+                .addNeighborIdxs(5)
+                .addNeighborIdxs(8)
                 .build());
         pathVerts.add(List.of(vertices.get(2), vertices.get(1), vertices.get(0), vertices.get(4),
                 vertices.get(3)));
         pathVerts.add(List.of(vertices.get(7), vertices.get(6), vertices.get(1), vertices.get(2)));
-        neighbours = List.of(new Line2D.Double(3.6, 0.6, 6, 4));
+        pathVerts.add(List.of(vertices.get(7), vertices.get(2), vertices.get(3), vertices.get(9)));
+        neighbours = List.of(new Line2D.Double(3.6, 0.6, 6, 4), new Line2D.Double(3.6, 0.6, 7, 0.75),
+                new Line2D.Double(6, 4, 7, 0.75));
     }
 
     @BeforeAll
@@ -342,7 +400,8 @@ public class DebugRendererTest {
         assertAll(
                 "Polygon Path Assertions",
                 () -> assertEquals(pathVerts.get(0), path.get(0), "First polygon path"),
-                () -> assertEquals(pathVerts.get(1), path.get(1), "Right angled from centroid polygon path"));
+                () -> assertEquals(pathVerts.get(1), path.get(1),
+                        "Right angled from centroid polygon path"));
     }
 
     @Test
@@ -351,9 +410,17 @@ public class DebugRendererTest {
         assertAll(
                 "Neighbourhood Assertions",
                 () -> assertEquals(neighbours.size(), neighboursActual.size(), "Size check"),
-                () -> assertEquals(neighbours.get(0).getX1(), neighboursActual.get(0).getX1(), "X1 check"),
-                () -> assertEquals(neighbours.get(0).getY1(), neighboursActual.get(0).getY1(), "Y1 check"),
-                () -> assertEquals(neighbours.get(0).getX2(), neighboursActual.get(0).getX2(), "X2 check"),
-                () -> assertEquals(neighbours.get(0).getY2(), neighboursActual.get(0).getY2(), "Y2 check"));
+                () -> assertEquals(neighbours.get(0).getX1(), neighboursActual.get(0).getX1(), "Line 0 X1 check"),
+                () -> assertEquals(neighbours.get(0).getY1(), neighboursActual.get(0).getY1(), "Line 0 Y1 check"),
+                () -> assertEquals(neighbours.get(0).getX2(), neighboursActual.get(0).getX2(), "Line 0 X2 check"),
+                () -> assertEquals(neighbours.get(0).getY2(), neighboursActual.get(0).getY2(), "Line 0 Y2 check"),
+                () -> assertEquals(neighbours.get(1).getX1(), neighboursActual.get(1).getX1(), "Line 1 X1 check"),
+                () -> assertEquals(neighbours.get(1).getY1(), neighboursActual.get(1).getY1(), "Line 1 Y1 check"),
+                () -> assertEquals(neighbours.get(1).getX2(), neighboursActual.get(1).getX2(), "Line 1 X2 check"),
+                () -> assertEquals(neighbours.get(1).getY2(), neighboursActual.get(1).getY2(), "Line 1 Y2 check"),
+                () -> assertEquals(neighbours.get(2).getX1(), neighboursActual.get(2).getX1(), "Line 2 X1 check"),
+                () -> assertEquals(neighbours.get(2).getY1(), neighboursActual.get(2).getY1(), "Line 2 Y1 check"),
+                () -> assertEquals(neighbours.get(2).getX2(), neighboursActual.get(2).getX2(), "Line 2 X2 check"),
+                () -> assertEquals(neighbours.get(2).getY2(), neighboursActual.get(2).getY2(), "Line 2 Y2 check"));
     }
 }
