@@ -25,7 +25,7 @@ public class FixedMesh implements Mesh {
     static void warnUser(int givenValue, int defaultValue, String property) {
         if (givenValue < defaultValue) {
             System.out.println(
-                    String.format("WARNNING: The interpreted value of %1$s was set below the minimum value"
+                    String.format("WARNING: The interpreted value of %1$s was set below the minimum value"
                             + "of %2$s for argument %3$s. Setting %3$s to default value %2$s.",
                             givenValue, defaultValue, property.toUpperCase()));
         }

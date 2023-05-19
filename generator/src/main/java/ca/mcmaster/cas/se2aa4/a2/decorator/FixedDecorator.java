@@ -59,7 +59,7 @@ public class FixedDecorator implements Decorator {
 
     private static void warnUser(final String given, final String defaultValue, final String property) {
         System.out.println(String.format(
-                "WARNGING: The interpreted value of '%1$s' for the property %2$s is invalid. Property %2$s will be set to %3$s instead.",
+                "WARNING: The interpreted value of '%1$s' for the property %2$s is invalid. Property %2$s will be set to %3$s instead.",
                 given, property.toUpperCase(), defaultValue));
     }
 
