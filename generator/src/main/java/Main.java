@@ -19,18 +19,27 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
-    
 
     public static void main(String[] args) throws IOException {
         CommandLineParser parser = new DefaultParser();
         GeneratorCommandLine cmd = new GeneratorCommandLine();
-        Generator gen = null;
+        Generator gen;
         cmd.addOptions();
         Decorator decorator = new FixedDecorator();
         MeshFactory factory = new MeshFactory();
+        // Print help and exit if help was asked for
+        if (cmd.hasHelpOption(parser, args)) {
+            cmd.getHelp();
+            System.exit(0);
+        } // Otherwise get the required generator type
+        GeneratorTypes type = cmd.getMeshType(parser, args);
+        // Warn users if generator type is not provided otherwise exit
+        if (type.equals(GeneratorTypes.NONE)) {
+            cmd.getHelp();
+            System.exit(0);
+        } // Otherwise make the required generator
         int height = cmd.getDimeH(parser, args), width = cmd.getDimeW(parser, args);
         Mesh fMesh = new FixedMesh(height, width);
         String vertColour = cmd.getVertColour(parser, args);
@@ -53,21 +62,14 @@ public class Main {
         int relaxationLevel = cmd.getRelaxationLevel(parser, args);
         int sideLength = cmd.getSideLength(parser, args);
         String fileName = cmd.setFileName(parser, args);
-        GeneratorTypes type = cmd.getMeshType(parser, args);
-        // Determine help option or if mesh type was not given or not valid then show
-        // help and exit
-        if (cmd.hasHelpOption(parser, args) || type.equals(GeneratorTypes.NONE)) {
-            cmd.getHelp();
-            System.exit(0);
-        } // Otherwise make the required generator
         if (type.equals(GeneratorTypes.VORONOI)) {
             logger.info("Creating Mesh Type: Voronoi");
             logger.info("Voronoi Relaxation Level: " + relaxationLevel);
-            logger.info("Voronoi Number of Start Points: "+ numPoints);
+            logger.info("Voronoi Number of Start Points: " + numPoints);
             gen = new VoronoiGenerator(numPoints, relaxationLevel);
         } else {
             logger.info("Creating Mesh Type: Grid");
-            logger.info("Grid Side Length: "+sideLength);
+            logger.info("Grid Side Length: " + sideLength);
             gen = new GridGenerator(sideLength);
         }
         logger.info("Mesh Vertex Colour: " + decorator.getVertThickness());
@@ -76,7 +78,7 @@ public class Main {
         logger.info("Mesh Polygon Fill Colour: " + decorator.getPolyFillColour());
         logger.info("Mesh Polygon Border Colour: " + decorator.getPolyBorderColour());
         logger.info("Mesh Polygon Border Thickness: " + decorator.getPolyBorderThickness());
-        logger.info("File Name: "+ fileName);
+        logger.info("File Name: " + fileName);
         // Generate the mesh and convert it
         factory.write(createMesh(fMesh, gen, decorator), fileName);
         logger.info("File " + fileName + " has been created");
