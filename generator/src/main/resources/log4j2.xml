@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5level - %msg%n" />
+        <Console name="Info" target="SYSTEM_OUT">
+            <PatternLayout pattern="%level :: %msg%n" />
+        </Console>
+        <Console name="Warning" target="SYSTEM_OUT">
+            <PatternLayout pattern="WARNING :: %msg%n" />
+        </Console>
+        <Console name="Errors" target="SYSTEM_ERR">
+            <PatternLayout pattern="[%-5p] %msg%n" />
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="ALL">
-            <AppenderRef ref="Console" />
+        <Root level="ERROR">
+            <AppenderRef ref="Errors" />
         </Root>
+        <Logger name="Informative" additivity="false" level="INFO">
+            <AppenderRef ref="Info" />
+        </Logger>
+        <Logger name="Warner" additivity="false" level="WARN">
+            <AppenderRef ref="Warning" />
+        </Logger>
     </Loggers>
 </Configuration>
