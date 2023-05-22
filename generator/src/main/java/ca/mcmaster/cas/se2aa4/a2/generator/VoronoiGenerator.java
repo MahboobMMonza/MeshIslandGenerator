@@ -2,18 +2,20 @@ package ca.mcmaster.cas.se2aa4.a2.generator;
 
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.triangulate.*;
+import org.locationtech.jts.algorithm.ConvexHull;
 
 import ca.mcmaster.cas.se2aa4.a2.components.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.components.Vert;
 import ca.mcmaster.cas.se2aa4.a2.components.Segment;
 import ca.mcmaster.cas.se2aa4.a2.components.Seg;
 import ca.mcmaster.cas.se2aa4.a2.components.Poly;
-import org.locationtech.jts.algorithm.ConvexHull;
+import org.apache.logging.log4j.*;
 
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 import java.util.*;
 
 public class VoronoiGenerator implements Generator {
+    private static final Logger logger = LogManager.getLogger(VoronoiGenerator.class);
 
     final static PrecisionModel HUNDREDTH_PRECISION_MODEL = new PrecisionModel(100);
     final static long PRIME = 2305843009213693951L;
@@ -21,11 +23,9 @@ public class VoronoiGenerator implements Generator {
 
     static void warnUser(int givenValue, int defaultValue, String property) {
         if (givenValue < defaultValue) {
-            System.out.println(String.format(
-                    "WARNING: The interpreted value of '%1$s' was set below the minimum value of %2$s for argument %3$s. Setting %3$s to default value %2$s",
-                    givenValue, defaultValue, property));
+            logger.warn(String.format("The interpreted value of '%1$s' was set below the minimum value of %2$s for"
+                    + " argument %3$s. Setting %3$s to default value %2$s", givenValue, defaultValue, property));
         }
-
     }
 
     private final Random randomX, randomY;
@@ -154,8 +154,9 @@ public class VoronoiGenerator implements Generator {
                 mesh.addSeg(s);
             }
             // Add the segment that connects the first vertex with the last one.
-            // s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0],
-            //         vertices.get(vertices.size() - 1)[1]);
+            // s = new Segment(vertices.get(0)[0], vertices.get(0)[1],
+            // vertices.get(vertices.size() - 1)[0],
+            // vertices.get(vertices.size() - 1)[1]);
             // mesh.addSeg(s);
             mesh.addPoly(p);
         }

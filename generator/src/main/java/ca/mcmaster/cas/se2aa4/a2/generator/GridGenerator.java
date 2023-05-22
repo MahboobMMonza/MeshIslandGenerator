@@ -6,31 +6,41 @@ import java.util.List;
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.mesh.Mesh;
 
+import org.apache.logging.log4j.*;
+
 /**
  * GridGenerator
  */
 public class GridGenerator implements Generator {
+    private static final Logger logger = LogManager.getLogger(GridGenerator.class);
 
     static final double TOP_X = 0, TOP_Y = 0;
     static final int MIN_SIDE_LENGTH = 20, DEFAULT_SIDE_LENGTH = 100;
 
-    public final int sideLength;
+    private int sideLength;
 
     public GridGenerator(int sideLength) {
         this.sideLength = Math.max(sideLength, MIN_SIDE_LENGTH);
+        updateSideLength(sideLength, MIN_SIDE_LENGTH, "below", -1);
+    }
+
+    void updateSideLength(int givenValue, int defaultValue, String extremity, int compResult) {
+        if (Integer.compare(givenValue, defaultValue) == compResult) {
+            logger.warn(String.format("The interpreted value of '%1$s' was set %3$s the minimum value of %2$s for"
+                    + " argument SIDE_LENGTH. Setting SIDE_LENGTH to default value %2$s", givenValue, defaultValue,
+                    extremity));
+            this.sideLength = defaultValue;
+        } else {
+            this.sideLength = givenValue;
+        }
     }
 
     @Override
     public void generate(final Mesh mesh) {
         // This is to compromise a small mesh given, but the generator will create grids
         // of the given sideLength in other cases.
-        int sideLength = this.sideLength;
-        if (this.sideLength > mesh.getHeight() || this.sideLength > mesh.getWidth()) {
-            System.out.println("WARNING: The given SIDE_LENGTH of " + sideLength
-                    + "exceeds one of the given border sizes of the Mesh. The default value of " + DEFAULT_SIDE_LENGTH
-                    + " will be used instead.");
-            sideLength = DEFAULT_SIDE_LENGTH;
-        }
+        updateSideLength(sideLength, mesh.getHeight(), "above", 1);
+        updateSideLength(sideLength, mesh.getWidth(), "above", 1);
         // Round the increment to 2 decimal places (be sure of the the rounding)
         final double increment = Math.round((sideLength / 2.0) * 100) / 100.0;
         // Find the number of squares that at least partially fit inside the canvas
@@ -75,8 +85,9 @@ public class GridGenerator implements Generator {
                 mesh.addSeg(s);
             }
             // Add the segment that connects the first vertex with the last one.
-            // s = new Segment(vertices.get(0)[0], vertices.get(0)[1], vertices.get(vertices.size() - 1)[0],
-            //         vertices.get(vertices.size() - 1)[1]);
+            // s = new Segment(vertices.get(0)[0], vertices.get(0)[1],
+            // vertices.get(vertices.size() - 1)[0],
+            // vertices.get(vertices.size() - 1)[1]);
             // mesh.addSeg(s);
             mesh.addPoly(p);
         }

@@ -1,5 +1,8 @@
 package ca.mcmaster.cas.se2aa4.a2.decorator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ca.mcmaster.cas.se2aa4.a2.components.Poly;
 import ca.mcmaster.cas.se2aa4.a2.components.Seg;
 import ca.mcmaster.cas.se2aa4.a2.components.Vert;
@@ -8,6 +11,7 @@ import ca.mcmaster.cas.se2aa4.a2.components.Vert;
  * FixedDecorator
  */
 public class FixedDecorator implements Decorator {
+    private static final Logger logger = LogManager.getLogger(FixedDecorator.class);
 
     static final int DEFAULT_POLY_FILL_COLOUR, DEFAULT_POLY_BORDER_COLOUR, DEFAULT_SEG_COLOUR, DEFAULT_VERT_COLOUR,
             DEFAULT_CENTROID_COLOUR;
@@ -58,9 +62,8 @@ public class FixedDecorator implements Decorator {
     }
 
     private static void warnUser(final String given, final String defaultValue, final String property) {
-        System.out.println(String.format(
-                "WARNING: The interpreted value of '%1$s' for the property %2$s is invalid. Property %2$s will be set to %3$s instead.",
-                given, property.toUpperCase(), defaultValue));
+        logger.warn(String.format("The interpreted value of '%1$s' for the property %2$s is invalid. Property %2$s will"
+                + " be set to %3$s instead.", given, property.toUpperCase(), defaultValue));
     }
 
     private static int[] tryConversion(final String colourString, final String property, final int defaultValue) {
@@ -229,7 +232,7 @@ public class FixedDecorator implements Decorator {
     @Override
     public void decorateVert(final Vert v) {
         // Get colours in rgba format
-        v.setColour((v.isCentroid() ) ? rgbaToSRGB(DEFAULT_CENTROID_COLOUR) : rgbaToSRGB(vertColour));
+        v.setColour((v.isCentroid()) ? rgbaToSRGB(DEFAULT_CENTROID_COLOUR) : rgbaToSRGB(vertColour));
         v.setThickness((v.isCentroid()) ? DEFAULT_CENTROID_THICKNESS : vertThickness);
     }
 
