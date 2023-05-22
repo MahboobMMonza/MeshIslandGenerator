@@ -63,7 +63,7 @@ public class GeneratorMeshIntegrationTest {
         assertEquals(625, centroids.size());
     }
 
-    // Test to check of the right location of the centroid 
+    // Test to check of the right location of the centroid
     @Test
     public void correctCentroids() {
         double bottomCentX = 500.0;
@@ -99,11 +99,13 @@ public class GeneratorMeshIntegrationTest {
         generator.generate(mesh);
         mesh.lock();
         List<Poly> polys = mesh.getPolys();
-        for (double[] neighbours : polys.get(0).getNeigbourList()) {
-            System.out.println(String.format("(%.2f, %.2f) :: (%.2f, %.2f)", polys.get(0).getCentroidX(),
-                    polys.get(0).getCentroidY(), neighbours[0], neighbours[1]));
-        }
-
+        /*
+         * for (double[] neighbours : polys.get(0).getNeigbourList()) {
+         * System.out.println(String.format("(%.2f, %.2f) :: (%.2f, %.2f)",
+         * polys.get(0).getCentroidX(),
+         * polys.get(0).getCentroidY(), neighbours[0], neighbours[1]));
+         * }
+         */
         assertEquals(3, polys.get(0).getNeigbourList().size());
     }
 

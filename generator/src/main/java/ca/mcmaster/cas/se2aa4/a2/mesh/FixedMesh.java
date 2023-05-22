@@ -8,10 +8,13 @@ import java.util.TreeSet;
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
 
+import org.apache.logging.log4j.*;
+
 /**
  * FixedMesh class, which implements the Mesh interface.
  */
 public class FixedMesh implements Mesh {
+    private static final Logger logger = LogManager.getLogger(FixedMesh.class);
 
     private final Set<Poly> polysSet;
     private final Set<Seg> segsSet;
@@ -24,10 +27,9 @@ public class FixedMesh implements Mesh {
 
     static void warnUser(int givenValue, int defaultValue, String property) {
         if (givenValue < defaultValue) {
-            System.out.println(
-                    String.format("WARNNING: The interpreted value of %1$s was set below the minimum value"
-                            + "of %2$s for argument %3$s. Setting %3$s to default value %2$s.",
-                            givenValue, defaultValue, property.toUpperCase()));
+            logger.warn(String.format("The interpreted value of %1$s was set below the minimum value of %2$s for"
+                    + " argument %3$s. Setting %3$s to default value %2$s.", givenValue, defaultValue,
+                    property.toUpperCase()));
         }
     }
 
@@ -56,8 +58,8 @@ public class FixedMesh implements Mesh {
     public boolean setHeight(int h) {
         if (locked)
             return false;
-        height = Math.max(MIN_HEIGHT, h);
         warnUser(h, MIN_HEIGHT, "height");
+        height = Math.max(MIN_HEIGHT, h);
         return true;
     }
 
@@ -65,8 +67,8 @@ public class FixedMesh implements Mesh {
     public boolean setWidth(int w) {
         if (locked)
             return false;
-        width = Math.max(MIN_WIDTH, w);
         warnUser(w, MIN_WIDTH, "width");
+        width = Math.max(MIN_WIDTH, w);
         return true;
     }
 
