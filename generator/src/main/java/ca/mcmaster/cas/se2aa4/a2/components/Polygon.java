@@ -1,5 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.components;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,10 +16,10 @@ public class Polygon implements Poly {
      * Converts the given red, green, blue, and alpha values into a single integer
      * following Java's sRGB model.
      *
-     * @param r
-     * @param g
-     * @param b
-     * @param a
+     * @param r colour's red value.
+     * @param g colour's green value.
+     * @param b colour's blue value.
+     * @param a colour's alpha (transparency) value.
      * @return the colour in Java's sRGB format.
      */
     private static int toSRGB(int r, int g, int b, int a) {
@@ -34,6 +35,7 @@ public class Polygon implements Poly {
     }
 
     private double centroidX, centroidY;
+
     private float borderThickness;
 
     private int fillColour, borderColour;
@@ -43,6 +45,8 @@ public class Polygon implements Poly {
     private List<double[]> neighbourList;
 
     public Polygon() {
+        verticesList = new ArrayList<>();
+        neighbourList = new ArrayList<>();
     }
 
     public Polygon(double x, double y) {
