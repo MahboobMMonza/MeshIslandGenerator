@@ -1,9 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a2.mesh;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import ca.mcmaster.cas.se2aa4.a2.components.*;
 import ca.mcmaster.cas.se2aa4.a2.decorator.Decorator;
@@ -74,6 +71,9 @@ public class FixedMesh implements Mesh {
 
     @Override
     public boolean addPoly(Poly p) {
+        if (Objects.isNull(p)) {
+            return false;
+        }
         Vert v = new Vertex(p.getCentroidX(), p.getCentroidY());
         v.setCentroid();
         return locked ? false : (vertsSet.add(v) && polysSet.add(p));
@@ -81,11 +81,17 @@ public class FixedMesh implements Mesh {
 
     @Override
     public boolean addSeg(Seg s) {
+        if (Objects.isNull(s)) {
+            return false;
+        }
         return locked ? false : segsSet.add(s);
     }
 
     @Override
     public boolean addVert(Vert v) {
+        if (Objects.isNull(v)) {
+            return false;
+        }
         return locked ? false : vertsSet.add(v);
     }
 
