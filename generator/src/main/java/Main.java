@@ -2,11 +2,12 @@ import static ca.mcmaster.cas.se2aa4.a2.creator.MeshCreator.createMesh;
 
 import java.io.IOException;
 
+import ca.mcmaster.cas.se2aa4.a2.cli.*;
 import ca.mcmaster.cas.se2aa4.a2.decorator.*;
 import ca.mcmaster.cas.se2aa4.a2.generator.*;
 import ca.mcmaster.cas.se2aa4.a2.io.*;
 import ca.mcmaster.cas.se2aa4.a2.mesh.*;
-import cli.*;
+
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.*;
 

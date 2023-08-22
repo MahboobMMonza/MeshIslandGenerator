@@ -1,4 +1,4 @@
-package cli;
+package ca.mcmaster.cas.se2aa4.a2.cli;
 
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -7,6 +7,14 @@ import org.apache.logging.log4j.Logger;
 import ca.mcmaster.cas.se2aa4.a2.generator.GeneratorTypes;
 
 public class GeneratorCommandLine {
+    static final int LINE_WIDTH = 120;
+
+    static final String HEADER = String.format("%nGenerate a PNG image of a grid or voronoi mesh with a given length"
+            + "%n%nOptions%n%n");
+    static final String FOOTER = String.format("%nColour must be in RGBA hex format. E.g.: Fully opaque orange would"
+            + " be entered as \"FFA500FF\", and semi-transparent orange as \"FFA50080\";"
+            + " see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions.");
+
     private static final Logger logger = LogManager.getLogger(GeneratorCommandLine.class);
 
     // Options that is used for the command line functionality
@@ -43,10 +51,13 @@ public class GeneratorCommandLine {
     private static HelpFormatter formatter = new HelpFormatter();
 
     static {
+        // Change max width of formatter.
+        formatter.setWidth(LINE_WIDTH);
         // Adds the different options to the type Options
         passiveOpts = new Options();
         runOpts = new Options();
         meshType.setRequired(true);
+        passiveOpts.addOption(help);
         runOpts.addOption(help);
         runOpts.addOption(meshType);
         runOpts.addOption(width);
@@ -60,7 +71,6 @@ public class GeneratorCommandLine {
         runOpts.addOption(sideLength);
         runOpts.addOption(polygonBorderColour);
         runOpts.addOption(polygonFillColour);
-        passiveOpts.addOption(help);
         runOpts.addOption(fileName);
         runOpts.addOption(polygonBorderThickness);
     }
@@ -69,10 +79,7 @@ public class GeneratorCommandLine {
      * Prints the Help information
      */
     public static void getHelp() {
-        formatter.printHelp("java -jar generator.jar [option 1] arg1 [option 2] arg2 ...", "Options", runOpts,
-                String.format("%nColour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as "
-                        + "\"FFA500FF\", and semi-transparent orange as \"FFA50080\";"
-                        + " see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions"));
+        formatter.printHelp("java -jar generator.jar", HEADER, runOpts, FOOTER, true);
     }
 
     /**
@@ -317,7 +324,7 @@ public class GeneratorCommandLine {
             filename = cmd.getOptionValue(fileName);
         } else {
             logger.warn("No file name was given. The default file name 'sample.mesh' will be used and the file will be"
-                    + "created in the default directory.");
+                    + " created in the default directory.");
         }
         return filename;
     }
