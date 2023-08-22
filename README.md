@@ -33,34 +33,31 @@ one, and a file named `island.jar` in the `island` subdirectory.
 
 To run the generator, go to the `generator` directory, and use `java -jar` to run the product. The product takes multiple arguments, each with its own switch as described below, the name of the file where the generated mesh will be stored as binary. Follow the instructions below.
 ```
-usage: java -jar generator.jar -mt type_arg [option 1] arg1 [option 2] arg2
-            ...
+usage: java -jar generator.jar [-bt <arg>] [-dh <arg>] [-dw <arg>] [-f <arg>] [-h] -mt <arg> [-pb <arg>] [-pf <arg>]
+       [-rl <arg>] [-sc <arg>] [-sl <arg>] [-sp <arg>] [-st <arg>] [-vc <arg>] [-vt <arg>]
+
+Generate a PNG image of a grid or voronoi mesh with a given length
+
 Options
- -bt,--borderthickness <arg>    Polygon Border Thickness :: MIN =0, MAX =
-                                30
- -dh,--dimensionh <arg>         Dimension for the height :: MIN = 300
- -dw,--dimensionw <arg>         Dimension for the width :: MIN = 300
- -f,--filename <arg>            Sets File Name
- -h,--help                      Show usage help
- -mt,--meshtype <type_arg>           Mesh type (Grid or Vornoi) ::This is a
-                                mandatory option
- -pb,--polygonborder <arg>      Polygon Border Colour (See Footer for more
-                                information)
- -pf,--polygonfill <arg>        Polygon Fill Colour (See Footer for more
-                                information)
- -rl,--relaxationlevel <arg>    Relaxation Level :: MIN = 0
- -sc,--segmentcolour <arg>      Segment Colour (See Footer for more
-                                information)
- -sl,--sidelength <arg>         Side Lengths :: MIN = 20
- -sp,--startpoints <arg>        Number of Start Points :: MIN = 20
- -st,--segmentthickness <arg>   Segment Thickness :: MIN = 0.25, Max = 30
- -vc,--vertexcolour <arg>       Vertex Colour (See Footer for more
-                                information)
- -vt,--vertexthickness <arg>    Vertex Thickness :: MIN = 0.25, Max = 30
-Colour must be in RGBA hex format. E.g.: Fully opaque orange would be
-entered as "FFA500FF", and semi-transparent orange as "FFA50080"; see
-https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex
-conversions
+
+ -bt,--border-thickness <arg>    Polygon Border Thickness :: MIN = 0, MAX = 30
+ -dh,--height <arg>              Dimension for the Mesh Height :: MIN = 300
+ -dw,--width <arg>               Dimension for the Mesh Width :: MIN = 300
+ -f,--file-name <arg>            Sets File Name
+ -h,--help                       Show usage help
+ -mt,--mesh-type <arg>           Mesh type (Grid or Vornoi) :: THIS IS A MANDATORY OPTION
+ -pb,--polygon-border <arg>      Polygon Border Colour (See Footer for more information)
+ -pf,--polygon-fill <arg>        Polygon Fill Colour (See Footer for more information
+ -rl,--relaxation-level <arg>    Relaxation Level for Voronoi Mesh :: MIN = 0
+ -sc,--segment-colour <arg>      Segment Colour (See Footer for more information)
+ -sl,--side-length <arg>         Side Length for Grid Mesh :: MIN = 20
+ -sp,--start-points <arg>        Number of Start Points for Voronoi Mesh :: MIN = 20
+ -st,--segment-thickness <arg>   Segment Thickness :: MIN = 0.25, Max = 30
+ -vc,--vertex-colour <arg>       Vertex Colour (See Footer for more information)
+ -vt,--vertex-thickness <arg>    Vertex Thickness :: MIN = 0.25, Max = 30
+
+Colour must be in RGBA hex format. E.g.: Fully opaque orange would be entered as "FFA500FF", and semi-transparent orange
+as "FFA50080"; see https://rgbacolorpicker.com/rgba-to-hex for more examples and for hex conversions.
 ```
 
 For a Grid Mesh with some default options for every color:
@@ -244,4 +241,3 @@ __Note__: Features in part 2 will only be pre-released as beta to focus on v1.3 
 | F17 | [Biomes 1] Singular biome profile (colour palette), affected based on the elevation and tile type | Mohammad | 03/22/2023 | 03/23/2023 | C |
 | F18 | [Biomes 2] Multiple biome profiles that can be selected at the command line | Mohammad/Khalid/Samih | 03/25/2023 | 03/25/2023 | C |
 | F19 | [Shapes 2] Different shape profiles can be selected on the command line | Mohammad/Samih/Khalid | 03/22/2023 | 03/23/2023 | C |
-
