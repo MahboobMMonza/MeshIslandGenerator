@@ -127,13 +127,13 @@ public class Polygon implements Poly {
     }
 
     @Override
-    public void setFillColour(int rgba) {
-        fillColour = rgba;
+    public void setFillColour(int srgb) {
+        fillColour = srgb;
     }
 
     @Override
-    public void setBorderColour(int rgba) {
-        borderColour = rgba;
+    public void setBorderColour(int srgb) {
+        borderColour = srgb;
     }
 
 }
